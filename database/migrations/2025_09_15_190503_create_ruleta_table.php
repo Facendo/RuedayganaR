@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->integer('nro_ranuras');
             $table->string('dir_imagen');
+            $table->integer('Condicional_Oportunidades')->default(0);
             $table->timestamps();
 
             $table->foreign('id_sorteo')
