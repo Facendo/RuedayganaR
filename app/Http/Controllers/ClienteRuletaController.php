@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ranura;
+use App\Models\ClienteRuleta;
 use Illuminate\Http\Request;
 
-class RanuraController extends Controller
+class ClienteRuletaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class RanuraController extends Controller
      */
     public function create()
     {
-        //Retorna a una vista del admin para la creacion de la ranura
+        //
     }
 
     /**
@@ -34,7 +34,7 @@ class RanuraController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Ranura $ranura)
+    public function show(ClienteRuleta $clienteRuleta)
     {
         //
     }
@@ -42,7 +42,7 @@ class RanuraController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Ranura $ranura)
+    public function edit(ClienteRuleta $clienteRuleta)
     {
         //
     }
@@ -50,7 +50,7 @@ class RanuraController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Ranura $ranura)
+    public function update(Request $request, ClienteRuleta $clienteRuleta)
     {
         //
     }
@@ -58,7 +58,7 @@ class RanuraController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ranura $ranura)
+    public function destroy(ClienteRuleta $clienteRuleta)
     {
         //
     }

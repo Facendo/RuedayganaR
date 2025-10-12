@@ -16,8 +16,9 @@ return new class extends Migration
             $table->integer('id_ranura')->primary()->autoIncrement();
             $table->string('color');
             $table->string('texto');
+            $table->integer('Rate');
+            $table->boolean('Blocked')->default(false);
             $table->timestamps();
-
             $table->foreign('id_ruleta')
                     ->references('id')
                     ->on('ruleta')
