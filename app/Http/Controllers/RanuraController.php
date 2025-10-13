@@ -20,7 +20,7 @@ class RanuraController extends Controller
      */
     public function create()
     {
-        //Retorna a una vista del admin para la creacion de la ranura
+        return view('admin.formularioRanura');
     }
 
     /**
@@ -28,7 +28,20 @@ class RanuraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $ranura = new Ranura();
+        $ranura->id_ruleta = $request->input('id_ruleta');
+        $ranura->color = $request->input('color');
+        $ranura->type = $request->input('type');
+        $ranura->texto = $request->input('texto');
+        $ranura->Rate = $request->input('Rate');
+        if ($request->hasFile('dir_imagen')) {
+            $image = $request->file('dir_imagen');
+            $filename = $image->getClientOriginalName();
+            $path = $image->storeAs('ranura', $filename, 'public');
+            $ranura->dir_imagen = 'ranura/' . $filename;
+        }
+        $ranura->Blocked = $request->input('Blocked', false);
+        $ranura->save();
     }
 
     /**
@@ -52,7 +65,19 @@ class RanuraController extends Controller
      */
     public function update(Request $request, Ranura $ranura)
     {
-        //
+        $ranura->id_ruleta = $request->input('id_ruleta');
+        $ranura->color = $request->input('color');
+        $ranura->type = $request->input('type');
+        $ranura->texto = $request->input('texto');
+        $ranura->Rate = $request->input('Rate');
+        if ($request->hasFile('dir_imagen')) {
+            $image = $request->file('dir_imagen');
+            $filename = $image->getClientOriginalName();
+            $path = $image->storeAs('ranura', $filename, 'public');
+            $ranura->dir_imagen = 'ranura/' . $filename;
+        }
+        $ranura->Blocked = $request->input('Blocked', false);
+        $ranura->save();
     }
 
     /**

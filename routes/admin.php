@@ -3,6 +3,8 @@
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\SorteoController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\RuletaController;
+use App\Http\Controllers\RanuraController;
 use App\Models\Pago;
 use Illuminate\Support\Facades\Route;
 
@@ -13,3 +15,7 @@ Route::get('/tickets/show', [TicketController::class, 'show'])->name('admin.show
 Route::get('/ticket/show',[TicketController::class, 'showticket'])->name('admin.ticket')->middleware('auth');
 Route::post('/showcomprobante', [PagoController::class, 'showComprobante'])->name('admin.showcomprobante')->middleware('auth');
 Route::put('/admin/pago/update',[PagoController::class, 'update'])->name('pago.update')->middleware('auth');
+Route::get('/ruletas/creacion', [RuletaController::class,'create'])->name('ruletas.creacion');
+Route::get('/ranuras/creacion', [RanuraController::class,'create'])->name('ranuras.creacion');
+Route::post('/ruletas/store', [RuletaController::class,'store'])->name('ruletas.store');
+Route::post('/ranuras/store', [RanuraController::class,'store'])->name('ranuras.store');

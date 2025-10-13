@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('cliente_ruleta', function (Blueprint $table) {
             $table->id();
-            $table->integer('cedula');
+            $table->string('cedula');
             $table->integer('residuo')->default(0);
             $table->integer('oportunidades')->default(0);
             $table->integer('id_ruleta');
