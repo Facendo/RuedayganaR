@@ -239,6 +239,11 @@
                                 <button type="submit" class="button">Activar</button>
                             @endif
                         </form>
+
+                            <div class="button btn_modal">
+                                <a href="{{route('ruletas.creacion')}}">Agregar Ruleta</a>
+                            </div>
+
                         <div class="button btn_modal"
                              data-modal="sorteo"
                              data-id="{{ $sorteo->id_sorteo }}"
@@ -264,6 +269,41 @@
         </table>
     </div>
 </div>
+
+
+<div id="section_ventas_admin" class="container">
+    <h2 class="section_subtitle">TABLA DE RULETAS</h2>
+    <div class="container_table">
+        <table id="table_gestion" class="table_gestion">
+            <thead>
+                <tr>
+                    <th>Nombre Ruleta</th>
+                    <th>Cantidad de Oportunidades</th>
+                    <th>Número de Ranuras</th>
+                    <th>Condicional de Oportunidades</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($Ruletas as $ruleta)
+                <tr>
+                    <td>{{ $ruleta->nombre }}</td>
+                    <td>{{ $ruleta->cantidad_de_opotunidades_por_dar }}</td>
+                    <td>{{ $ruleta->nro_ranuras}}</td>
+                    <td>{{ $ruleta->Condicional_Oportunidades}}</td>
+                    <td>
+                        <button>Editar Ruleta</button>
+                        <div class="button btn_modal">
+                        <a href="{{route('ranuras.creacion')}}">Agregar Ranura  </a>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 <h2 class="section_subtitle">Asignar Premios</h2>
 <div class="container_reg">

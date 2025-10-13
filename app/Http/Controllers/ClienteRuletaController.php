@@ -12,7 +12,11 @@ class ClienteRuletaController extends Controller
      */
     public function index()
     {
-        //
+        /* Formulario para calcular la diferencia en tal caso
+            Quiero q sea acumulativo
+            --Oportunidad= residuo/Condicional_Oportunidades
+            --Residuoinicial= residuo%Condicional_Oportunidades
+        */
     }
 
     /**

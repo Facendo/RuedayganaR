@@ -12,15 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ranura', function (Blueprint $table) {
-            $table->integer('id_ruleta')->autoIncrement();
+            $table->integer('id_ruleta');
             $table->integer('id_ranura')->primary()->autoIncrement();
             $table->string('color');
+            $table->string('dir_imagen')->nullable();
+            $table->string('type');
             $table->string('texto');
             $table->integer('Rate');
             $table->boolean('Blocked')->default(false);
             $table->timestamps();
+
             $table->foreign('id_ruleta')
-                    ->references('id')
+                    ->references('id_ruleta')
                     ->on('ruleta')
                     ->onDelete('cascade');
         });
