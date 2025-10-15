@@ -11,6 +11,14 @@ class Ruleta extends Model
     public $incrementing = true;
     public $timestamps = true;
 
+    protected $fillable = [
+        'id_ruleta',
+        'id_sorteo',
+        'condicional_oportunidades',
+        'created_at',
+        'updated_at',
+    ];
+    
     public function sorteo(){
         return $this->belongsTo(Sorteo::class, 'id_sorteo', 'id_sorteo');
     }

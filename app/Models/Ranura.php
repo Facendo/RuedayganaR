@@ -12,6 +12,12 @@ class Ranura extends Model
     protected $primaryKey = 'id_ruleta';
     public $incrementing = true;
     
+    protected $fillable = [
+        'id_ruleta',
+        'numero_ranura',
+        'color_ranura',
+        'tipo_ranura',
+    ];
     public function ruleta(){
         return $this->belongsTo(Ruleta::class, 'id_ruleta', 'id_ruleta');
     }
