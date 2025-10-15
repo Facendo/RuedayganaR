@@ -3,28 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClienteRuleta;
+use App\Models\Ruleta;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClienteRuletaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function CalcularResiduo(int $cedulaCliente, int $CantidadComprados, int $id_sorteo)
     {
-        /* Formulario para calcular la diferencia en tal caso
-            Quiero q sea acumulativo
-            --Oportunidad= residuo/Condicional_Oportunidades
-            --Residuoinicial= residuo%Condicional_Oportunidades
-        */
+        $cliente = Cliente::where('cedula', $cedulaCliente)->first();
+        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
+        $clienteRuleta = ClienteRuleta::where('cedula', $cedulaCliente)->first();
+
+        $clienteRuleta->oportunidades += ($clienteRuleta->residuo + $CantidadComprados) / $ruleta->condicional_oportunidades;
+        $clienteRuleta->residuo = ($clienteRuleta->residuo + $CantidadComprados) % $ruleta->condicional_oportunidades;
+        
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function ActualizarOportunidades(int $cedulaCliente, int $id_sorteo)
     {
-        //
+        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
+        $condicional = $ruleta->condicional_oportunidades;
+
+        ClienteRuleta::where('residuo', '>=', $condicional)
+            ->update([
+                'oportunidades' => DB::raw("oportunidades + FLOOR(residuo / {$condicional})"),
+                'residuo' => DB::raw("residuo % {$condicional}"),
+            ]);
     }
 
     /**

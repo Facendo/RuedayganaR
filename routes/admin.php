@@ -19,3 +19,6 @@ Route::get('/ruletas/creacion', [RuletaController::class,'create'])->name('rulet
 Route::get('/ranuras/creacion', [RanuraController::class,'create'])->name('ranuras.creacion');
 Route::post('/ruletas/store', [RuletaController::class,'store'])->name('ruletas.store');
 Route::post('/ranuras/store', [RanuraController::class,'store'])->name('ranuras.store');
+Route::get('/ruletas/editar/{id_ruleta}', [RuletaController::class,'edit'])->name('ruletas.editar');
+Route::put('/ruletas/update', [RuletaController::class,'update'])->name('ruletas.update');
+Route::put('/ranuras/update', [RanuraController::class,'update'])->name('ranuras.update');

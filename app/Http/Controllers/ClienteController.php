@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\ClienteRuleta;
+use App\Models\Ruleta;
 use App\Models\Pago;
 use App\Models\Sorteo;
 use Illuminate\Http\Request;
@@ -36,9 +38,21 @@ class ClienteController extends Controller
             $cliente->correo = $request->correo;
             $cliente->cantidad_comprados = 0;
             
+            //Crear clienteRuleta 
+            $clienteRuleta= new ClienteRuleta();
+            $clienteRuleta->cedula = $request->cedula;
+            $Ruleta=Ruleta::where('id_sorteo', $request->id_sorteo)->first();
+            $clienteRuleta->id_ruleta = $Ruleta->id_ruleta;
+            $clienteRuleta->oportunidades = 0;
+            $clienteRuleta->residuo = 0;
+            $clienteRuleta->created_at = now();
+            $clienteRuleta->updated_at = now();
+            
+
             $cliente->fecha_de_pago = $request->fecha_de_pago; 
             $cliente->id_sorteo = $request->id_sorteo;
             $cliente->save();
+            $clienteRuleta->save();
         }
         $pago = new Pago();
         if(Pago::where('referencia', $request->referencia)->exists()){

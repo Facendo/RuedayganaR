@@ -292,9 +292,11 @@
                     <td>{{ $ruleta->nro_ranuras}}</td>
                     <td>{{ $ruleta->Condicional_Oportunidades}}</td>
                     <td>
-                        <button>Editar Ruleta</button>
                         <div class="button btn_modal">
-                        <a href="{{route('ranuras.creacion')}}">Agregar Ranura  </a>
+                            <a href="{{route('ruletas.editar', $ruleta->id_ruleta)}}">Editar Ruleta</a>
+                        </div>
+                        <div class="button btn_modal">
+                        <a href="{{route('ranuras.creacion')}}">Agregar Ranura </a>
                         </div>
                     </td>
                 </tr>

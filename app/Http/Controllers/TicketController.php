@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\ClienteRuleta;
 use App\Models\Pago;
+use App\Models\Ruleta;
 use App\Models\Sorteo;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+
 
 class TicketController extends Controller
 {
@@ -64,6 +68,7 @@ class TicketController extends Controller
         $cliente->cantidad_comprados+= $pago->cantidad_de_tickets;
         $cliente->save();
         
+        //Condicional si los numeros fueron aleatorios
         if($request->numeros_seleccionados == "aleatorio"){ 
             $numerosSeleccionados = [];
             $cantidad_a_seleccionar = $pago->cantidad_de_tickets;
@@ -88,6 +93,10 @@ class TicketController extends Controller
         $pago->estado_pago = 'Confirmado';
         $pago->save();
 
+        //Espacio para Manejar el Residuo y la Asignacion de Oportunidades
+
+        $this->CalcularResiduo($cliente->cedula, $pago->cantidad_de_tickets, $sorteo->id_sorteo);
+        //Crear Ticket
         $ticket = new Ticket();
         $ticket->cedula_cliente = $request->cedula_cliente;
         $ticket->id_sorteo = $request->id_sorteo;
@@ -212,6 +221,19 @@ class TicketController extends Controller
             return redirect()->route('pago.index');
         }
     }
-    
+
+    //Funciones de Oportunidades y Residuo
+
+    public function CalcularResiduo(int $cedulaCliente, int $CantidadComprados, int $id_sorteo)
+    {
+        $cliente = Cliente::where('cedula', $cedulaCliente)->first();
+        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
+        $clienteRuleta = ClienteRuleta::where('cedula', $cedulaCliente)->first();
+        $clienteRuleta->oportunidades += floor((($clienteRuleta->residuo + $CantidadComprados) / $ruleta->Condicional_Oportunidades)* $ruleta->cantidad_de_opotunidades_por_dar);
+        $clienteRuleta->residuo = ($clienteRuleta->residuo + $CantidadComprados) % $ruleta->Condicional_Oportunidades;
+        $clienteRuleta->save();
+        return;
+    }
+
 }
 
