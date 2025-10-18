@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClienteRuleta;
+use App\Models\Ranura;
 use App\Models\Ruleta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -47,9 +48,6 @@ class RuletaController extends Controller
         return redirect()->route('pago.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Ruleta $ruleta)
     {
         //
@@ -113,4 +111,69 @@ class RuletaController extends Controller
             }
         }
     }
+
+    public function Lanzar($id_sorteo,$cedula)
+    {
+        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
+        $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
+        $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
+
+        // Lógica para lanzar la ruleta y determinar ganadores
+        $total_rate = 0;
+        $last_slot = null;
+        //Se saca el total de rates
+        foreach ($ranuras as $ranura) {
+            if(!$ranura->Blocked){
+               $total_rate += $ranura->rate;
+            }
+        }
+        //Se genera un numero random entre 1 y el total de rates
+        $number_random = rand(1, $total_rate);
+        foreach($ranuras as $ranura){
+            if(!$ranura->Blocked){
+            //Se va restando el rate al numero random hasta que sea menor o igual a 0
+            if($number_random <= 0){
+                //Se retorna la ranura ganadora
+                break;
+
+                if($last_slot->type == 'bancarrota'){
+                    //Si la ranura es bancarrota, se eliminan todas las oportunidades del cliente
+                    $clienteRuleta->oportunidades -= 1;
+                    $clienteRuleta->save();
+                }
+                elseif($last_slot->type == 'intentar_de_nuevo'){
+                    return $last_slot;
+                }
+
+                elseif($last_slot->type == 'premiomenor' || $last_slot->type == 'premiomayor'){
+                    $clienteRuleta->oportunidades -= 1;
+                    $clienteRuleta->save();
+                }
+                
+
+                return $last_slot;
+            }
+            //Si no es menor o igual a 0, se resta el rate de la ranura actual
+            else{
+                $number_random -= $ranura->rate;
+                $last_slot = $ranura->id_ranura;
+            }
+            
+        }
+        }
+
+    }
+
+    public function ConstruirRuleta($id_sorteo)
+    {
+        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
+        $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
+        return response()->json([
+            'ruleta' => $ruleta,
+            'ranuras' => $ranuras
+        ]);
+    }
+
+
+
 }
