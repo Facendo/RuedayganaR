@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
+    <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin.css')}}">
+    <link rel="stylesheet" href="{{asset('css/cards.css')}}">
+    <link rel="stylesheet" href="{{asset('css/forms.css')}}">
     <title>Configuración de la Ruleta</title>
-    <style>
+    <!-- <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         :root {
             --primary: #3b82f6;
@@ -90,60 +95,65 @@
                 padding: 15px;
             }
         }
-    </style>
+    </style> -->
 </head>
 <body>
 
-<div class="container">
+<div class="container_reg">
+    <div class="cont_form">
     <!-- El formulario usa POST y multipart/form-data para enviar la data de la Ruleta -->
     <!-- RECUERDA: Debes reemplazar "/tu-ruta-de-guardado" con la URL real de tu controlador en Laravel. -->
-    <form id="ruletaForm" method="POST" action="{{ route('ruletas.store') }}" enctype="multipart/form-data">
+    <form id="ruletaForm" method="POST" class="cont_form" action="{{ route('ruletas.store') }}" enctype="multipart/form-data">
+        <h2 class="header">Creacion de ruleta</h2>
         @csrf
-        <div class="section-ruleta">
-            <h1>Configuración de la Ruleta</h1>
+        <div class="cont_input">
             
-            <div class="form-group">
+            <div class="content_form">
+                <div class="form-group">
                 <label for="id_sorteo">ID del Sorteo</label>
-                <input type="number" id="id_sorteo" name="id_sorteo" placeholder="Ej: 101" required>
+                <input type="number" class="input_form" id="id_sorteo" name="id_sorteo" placeholder="Ej: 101" required>
             </div>
 
             <div class="form-group">
                 <label for="nombre">Nombre de la Ruleta</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Ej: Ruleta de Premios Diarios" required>
+                <input type="text" class="input_form" id="nombre" name="nombre" placeholder="Ej: Ruleta de Premios Diarios" required>
             </div>
             
             <div class="form-group">
                 <label for="ruleta_type">Tipo de Ruleta</label>
-                <input type="text" id="ruleta_type" name="type" placeholder="Ej: Clasica, Multi-nivel" required>
+                <input type="text" class="input_form" id="ruleta_type" name="type" placeholder="Ej: Clasica, Multi-nivel" required>
             </div>
 
             <div class="form-group">
                 <label for="cant_oportunidades">Cantidad de Oportunidades por Dar</label>
-                <input type="number" id="cant_oportunidades" name="cantidad_de_opotunidades_por_dar" value="1" min="0" required>
+                <input type="number" class="input_form" id="cant_oportunidades" name="cantidad_de_opotunidades_por_dar" value="1" min="0" required>
             </div>
 
             <div class="form-group">
                 <label for="nro_ranuras">Número de Ranuras (Solo Referencia)</label>
-                <input type="number" id="nro_ranuras" name="nro_ranuras" value="8" min="1" required>
+                <input type="number" class="input_form" id="nro_ranuras" name="nro_ranuras" value="8" min="1" required>
             </div>
 
             <div class="form-group">
                 <label for="dir_imagen_ruleta">Imagen de la Ruleta (Opcional)</label>
-                <input type="file" id="dir_imagen_ruleta" name="dir_imagen" accept="image/*">
+                <input type="file" class="input_form" id="dir_imagen_ruleta" name="dir_imagen" accept="image/*">
             </div>
 
             <div class="form-group">
                 <label for="condicional_oportunidades">Condicional Oportunidades (Valor)</label>
-                <input type="number" id="condicional_oportunidades" name="Condicional_Oportunidades" value="0" min="0" required>
+                <input type="number" class="input_form" id="condicional_oportunidades" name="Condicional_Oportunidades" value="0" min="0" required>
             </div>
+            </div>
+
         </div>
         
         <div class="footer-buttons">
-            <button type="submit" class="btn btn-primary" id="submitBtn">
+            <button type="submit" class="class="button submit_btn" id="submitBtn">
                 Guardar Configuración de Ruleta
             </button>
         </div>
     </form>
+</div>
 </div>
 
 <!-- Script de la ruleta simplificado, ya no necesita lógica de ranuras -->
