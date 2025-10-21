@@ -266,6 +266,16 @@ document.addEventListener('DOMContentLoaded', function() {
     </section>
 
 
+    <section id="view_rulet">
+        <div class="container">
+
+            <h2 class="section_subtitle">Prueba tu suerte</h2>
+            
+            <div type="submit" id="button_rulet" class="button button_rulet submit_btn">Verifique sus tiros</div>
+        </div>
+    </section>
+
+
     <section id="view_tickets">
         <div class="container">
 
@@ -289,6 +299,83 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </section>
 
+   
+    <div class="cont_modal_rulet">
+        <div class="x_modal_rulet">
+            <img src="{{asset('img/x.png')}}" alt="" >
+        </div>
+           <div class="content_ruleta">
+            <span class="arrow"></span>
+            <button id="spin">Spin</button>
+             <div class="container_r">
+                <div class="one">nombre1</div>
+                <div class="two">nombre2</div>
+                <div class="three">3</div>
+                <div class="four">4</div>
+                <div class="five">5</div>
+                <div class="six">6</div>
+                <div class="seven">7</div>
+                <div class="eight">8</div>
+            </div>
+        </div>
+    </div>
+
+
+
+  
+      
+
+
+    <!-- RULET MAIN JS  -->
+
+
+    <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.querySelector('.cont_modal_rulet');
+    const openButton = document.querySelector('.button_rulet')
+    const closeButton = document.querySelector('.x_modal_rulet')
+    
+    function openModal(event) {
+        if (event) {
+            event.preventDefault(); 
+        }
+        
+        modal.style.transform = 'translateX(0)';
+        modal.style.display = 'block';
+    }
+
+    function closeModal() {
+        modal.style.transform = 'translateX(110%)';
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 500);
+    }
+
+    if (openButton) {
+        openButton.addEventListener('click', openModal);
+    }
+
+    closeButton.addEventListener('click', closeModal);
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
+
+
+        let container = document.querySelector(".container_r");
+        let btn = document.getElementById("spin");
+        let number = Math.ceil(Math.random() * 1000);
+
+        btn.onclick = function () {
+        container.style.transform = "rotate(" + number + "deg)";
+        number += Math.ceil(Math.random() * 1000);
+        };
+
+    </script>
     
 
     

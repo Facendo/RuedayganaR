@@ -1,43 +1,39 @@
-*{
+* {
     box-sizing: border-box;
     padding: 0;
-    margin: 0;  
-
+    margin: 0;
 }
 
 /* ------ API FONT ------- */
 
-@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&display=swap");
 
-html{
+html {
     scroll-behavior: smooth;
 }
 
-body{
+body {
     color: #fff;
     font-family: arial;
     background-color: rgb(35, 35, 35);
-    
 }
 
-.container{
+.container {
     width: 100%;
 }
 
-img.img_logo{
+img.img_logo {
     width: 70%;
     height: 50%;
-    
 }
 
-.section_subtitle{
+.section_subtitle {
     text-align: center;
     margin: 50px;
     color: rgb(10, 180, 171);
-    
 }
 
-.button{
+.button {
     border: none;
     width: 120px;
     background-color: rgb(254, 180, 3);
@@ -49,12 +45,9 @@ img.img_logo{
     margin: 0 auto;
     color: black;
     border-radius: 5px;
-    transition: .3s;
+    transition: 0.3s;
     cursor: pointer;
-    
 }
-
-
 
 /*  
 COLORS
@@ -66,27 +59,22 @@ RGB(10, 180, 171) BLUE COLOR
 
 */
 
-
-
 /* ------- PANEL DE MENU --------- */
 
 .button_menu {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 1000; 
+    z-index: 1000;
     cursor: pointer;
     background-color: white;
     padding: 10px;
     border-radius: 10px;
-    transition: .3s;
+    transition: 0.3s;
     display: none;
-
-    
-
 }
 
-.button_menu:hover{
+.button_menu:hover {
     background-color: #eee;
 }
 
@@ -95,23 +83,21 @@ RGB(10, 180, 171) BLUE COLOR
     height: 40px;
 }
 
-
 .panel_nav {
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
-    width: 250px; 
-    background-color: #333; 
-    padding-top: 60px; 
-    transform: translateX(-100%); 
-    transition: transform 0.3s ease-in-out; 
+    width: 250px;
+    background-color: #333;
+    padding-top: 60px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
     z-index: 999;
 }
 
-
 .panel_nav.show {
-    transform: translateX(0); 
+    transform: translateX(0);
 }
 
 .option_panel_nav {
@@ -129,16 +115,16 @@ RGB(10, 180, 171) BLUE COLOR
 
 /* ------------------------- */
 
-.text_presentacion{
+.text_presentacion {
     font-family: "Luckiest Guy", sans-serif;
 }
 
-h1{
+h1 {
     font-family: "Luckiest Guy", sans-serif;
     color: rgb(254, 180, 3);
 }
 
-nav.menu{
+nav.menu {
     width: 100%;
     height: 10vh;
     background-color: rgb(15, 15, 15);
@@ -147,90 +133,93 @@ nav.menu{
     justify-content: space-around;
 }
 
-.button_nav{
+.button_nav {
     border: 1px solid rgb(254, 180, 3);
     border: none;
     outline: none;
     background-color: #0056b3;
     padding: 7px 12px;
     text-decoration: none;
-    color: white; 
+    color: white;
     border-radius: 25px;
     margin: 0 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: .2s;
+    transition: 0.2s;
 }
 
-.button_nav:hover{
+.button_nav:hover {
     background-color: #0036b3;
 }
 
-.button_contact{
+.button_contact {
     border: 2px solid rgb(254, 180, 3);
 }
 
-.button_contact:hover{
+.button_contact:hover {
     background-color: rgb(254, 180, 3);
     color: black;
 }
 
-h2{
+h2 {
     font-family: sans-serif;
     color: rgb(254, 180, 3);
     margin: 15px auto;
     text-align: center;
 }
 
-h3{
+h3 {
     font-family: "Cal Sans", sans-serif;
     text-align: center;
     margin: 15px auto;
     color: rgb(254, 180, 3);
-   
 }
 
-.imagen_nav{
+.imagen_nav {
     border-radius: 50%;
     height: 95%;
     padding: 2px;
     border: 1px solid rgb(254, 180, 3);
 }
 
-.separador_nav{
+.separador_nav {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.container_info, .back_rg{
-    background-image: linear-gradient(90deg,rgba(0, 0, 0, 0.80) 20%, rgba(0, 0, 0, 0.7) 94%), var(--bg-image);
+.container_info,
+.back_rg {
+    background-image: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.8) 20%,
+            rgba(0, 0, 0, 0.7) 94%
+        ),
+        var(--bg-image);
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed; 
+    background-attachment: fixed;
     background-position: top;
     width: 100%;
     height: 90vh;
-
 }
 
-.text_presentacion{
+.text_presentacion {
     text-align: center;
     margin-top: 50px;
 }
 
- .container_presentacion{
+.container_presentacion {
     width: 100%;
-    height: 100%;    
+    height: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
-
 }
 
-.press{
+.press {
     width: 40%;
     height: 60%;
     display: flex;
@@ -238,7 +227,7 @@ h3{
     flex-wrap: wrap;
 }
 
-.container_content{
+.container_content {
     width: 100%;
     height: 100%;
     display: flex;
@@ -246,33 +235,27 @@ h3{
     align-items: center;
 }
 
-.imagen_head{
+.imagen_head {
     width: 380px;
     height: 380px;
     border-radius: 50%;
     padding: 10px;
     border: 5px solid blue;
-    transition: .3s;
+    transition: 0.3s;
 }
 
-.imagen_head:hover{
+.imagen_head:hover {
     transform: scale(1.08);
 }
 
-
-
-
-
-
-footer#foot{
+footer#foot {
     width: 100%;
 
-    background-color: rgb(254,180,3);
+    background-color: rgb(254, 180, 3);
     margin-top: 100px;
 }
 
-
-.contenido_foot{
+.contenido_foot {
     width: 100%;
     height: 100%;
     display: flex;
@@ -280,13 +263,13 @@ footer#foot{
     align-items: center;
 }
 
-.cont_foot{
+.cont_foot {
     width: 20%;
-    height: 100%;   
+    height: 100%;
     text-align: center;
 }
 
-.cont_cert{
+.cont_cert {
     width: 100%;
     height: 100%;
     display: flex;
@@ -295,7 +278,7 @@ footer#foot{
     align-items: center;
 }
 
-.img_cert{
+.img_cert {
     width: 200px;
     height: 200px;
     margin: 15px;
@@ -304,120 +287,108 @@ footer#foot{
     border: 5px solid blue;
 }
 
-
 /* ---------- COMPRAS ----------- */
-.contador { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    margin-top: 20px; 
+.contador {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
-.contador button { 
-    font-size: 1.5em; 
-    padding: 10px 20px; 
-    margin: 0 10px; 
-    background: gold; 
-    border: none; 
-    border-radius: 10px; 
-    color: black; 
+.contador button {
+    font-size: 1.5em;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background: gold;
+    border: none;
+    border-radius: 10px;
+    color: black;
     font-weight: bold;
-    cursor: pointer; 
+    cursor: pointer;
 }
-.cantidad { 
-    font-size: 2em; 
-    color: yellow; 
+.cantidad {
+    font-size: 2em;
+    color: yellow;
 }
 
-.icon_contact{
+.icon_contact {
     width: 50px;
     height: 50px;
     margin: 0 10px;
 }
 
-
 /* --------------- CAMBIOS INDEX------------------------ */
 
-.titulo{
-     font-family: "Alfa Slab One", serif;
+.titulo {
+    font-family: "Alfa Slab One", serif;
 }
 
-.text_presentacion{
-     font-family: "Alfa Slab One", serif;
+.text_presentacion {
+    font-family: "Alfa Slab One", serif;
 }
 
-.text_center{
+.text_center {
     font-family: "Roboto Mono", monospace;
     font-size: 20px;
 }
 
-p{
+p {
     font-family: "Roboto Mono", monospace;
 }
 
-h2.section_subtitle{
+h2.section_subtitle {
     font-family: "Cal Sans", sans-serif;
 }
 
-h3.title_card, h3{
+h3.title_card,
+h3 {
     font-family: "Cal Sans", sans-serif;
 }
 
-
-
-.button{
+.button {
     background-color: var(--dark-orange);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 20px;
-            width: 100%;
-
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    width: 100%;
 }
 
-.button_ini{
+.button_ini {
     background-color: var(--dark-orange);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 20px;
-            width: 100%;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    width: 100%;
 }
 
-.contenido{
+.contenido {
     text-align: center;
     width: 100%;
 }
 
-h2.slogan_footer{
+h2.slogan_footer {
     font-family: "Alfa Slab One", serif;
     color: black;
 }
 
-
-
-
-
-.section_ventas{
+.section_ventas {
     width: 100%;
-    
 }
-
-
-
 
 /* --------------------- compra cambios -------------------- */
 
-.selector_ticket{
+.selector_ticket {
     width: 200px;
     height: 70px;
     display: flex;
@@ -432,21 +403,21 @@ h2.slogan_footer{
     user-select: none;
 }
 
-.selector_ticket:hover{
+.selector_ticket:hover {
     background-color: rgb(254, 180, 3);
     color: black;
     transform: scale(1.05);
-    transition: .2s;
+    transition: 0.2s;
 }
 
-.selector_ticket:active{
+.selector_ticket:active {
     background-color: rgb(254, 180, 3);
     color: black;
     transform: scale(1.05);
-    transition: .2s;
+    transition: 0.2s;
 }
 
-.container_tick{
+.container_tick {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
@@ -454,76 +425,70 @@ h2.slogan_footer{
     margin: 20px auto;
 }
 
-.copy{
+.copy {
     color: rgb(254, 180, 3);
     width: 20px;
 }
 
-
 .copy-icon {
-    width: 20px; 
-    cursor: pointer; 
-    margin-left: 8px; 
-    font-size: 1em; 
-    color: #007bff; 
-    transition: color 0.2s ease-in-out; 
+    width: 20px;
+    cursor: pointer;
+    margin-left: 8px;
+    font-size: 1em;
+    color: #007bff;
+    transition: color 0.2s ease-in-out;
 }
 
 .copy-icon:hover {
-    color: #0056b3; 
+    color: #0056b3;
 }
-
 
 /* ------------------- TABLA DE TOPS VENTA -------------------- */
 
-.th_top{
+.th_top {
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
     padding: 20px;
 }
 
-
-
-tr.tr_top .td_top{
+tr.tr_top .td_top {
     background-color: rgba(0, 0, 0, 0.4);
     padding: 20px;
     color: white;
 }
 
-img.img_trofeo{
+img.img_trofeo {
     width: 50px;
     height: 50px;
     margin-right: 10px;
 }
 
-thead.table_top_header{
+thead.table_top_header {
     background-color: rgba(110, 110, 110, 0.5);
 }
 
-tr.tr_top{
+tr.tr_top {
     background-color: rgba(0, 0, 0, 0.4);
     border-collapse: collapse;
 }
 
-.table_top{
+.table_top {
     border-radius: 10px;
     width: 70%;
     background: rgba(0, 0, 0, 0.3);
     border-collapse: collapse;
 }
 
-.table_top_header{
+.table_top_header {
     border-radius: 5px;
 }
 
-tr.td_top:nth-child(1){
+tr.td_top:nth-child(1) {
     color: green;
 }
 
-
-#message{
+#message {
     width: 100%;
-
 }
 
 .mesage_success {
@@ -541,7 +506,7 @@ tr.td_top:nth-child(1){
     margin: 15px 0;
     width: 100%;
     padding: 30px 20px;
-    color: #d31; 
+    color: #d31;
     background-color: #f8d7da;
     border: 1px solid #c11; /* Propiedad corregida */
     border-radius: 5px;
@@ -558,31 +523,28 @@ tr.td_top:nth-child(1){
 }
 
 .cont_modal {
-
-  transform: translateX(110%);
-  display: none; 
-  position: fixed; 
-  z-index: 9999; 
-  left: 0;
-  top: 0;
-  width: 100%; 
-  height: 100%;
-  overflow: auto; 
-  background-color: rgba(0, 0, 0, 0.5); 
-  transition: .6s;
+    transform: translateX(110%);
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.6s;
 }
 
-
 .ventana_tickets {
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: 5px 5px 20px 5px gray;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; 
-  border-radius: 8px;
-  position: relative; 
- 
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 5px 5px 20px 5px gray;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 8px;
+    position: relative;
 }
 
 /* .filtro_admin{
@@ -591,7 +553,7 @@ tr.td_top:nth-child(1){
     right: 20px;
 } */
 
-.contenedor_tickets{
+.contenedor_tickets {
     width: 90%;
     background-color: rgba(170, 170, 170);
     margin: 0 auto;
@@ -600,13 +562,13 @@ tr.td_top:nth-child(1){
     border-radius: 10px;
 }
 
-p.mostrar_data{
+p.mostrar_data {
     font-size: 15px;
     font-weight: bold;
     color: black;
 }
 
-.x_modal{
+.x_modal {
     position: fixed;
     top: 50px;
     right: 50px;
@@ -614,20 +576,19 @@ p.mostrar_data{
     border-radius: 10px;
     background-color: white;
     cursor: pointer;
-    transition: .3s;
-
+    transition: 0.3s;
 }
 
-.x_modal img{
+.x_modal img {
     width: 40px;
     height: 40px;
 }
 
-.x_modal:hover{
+.x_modal:hover {
     background-color: #f33;
 }
 
-.data_tickets_modal{
+.data_tickets_modal {
     color: rgb(254, 180, 3);
     display: block;
     font-weight: 600;
@@ -635,8 +596,163 @@ p.mostrar_data{
     border-radius: 10px;
 }
 
-.contenedor_desp{
+.contenedor_desp {
     width: 30%;
     margin: 0 auto;
-    
+}
+
+/* ---------------  STYLE RULET ---------------------- */
+
+.cont_modal_rulet {
+    transform: translateX(0);
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.6s;
+}
+
+.content_ruleta {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: 2px solid red;
+}
+
+.x_modal_rulet {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.x_modal_rulet img {
+    width: 40px;
+    height: 40px;
+}
+
+.x_modal_rulet:hover {
+    background-color: #f33;
+}
+
+.button_rulet {
+    width: 30%;
+    text-align: center;
+}
+
+.container_r {
+    width: 500px;
+    height: 500px;
+    background-color: #ccc;
+    border-radius: 50%;
+    border: 15px solid #dde;
+    position: relative;
+    overflow: hidden;
+    transition: 5s;
+}
+
+.container_r div {
+    height: 50%;
+    width: 200px;
+    position: absolute;
+    clip-path: polygon(100% 0, 50% 100%, 0 0);
+    transform: translateX(-50%);
+    transform-origin: bottom;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: #fff;
+    left: 135px;
+}
+
+.container_r div {
+    /* ... */
+    height: 50%;
+    width: 200px; /* FIJO */
+    clip-path: polygon(100% 0, 50% 100%, 0 0);
+    /* ... */
+    left: 135px; /* FIJO */
+}
+
+.arrow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+}
+
+.arrow::before {
+    content: "\1F817";
+    font-size: 50px;
+}
+
+#spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: #e2e2e2;
+    text-transform: uppercase;
+    border: 8px solid #fff;
+    font-weight: bold;
+    font-size: 20px;
+    color: #a2a2a2;
+    width: 80px;
+    height: 80px;
+    font-family: sans-serif;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    letter-spacing: 1px;
+}
+
+.container_r .one {
+    background-color: #3f51b5;
+    left: 50%;
+}
+.container_r .two {
+    background-color: #ff9800;
+    transform: rotate(45deg);
+}
+.container_r .three {
+    background-color: #e91e63;
+    transform: rotate(90deg);
+}
+.container_r .four {
+    background-color: #4caf50;
+    transform: rotate(135deg);
+}
+.container_r .five {
+    background-color: #009688;
+    transform: rotate(180deg);
+}
+.container_r .six {
+    background-color: #795548;
+    transform: rotate(225deg);
+}
+.container_r .seven {
+    background-color: #9c27b0;
+    transform: rotate(270deg);
+}
+.container_r .eight {
+    background-color: #f44336;
+    transform: rotate(315deg);
 }
