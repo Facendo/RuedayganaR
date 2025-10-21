@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
+    <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin.css')}}">
+    <link rel="stylesheet" href="{{asset('css/cards.css')}}">
+    <link rel="stylesheet" href="{{asset('css/forms.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>Gestión Dinámica de Ranuras (Slots)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
@@ -251,7 +259,7 @@
                     + Agregar Nueva Ranura
                 </button>
             </div>
-            <button type="submit" class="btn btn-primary" id="submitBtn">
+            <button type="submit" class="button submit_btn" id="submitBtn">
                 Guardar / Actualizar Todas las Ranuras
             </button>
         </div>
