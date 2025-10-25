@@ -168,6 +168,12 @@ class RuletaController extends Controller
 
     }
 
+    public function SearchClientRulet($cedula)
+    {
+        $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
+        return $clienteRuleta;
+    }
+
     public function ObtenerUbicacionCasilla($id_ranura,$ruleta){
         $ranuraResult = null;
         $ranuraResult=360/ $ruleta->nro_ranuras * ($id_ranura);
