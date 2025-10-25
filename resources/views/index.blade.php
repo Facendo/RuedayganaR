@@ -154,12 +154,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             <div class="container_reg">
                                 <div class="cont_form">
-                                    <form action="{{route('ruleta.creacion',$sorteo->id_sorteo)}}" class="form content_form" method="GET" enctype="multipart/form-data">
+                                    <form action="{{route('ruleta.searchclient')}}" class="form content_form" method="POST" enctype="multipart/form-data">
                                         <div class="header">
                                             <h1>Ingrese su cedula</h1>
                                         </div>
                                         @csrf
-                                        <input type="text" name="spin_ruleta" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
+                                        <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
+                                        <input type="text" name="cedula" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
                                         <br>
                                         <button type="submit" class="button button_rulet submit_btn">Enviar</button>
                                     </form>
