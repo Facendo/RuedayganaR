@@ -269,9 +269,24 @@ document.addEventListener('DOMContentLoaded', function() {
     <section id="view_rulet">
         <div class="container">
 
-            <h2 class="section_subtitle">Prueba tu suerte</h2>
+            <h2 class="section_subtitle">PRUEBA TU SUERTE</h2>
+            <h2 class="section_subtitle">Ruleta rueda y gana</h2>
+
+            <div class="container_reg">
+                <div class="cont_form">
+                    <form action="{{route('ruleta.creacion')}}" class="form content_form" method="GET" enctype="multipart/form-data">
+                        <div class="header">
+                            <h1>Ingrese su cedula</h1>
+                        </div>
+                        @csrf
+                        <input type="text" name="spin_ruleta" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
+                        <br>
+                        <button type="submit" class="button button_rulet submit_btn">Enviar</button>
+                    </form>
+                </div>
+            </div>
             
-            <div type="submit" id="button_rulet" class="button button_rulet submit_btn">Verifique sus tiros</div>
+        
         </div>
     </section>
 
@@ -331,16 +346,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <script>
 
-    document.addEventListener('DOMContentLoaded', () => {
+    <script>
+
+document.addEventListener('DOMContentLoaded', () => {
     const modal = document.querySelector('.cont_modal_rulet');
-    const openButton = document.querySelector('.button_rulet')
-    const closeButton = document.querySelector('.x_modal_rulet')
-    
-    function openModal(event) {
-        if (event) {
-            event.preventDefault(); 
-        }
-        
+    const form = document.querySelector('.form'); // Seleccionamos el formulario
+    const closeButton = document.querySelector('.x_modal_rulet');
+    const cedulaInput = document.getElementById('cedula');
+    const submitBtn = document.querySelector('.submit_btn');
+
+    // Funciones de la modal (mantienen su propósito)
+    function openModal() {
         modal.style.transform = 'translateX(0)';
         modal.style.display = 'block';
     }
@@ -352,28 +368,94 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
 
-    if (openButton) {
-        openButton.addEventListener('click', openModal);
-    }
-
     closeButton.addEventListener('click', closeModal);
-
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             closeModal();
         }
     });
+    
+  
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const cedula = cedulaInput.value.trim();
+            const url = form.getAttribute('action');
+            // Obtener el token CSRF para seguridad de Laravel
+            const token = document.querySelector('input[name="_token"]').value; 
+            
+            if (cedula === '' || url === '') {
+                alert('Ingrese su cédula y asegúrese de que la ruta del formulario esté configurada.');
+                return;
+            }
+
+           
+            submitBtn.disabled = true;
+
+        
+            fetch(url, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token 
+                },
+                body: JSON.stringify({
+                    spin_ruleta: cedula 
+                })
+            })
+            .then(response => {
+                // Verifica si la respuesta fue exitosa (código 200-299)
+                if (!response.ok) {
+                    throw new Error('Error de servidor: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Manejar la respuesta JSON del servidor
+                if (data.success) {
+                    console.log('Datos del cliente:', data);
+                    
+                    //  usar data.nombre, data.giros para actualizar la modal
+                    
+                    
+                    // Abrir la modal con la ruleta
+                    openModal(); 
+                } else {
+                    
+                    alert(data.message || 'Cédula no válida o sin giros.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al verificar la cédula:', error);
+                alert('Hubo un error de conexión. Inténtelo más tarde.');
+            })
+            .finally(() => {
+                // Habilitar el botón nuevamente
+                submitBtn.disabled = false;
+            });
+        });
+    }
+
+    
+    let container = document.querySelector(".container_r");
+    let btn = document.getElementById("spin");
+    const TARGET_SLOT_ANGLE = 135; 
+    const FULL_ROUNDS = 5; 
+
+    btn.onclick = function () {
+        let newRotation = (FULL_ROUNDS * 360) + TARGET_SLOT_ANGLE; 
+        container.style.transform = "rotate(-" + newRotation + "deg)";
+        
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.disabled = false;
+            console.log("¡El resultado es la ranura " + (TARGET_SLOT_ANGLE / 45 + 1) + "!");
+        }, 5000); 
+    };
 });
 
-
-        let container = document.querySelector(".container_r");
-        let btn = document.getElementById("spin");
-        let number = Math.ceil(Math.random() * 1000);
-
-        btn.onclick = function () {
-        container.style.transform = "rotate(" + number + "deg)";
-        number += Math.ceil(Math.random() * 1000);
-        };
+</script>
 
     </script>
     
