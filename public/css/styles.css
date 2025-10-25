@@ -604,7 +604,7 @@ p.mostrar_data {
 /* ---------------  STYLE RULET ---------------------- */
 
 .cont_modal_rulet {
-    transform: translateX(0);
+    transform: translateX(100%);
     display: none;
     position: fixed;
     z-index: 9999;
@@ -636,6 +636,7 @@ p.mostrar_data {
     background-color: white;
     cursor: pointer;
     transition: 0.3s;
+    z-index: 100;
 }
 
 .x_modal_rulet img {
