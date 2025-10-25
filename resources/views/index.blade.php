@@ -144,6 +144,33 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p>Los sorteos están en mantenimiento y no están disponibles en este momento.</p>
                     </div>
                 @endif
+
+
+                     <section id="view_rulet">
+                        <div class="container">
+
+                            <h2 class="section_subtitle">PRUEBA TU SUERTE</h2>
+                            <h2 class="section_subtitle">Ruleta rueda y gana</h2>
+
+                            <div class="container_reg">
+                                <div class="cont_form">
+                                    <form action="{{route('ruleta.creacion',$sorteo->id_sorteo)}}" class="form content_form" method="GET" enctype="multipart/form-data">
+                                        <div class="header">
+                                            <h1>Ingrese su cedula</h1>
+                                        </div>
+                                        @csrf
+                                        <input type="text" name="spin_ruleta" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
+                                        <br>
+                                        <button type="submit" class="button button_rulet submit_btn">Enviar</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                        
+                        </div>
+                    </section>
+
+
             @endforeach
         @else
             <div class="message_alert message">
@@ -266,29 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </section>
 
 
-    <section id="view_rulet">
-        <div class="container">
-
-            <h2 class="section_subtitle">PRUEBA TU SUERTE</h2>
-            <h2 class="section_subtitle">Ruleta rueda y gana</h2>
-
-            <div class="container_reg">
-                <div class="cont_form">
-                    <form action="{{route('ruleta.creacion')}}" class="form content_form" method="GET" enctype="multipart/form-data">
-                        <div class="header">
-                            <h1>Ingrese su cedula</h1>
-                        </div>
-                        @csrf
-                        <input type="text" name="spin_ruleta" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
-                        <br>
-                        <button type="submit" class="button button_rulet submit_btn">Enviar</button>
-                    </form>
-                </div>
-            </div>
-            
-        
-        </div>
-    </section>
+   
 
 
     <section id="view_tickets">
