@@ -113,7 +113,7 @@ class RuletaController extends Controller
         }
     }
 
-    public function Lanzar($id_sorteo,$cedula)
+    public function Spin($id_sorteo,$cedula)
     {
         $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
         $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
@@ -146,7 +146,7 @@ class RuletaController extends Controller
                 }
                 elseif($last_slot->type == 'intentar_de_nuevo'){
                     //Si la ranura es intentar de nuevo, no se le resta oportunidades al cliente
-                    $this->Lanzar($id_sorteo,$cedula);
+                    $this->Spin($id_sorteo,$cedula);
                     return;
                 }
 
@@ -168,26 +168,31 @@ class RuletaController extends Controller
 
     }
 
-    public function SearchClientRulet($cedula)
+    public function SearchClientRulet(Request $request)
     {
-        $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
-        return $clienteRuleta;
+        $clienteRuleta = ClienteRuleta::where('cedula', $request->input('cedula'))->first();
+        $id_sorteo = $request->input('id_sorteo');
+        return $this->ConstruirRuleta($id_sorteo,$clienteRuleta);
     }
+
+    public function ConstruirRuleta($id_sorteo,$clienteRuleta)
+    {
+
+        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
+        $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
+        $data = [
+            'clienteRuleta' => $clienteRuleta,
+            'ruleta' => $ruleta,
+            'ranuras' => $ranuras,
+        ];
+        return json_encode($data);
+    }
+
 
     public function ObtenerUbicacionCasilla($id_ranura,$ruleta){
         $ranuraResult = null;
         $ranuraResult=360/ $ruleta->nro_ranuras * ($id_ranura);
         return $ranuraResult;
-    }
-
-    public function ConstruirRuleta($id_sorteo)
-    {
-        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
-        $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
-        return response()->json([
-            'ruleta' => $ruleta,
-            'ranuras' => $ranuras
-        ]);
     }
 
 
