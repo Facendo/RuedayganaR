@@ -141,18 +141,21 @@ class RuletaController extends Controller
                     //Si la ranura es bancarrota, se eliminan todas las oportunidades del cliente
                     $clienteRuleta->oportunidades -= 1;
                     $clienteRuleta->save();
+                    $this->ObtenerUbicacionCasilla($last_slot, $ruleta);
+                    return;
                 }
                 elseif($last_slot->type == 'intentar_de_nuevo'){
-                    return $last_slot;
+                    //Si la ranura es intentar de nuevo, no se le resta oportunidades al cliente
+                    $this->Lanzar($id_sorteo,$cedula);
+                    return;
                 }
 
                 elseif($last_slot->type == 'premiomenor' || $last_slot->type == 'premiomayor'){
                     $clienteRuleta->oportunidades -= 1;
                     $clienteRuleta->save();
+                    $this->ObtenerUbicacionCasilla($last_slot, $ruleta);
                 }
                 
-
-                return $last_slot;
             }
             //Si no es menor o igual a 0, se resta el rate de la ranura actual
             else{
@@ -163,6 +166,12 @@ class RuletaController extends Controller
         }
         }
 
+    }
+
+    public function ObtenerUbicacionCasilla($id_ranura,$ruleta){
+        $ranuraResult = null;
+        $ranuraResult=360/ $ruleta->nro_ranuras * ($id_ranura);
+        return $ranuraResult;
     }
 
     public function ConstruirRuleta($id_sorteo)
