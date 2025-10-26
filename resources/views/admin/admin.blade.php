@@ -296,7 +296,7 @@
                             <a href="{{route('ruletas.editar', $ruleta->id_ruleta)}}">Editar Ruleta</a>
                         </div>
                         <div class="button btn_modal">
-                        <a href="{{route('ranuras.creacion')}}">Agregar Ranura </a>
+                        <a href="{{route('ranuras.creacion',$ruleta->id_ruleta)}}">Gestion de Ranuras</a>
                         </div>
                     </td>
                 </tr>

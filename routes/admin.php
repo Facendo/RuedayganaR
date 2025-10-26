@@ -16,7 +16,7 @@ Route::get('/ticket/show',[TicketController::class, 'showticket'])->name('admin.
 Route::post('/showcomprobante', [PagoController::class, 'showComprobante'])->name('admin.showcomprobante')->middleware('auth');
 Route::put('/admin/pago/update',[PagoController::class, 'update'])->name('pago.update')->middleware('auth');
 Route::get('/ruletas/creacion', [RuletaController::class,'create'])->name('ruletas.creacion');
-Route::get('/ranuras/creacion', [RanuraController::class,'create'])->name('ranuras.creacion');
+Route::get('/ranuras/creacion/{id_ruleta}', [RanuraController::class,'create'])->name('ranuras.creacion');
 Route::post('/ruletas/store', [RuletaController::class,'store'])->name('ruletas.store');
 Route::post('/ranuras/store', [RanuraController::class,'store'])->name('ranuras.store');
 Route::get('/ruletas/editar/{id_ruleta}', [RuletaController::class,'edit'])->name('ruletas.editar');
