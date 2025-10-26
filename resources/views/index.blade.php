@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             <div class="container_reg">
                                 <div class="cont_form">
-                                    <form action="{{route('ruleta.searchclient')}}" class="form content_form" method="POST" enctype="multipart/form-data">
+                                    <form action="{{route('ruleta.searchclient')}}" class="form content_form form_rulet" method="POST" enctype="multipart/form-data">
                                         <div class="header">
                                             <h1>Ingrese su cedula</h1>
                                         </div>
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                         
                         </div>
-                    </section>
+</section>
 
 
             @endforeach
@@ -325,41 +325,40 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="x_modal_rulet">
             <img src="{{asset('img/x.png')}}" alt="" >
         </div>
+
+        @foreach($ruleta as $dato)
+
            <div class="content_ruleta">
             <span class="arrow"></span>
-            <button id="spin">Spin</button>
+            <form action="{{route('ruleta.spin')}}">
+                <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
+                <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
+                
+                <button type="submit" id="spin">Spin</button>
+                
+            </form>
              <div class="container_r">
-                <div class="one">nombre1</div>
-                <div class="two">nombre2</div>
-                <div class="three">3</div>
-                <div class="four">4</div>
-                <div class="five">5</div>
-                <div class="six">6</div>
-                <div class="seven">7</div>
-                <div class="eight">8</div>
+                <div class="one">{{$dato->nombre}}</div>
             </div>
         </div>
     </div>
 
-
-
-  
-      
+    @endforeach
 
 
     <!-- RULET MAIN JS  -->
 
 
-    <script>
-
-    <script>
-
+    
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.querySelector('.cont_modal_rulet');
-    const form = document.querySelector('.form'); // Seleccionamos el formulario
+    const form = document.querySelector('.form_rulet'); 
+    const form_spin = document.querySelector('.form_spin')
     const closeButton = document.querySelector('.x_modal_rulet');
     const cedulaInput = document.getElementById('cedula');
     const submitBtn = document.querySelector('.submit_btn');
+    const idSorteoInput = document.querySelector('input[name="id_sorteo"]');
 
     // Funciones de la modal (mantienen su propósito)
     function openModal() {
@@ -381,14 +380,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-  
+ 
     if (form) {
         form.addEventListener('submit', function(event) {
             event.preventDefault(); 
             
             const cedula = cedulaInput.value.trim();
             const url = form.getAttribute('action');
-            // Obtener el token CSRF para seguridad de Laravel
             const token = document.querySelector('input[name="_token"]').value; 
             
             if (cedula === '' || url === '') {
@@ -396,54 +394,59 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-           
             submitBtn.disabled = true;
 
-        
+            const formData = new FormData();
+            formData.append('cedula', cedula);
+            
+            if (idSorteoInput) {
+                formData.append('id_sorteo', idSorteoInput.value);
+            }
+            
             fetch(url, {
                 method: 'POST', 
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': token 
                 },
-                body: JSON.stringify({
-                    spin_ruleta: cedula 
-                })
+                body: formData
             })
             .then(response => {
-                // Verifica si la respuesta fue exitosa (código 200-299)
                 if (!response.ok) {
                     throw new Error('Error de servidor: ' + response.status);
                 }
                 return response.json();
             })
             .then(data => {
-                // Manejar la respuesta JSON del servidor
-                if (data.success) {
-                    console.log('Datos del cliente:', data);
-                    
-                    //  usar data.nombre, data.giros para actualizar la modal
-                    
-                    
-                    // Abrir la modal con la ruleta
-                    openModal(); 
-                } else {
-                    
-                    alert(data.message || 'Cédula no válida o sin giros.');
+                // ------------------------------------------------------------------
+                // MODIFICACIÓN CLAVE: Abrir la modal SIEMPRE que la petición sea OK.
+                // ------------------------------------------------------------------
+                console.log('Datos de respuesta recibidos:', data);
+                
+                // Abrir la modal con la ruleta sin verificar data.success ni giros.
+                openModal(); 
+                
+                // Opcional: Si quieres mostrar una alerta *adentro* de la modal 
+                // para indicar que no hay giros, puedes hacerlo aquí, 
+                // pero la modal se abre de todas formas.
+                if (!data.success) {
+                    console.warn(data.message || 'Cédula no válida o sin giros.');
                 }
+                // ------------------------------------------------------------------
             })
             .catch(error => {
                 console.error('Error al verificar la cédula:', error);
+                // Mantenemos la alerta de "Error de conexión" solo para fallos 
+                // de red o del servidor (4xx, 5xx)
                 alert('Hubo un error de conexión. Inténtelo más tarde.');
             })
             .finally(() => {
-                // Habilitar el botón nuevamente
                 submitBtn.disabled = false;
             });
         });
     }
 
     
+    // --- Lógica de la Ruleta (Sin Cambios) ---
     let container = document.querySelector(".container_r");
     let btn = document.getElementById("spin");
     const TARGET_SLOT_ANGLE = 135; 
@@ -460,10 +463,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000); 
     };
 });
-
 </script>
 
-    </script>
+    
     
 
     
