@@ -18,7 +18,6 @@
 
 
 
-
 <!------------------ TODO EL CONTENIDO DE LA APP  --------------------->
 
 <body class="back_rg" style="--bg-image: url('{{ asset('img/backrueda.PNG') }}');" >
@@ -321,29 +320,45 @@ document.addEventListener('DOMContentLoaded', function() {
     </section>
 
    
+       
+   
     <div class="cont_modal_rulet">
         <div class="x_modal_rulet">
             <img src="{{asset('img/x.png')}}" alt="" >
         </div>
 
-        @foreach($ruleta as $dato)
-
+       
            <div class="content_ruleta">
             <span class="arrow"></span>
-            <form action="{{route('ruleta.spin')}}">
-                <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
-                <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
+           <form action="{{route('ruleta.spin')}}" method="POST">
+                @csrf
+                <input type="hidden" name="id_sorteo" value="#">
+                <input type="hidden" name="cedula" value="#">
                 
                 <button type="submit" id="spin">Spin</button>
                 
             </form>
+
              <div class="container_r">
-                <div class="one">{{$dato->nombre}}</div>
+         
+                <div class="one">pipe</div>
+                <div class="two">50%</div>
+                <div class="three">100%</div>
+                <div class="four">200%</div>
+                <div class="five">300%</div>
+                <div class="six">400%</div>
+                <div class="seven">500%</div>
+                <div class="eight">Jackpot</div>
+                    <div class="nine">Bancarrota</div>
+
+            
+
             </div>
         </div>
     </div>
 
-    @endforeach
+    
+
 
 
     <!-- RULET MAIN JS  -->
@@ -442,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .finally(() => {
                 submitBtn.disabled = false;
             });
+            
         });
     }
 
@@ -449,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica de la Ruleta (Sin Cambios) ---
     let container = document.querySelector(".container_r");
     let btn = document.getElementById("spin");
-    const TARGET_SLOT_ANGLE = 135; 
+    const TARGET_SLOT_ANGLE = 30; 
     const FULL_ROUNDS = 5; 
 
     btn.onclick = function () {
