@@ -113,8 +113,10 @@ class RuletaController extends Controller
         }
     }
 
-    public function Spin($id_sorteo,$cedula)
+    public function Spin(Request $request)
     {
+        $id_sorteo = $request->input('id_sorteo');
+        $cedula = $request->input('cedula');
         $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
         $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
         $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
@@ -141,19 +143,19 @@ class RuletaController extends Controller
                     //Si la ranura es bancarrota, se eliminan todas las oportunidades del cliente
                     $clienteRuleta->oportunidades -= 1;
                     $clienteRuleta->save();
-                    $this->ObtenerUbicacionCasilla($last_slot, $ruleta);
-                    return;
+                    
+                    
                 }
                 elseif($last_slot->type == 'intentar_de_nuevo'){
                     //Si la ranura es intentar de nuevo, no se le resta oportunidades al cliente
-                    $this->Spin($id_sorteo,$cedula);
-                    return;
+                    
+                    
                 }
 
                 elseif($last_slot->type == 'premiomenor' || $last_slot->type == 'premiomayor'){
                     $clienteRuleta->oportunidades -= 1;
                     $clienteRuleta->save();
-                    $this->ObtenerUbicacionCasilla($last_slot, $ruleta);
+                    
                 }
                 
             }
@@ -164,20 +166,18 @@ class RuletaController extends Controller
             }
             
         }
+
         }
 
+        $ranuraResult = null;
+        $ranuraResult=360/ $ruleta->nro_ranuras * ($last_slot);
+        return $ranuraResult;
     }
 
-    public function SearchClientRulet(Request $request)
+    public function BuildRulet(Request $request)
     {
         $clienteRuleta = ClienteRuleta::where('cedula', $request->input('cedula'))->first();
         $id_sorteo = $request->input('id_sorteo');
-        return $this->ConstruirRuleta($id_sorteo,$clienteRuleta);
-    }
-
-    public function ConstruirRuleta($id_sorteo,$clienteRuleta)
-    {
-
         $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
         $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
         $data = [
@@ -185,15 +185,12 @@ class RuletaController extends Controller
             'ruleta' => $ruleta,
             'ranuras' => $ranuras,
         ];
-        return json_encode($data);
+        return $data;
     }
 
+    
 
-    public function ObtenerUbicacionCasilla($id_ranura,$ruleta){
-        $ranuraResult = null;
-        $ranuraResult=360/ $ruleta->nro_ranuras * ($id_ranura);
-        return $ranuraResult;
-    }
+   
 
 
 
