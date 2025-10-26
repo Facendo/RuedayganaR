@@ -14,9 +14,13 @@ class Ranura extends Model
     
     protected $fillable = [
         'id_ruleta',
-        'numero_ranura',
-        'color_ranura',
-        'tipo_ranura',
+        'id_ranura',
+        'color',
+        'dir_imagen',
+        'type',
+        'texto',
+        'Rate',
+        'Blocked'
     ];
     public function ruleta(){
         return $this->belongsTo(Ruleta::class, 'id_ruleta', 'id_ruleta');

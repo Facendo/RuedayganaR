@@ -61,13 +61,13 @@
         }
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); /* Sombra basada en el color principal */
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
             outline: none;
         }
         .slot-info {
             margin-bottom: 30px;
             padding: 20px;
-            background-color: #ecfdf5; /* Fondo verde claro */
+            background-color: #ecfdf5;
             border-radius: 10px;
             border: 1px solid var(--primary);
         }
@@ -142,7 +142,7 @@
         .checkbox-group {
             display: flex;
             align-items: center;
-            grid-column: span 2; /* Ocupa más espacio en desktop */
+            grid-column: span 2;
         }
         .checkbox-group label {
             margin-left: 10px;
@@ -182,25 +182,19 @@
     <h1>Gestión de Ranuras (Slots)</h1>
 
     <div class="slot-info">
-        <p>Utiliza este formulario para configurar las ranuras de una ruleta existente. **Asegúrate de saber el ID de la Ruleta a la que pertenecen**.</p>
-        <div class="form-group">
-            <label for="id_ruleta_global">ID de la Ruleta a Configurar</label>
-            <input type="number" id="id_ruleta_global" placeholder="Ingresa el ID de la ruleta (Ej: 42)" required>
-        </div>
+        <p>Estás configurando las ranuras para la Ruleta con el ID: 
+           <strong id="display_ruleta_id">{{ $id_ruleta ?? 'N/A (Crea una nueva)' }}</strong>.</p>
+        <p>Modifica, elimina o agrega nuevas ranuras a continuación.</p>
     </div>
     
-    <!-- El formulario usa POST y multipart/form-data para enviar el array de ranuras y archivos -->
-    <!-- RECUERDA: Debes reemplazar "/tu-ruta-de-guardado-ranuras" con la URL real de tu controlador. -->
     <form id="slotForm" method="POST" action="{{route('ranuras.store')}}" enctype="multipart/form-data">
         @csrf
         
-        <!-- Campo Oculto para enviar el ID de la Ruleta con cada envío -->
-        <input type="hidden" id="hidden_id_ruleta" name="id_ruleta" value=""> 
+        <input type="hidden" id="hidden_id_ruleta" name="id_ruleta" value="{{ $id_ruleta ?? '' }}"> 
 
         <h2 id="ranuras-title">Ranuras Actuales: 0 Ranuras Agregadas</h2>
         
         <div id="slotContainer" class="slot-container">
-            <!-- Las ranuras dinámicas se agregarán aquí -->
             <p style="text-align: center; color: #6b7280;">Presiona "Agregar Ranura" para empezar a configurar las opciones de la ruleta.</p>
         </div>
         
@@ -216,47 +210,64 @@
 </div>
 
 <script>
+    // =================================================================================
+    // 💡 INYECCIÓN DE DATOS DESDE BLADE (PHP)
+    // ---------------------------------------------------------------------------------
+    // Ranuras existentes: Array de objetos Ranura.
+    const initialRanuras = @json($ranuras ?? []); 
+    
+    // ID de la ruleta que se está editando.
+    const initialRuletaId = '{{ $id_ruleta ?? '' }}'; 
+    // =================================================================================
+
     const slotContainer = document.getElementById('slotContainer');
     const addSlotBtn = document.getElementById('addSlotBtn');
     const slotForm = document.getElementById('slotForm');
     const ranurasTitle = document.getElementById('ranuras-title');
-    const ruletaIdInput = document.getElementById('id_ruleta_global');
+    // const ruletaIdInput = document.getElementById('id_ruleta_global'); // ELIMINADO
     const hiddenRuletaId = document.getElementById('hidden_id_ruleta');
-    let globalSlotCounter = 0; // Usado para el número visible (Ranura #1, #2, etc.)
-
-    // Sincroniza el ID visible con el campo oculto antes de enviar
-    ruletaIdInput.addEventListener('input', (e) => {
-        hiddenRuletaId.value = e.target.value;
-    });
+    const submitBtn = document.getElementById('submitBtn');
+    
+    let deletedSlotIds = []; 
 
     /**
-     * Valida que exista el ID de la ruleta y al menos una ranura antes de enviar el formulario.
+     * Valida que exista el ID de la ruleta (ya cargado) y al menos una acción (ranura o eliminación) antes de enviar.
      */
     slotForm.addEventListener('submit', function(event) {
         const slotCount = slotContainer.querySelectorAll('.slot-item').length;
-        const ruletaId = hiddenRuletaId.value;
+        const ruletaId = hiddenRuletaId.value; // Usamos el ID cargado
 
         if (!ruletaId) {
             event.preventDefault(); 
-            showErrorFeedback('❌ Ingresa el ID de la Ruleta primero!');
-            console.error('ERROR: Debes ingresar el ID de la ruleta a configurar.');
+            showErrorFeedback('❌ Error: El ID de la Ruleta no está definido. (Intenta recargar).');
             return;
         }
 
-        if (slotCount === 0) {
-            event.preventDefault(); // Detener el envío si no hay ranuras
-            showErrorFeedback('❌ ¡Agrega al menos una Ranura!');
-            console.error('ERROR: Debes agregar al menos una ranura (slot) antes de guardar.');
+        // Permitimos el envío si hay ranuras O si hay IDs para eliminar.
+        if (slotCount === 0 && deletedSlotIds.length === 0) {
+            event.preventDefault(); 
+            showErrorFeedback('❌ Agrega al menos una Ranura o ingresa una Ruleta válida!');
+            return;
         }
+        
+        // Añadir el campo oculto con los IDs a eliminar (CRUCIAL para el controlador)
+        if (deletedSlotIds.length > 0) {
+            const hiddenDeletedInput = document.createElement('input');
+            hiddenDeletedInput.type = 'hidden';
+            hiddenDeletedInput.name = 'deleted_ids';
+            hiddenDeletedInput.value = deletedSlotIds.join(',');
+            slotForm.appendChild(hiddenDeletedInput);
+        }
+        
+        submitBtn.textContent = 'Guardando...';
+        submitBtn.disabled = true;
     });
     
     /**
      * Muestra retroalimentación visual de error en el botón de submit.
-     * @param {string} message - El mensaje de error.
      */
     function showErrorFeedback(message) {
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.textContent;
+        const originalText = 'Guardar Todas las Ranuras'; 
         const originalColor = submitBtn.style.backgroundColor;
         
         submitBtn.textContent = message;
@@ -264,35 +275,35 @@
         
         setTimeout(() => {
             submitBtn.textContent = originalText;
-            submitBtn.style.backgroundColor = originalColor || 'var(--primary)'; // Vuelve al color original
-        }, 2000);
+            submitBtn.style.backgroundColor = originalColor || 'var(--primary)';
+            submitBtn.disabled = false;
+        }, 3000);
     }
 
     /**
-     * Actualiza el contador en el título de la sección de ranuras.
+     * Actualiza el contador en el título y re-enumera las ranuras visibles.
      */
     function updateSlotTitle() {
-        // Re-enumerar las ranuras visibles después de agregar o eliminar
         const items = slotContainer.querySelectorAll('.slot-item');
         let visibleCount = 0;
+        
         items.forEach((item, index) => {
             visibleCount++;
             const header = item.querySelector('.slot-header h4');
             if (header) {
+                // Re-numeración visible
                 header.textContent = `Ranura #${index + 1}`;
             }
         });
 
         ranurasTitle.textContent = `Ranuras Actuales: ${visibleCount} Ranuras Agregadas`;
-        globalSlotCounter = visibleCount; // Sincroniza el contador con el número real de elementos
         
         // Muestra u oculta el placeholder
         const placeholder = slotContainer.querySelector('p');
         if (visibleCount === 0) {
             if (!placeholder) {
                 const newPlaceholder = document.createElement('p');
-                newPlaceholder.style.textAlign = 'center';
-                newPlaceholder.style.color = '#6b7280';
+                newPlaceholder.style.cssText = 'text-align: center; color: #6b7280;';
                 newPlaceholder.textContent = 'Presiona "Agregar Ranura" para empezar a configurar las opciones de la ruleta.';
                 slotContainer.appendChild(newPlaceholder);
             }
@@ -302,50 +313,79 @@
     }
 
     /**
-     * Crea un nuevo bloque de formulario para una ranura (slot).
-     * @param {number} index - El índice único de la ranura (timestamp) para la clave del array en PHP.
+     * Crea un nuevo bloque de formulario para una ranura (slot) con o sin datos iniciales.
+     * @param {number} uniqueId - El índice único (ID de DB o Timestamp) para la clave del array en PHP.
+     * @param {object} [slotData={}] - Datos opcionales para precargar (si es edición).
      */
-    function createSlotElement(index) {
+    function createSlotElement(uniqueId, slotData = {}) {
+        const isExisting = !!slotData.id_ranura;
+        const index = isExisting ? slotData.id_ranura : uniqueId; 
+        
         const slotDiv = document.createElement('div');
         slotDiv.classList.add('slot-item');
         slotDiv.dataset.index = index;
+        slotDiv.dataset.id = slotData.id_ranura || 'new'; 
+
+        // Valores por defecto
+        const defaults = {
+            id_ranura: isExisting ? slotData.id_ranura : '', 
+            color: slotData.color || '#2e86de',
+            type: slotData.type || '',
+            texto: slotData.texto || '',
+            rate: slotData.rate || 10,
+            blocked: slotData.blocked || 0,
+            dir_imagen: slotData.dir_imagen || '' 
+        };
         
-        // La clave 'ranuras[${index}][campo]' es lo que hace que Laravel reciba un array de objetos.
+        // Prepara la URL de la imagen si existe
+        const imageHtml = defaults.dir_imagen 
+            ? `<p style="font-size: 0.85em; color: var(--success); margin-top: -5px;">
+                  Imagen actual: <a href="${defaults.dir_imagen}" target="_blank">Ver</a> (Sube un archivo para reemplazarla)
+               </p>`
+            : '';
+
         slotDiv.innerHTML = `
             <div class="slot-header">
-                <h4>Ranura #Nuevo</h4>
+                <h4>Ranura #${isExisting ? 'Editando' : 'Nuevo'}</h4>
                 <button type="button" class="btn btn-danger" onclick="removeSlot(this)">X</button>
             </div>
             
+            <input type="hidden" name="ranuras[${index}][id_ranura]" value="${defaults.id_ranura}">
+            
             <div class="form-group">
                 <label for="ranura_${index}_color">Color</label>
-                <input type="color" id="ranura_${index}_color" name="ranuras[${index}][color]" value="#2e86de" required>
+                <input type="color" id="ranura_${index}_color" name="ranuras[${index}][color]" value="${defaults.color}" required>
             </div>
             
             <div class="form-group">
                 <label for="ranura_${index}_type">Tipo (Type)</label>
-                <input type="text" id="ranura_${index}_type" name="ranuras[${index}][type]" placeholder="Ej: Premio, Descuento, Vacío" required>
+                <select id="ranura_${index}_type" name="ranuras[${index}][type]" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="premio_menor" ${defaults.type === 'premio_menor' ? 'selected' : ''}>Premio Menor</option>
+                    <option value="premio_mayor" ${defaults.type === 'premio_mayor' ? 'selected' : ''}>Premio Mayor</option>
+                    <option value="intentar_de_nuevo" ${defaults.type === 'intentar_de_nuevo' ? 'selected' : ''}>Intentar de Nuevo</option>
+                    <option value="bancarrota" ${defaults.type === 'bancarrota' ? 'selected' : ''}>Bancarrota</option>
+                </select>
             </div>
             
             <div class="form-group">
                 <label for="ranura_${index}_texto">Texto</label>
-                <input type="text" id="ranura_${index}_texto" name="ranuras[${index}][texto]" placeholder="Texto en la ruleta" required>
+                <input type="text" id="ranura_${index}_texto" name="ranuras[${index}][texto]" placeholder="Texto en la ruleta" value="${defaults.texto}" required>
             </div>
             
             <div class="form-group">
                 <label for="ranura_${index}_rate">Tasa (Rate) / Probabilidad</label>
-                <input type="number" id="ranura_${index}_rate" name="ranuras[${index}][Rate]" value="10" min="1" required>
+                <input type="number" id="ranura_${index}_rate" name="ranuras[${index}][rate]" value="${defaults.rate}" min="1" required>
             </div>
             
             <div class="form-group">
                 <label for="ranura_${index}_dir_imagen">Imagen de Ranura (Opcional)</label>
-                <!-- Archivo de ranura. Nombre: ranuras[INDEX][dir_imagen] -->
+                ${imageHtml}
                 <input type="file" id="ranura_${index}_dir_imagen" name="ranuras[${index}][dir_imagen]" accept="image/*">
             </div>
 
             <div class="form-group checkbox-group">
-                <!-- Si se marca, se envía '1'. Si no, Laravel lo interpreta como null, por lo que debes usar el operador ?? 0 en el controlador. -->
-                <input type="checkbox" id="ranura_${index}_blocked" name="ranuras[${index}][Blocked]" value="1">
+                <input type="checkbox" id="ranura_${index}_blocked" name="ranuras[${index}][blocked]" value="1" ${defaults.blocked ? 'checked' : ''}>
                 <label for="ranura_${index}_blocked">Bloqueada (Blocked)</label>
             </div>
         `;
@@ -358,20 +398,48 @@
     window.removeSlot = function(buttonElement) {
         const slotItem = buttonElement.closest('.slot-item');
         if (slotItem) {
+            const slotId = slotItem.dataset.id;
+            
+            // Si la ranura NO es 'new' (tiene un ID de DB), se añade a la lista de eliminación.
+            if (slotId && slotId !== 'new') {
+                deletedSlotIds.push(slotId);
+            }
+            
             slotItem.remove();
-            updateSlotTitle(); // Re-actualiza el título y los números de ranura
+            updateSlotTitle(); 
         }
     };
 
     // Listener para el botón de agregar ranura
     addSlotBtn.addEventListener('click', () => {
-        // Usar la marca de tiempo para asegurar un índice único y evitar conflictos en el array de Laravel
         const uniqueIndex = Date.now(); 
         createSlotElement(uniqueIndex);
     });
     
-    // Al cargar, aseguramos que el título esté correcto
-    window.onload = updateSlotTitle;
+    /**
+     * Función que inicializa el formulario con los datos recibidos de Blade ($ranuras).
+     */
+    function initializeForm() {
+        // 1. Mostrar el ID de Ruleta en el encabezado
+        const displayIdElement = document.getElementById('display_ruleta_id');
+        if (displayIdElement && initialRuletaId) {
+            displayIdElement.textContent = initialRuletaId;
+        }
+
+        // 2. Renderizar las ranuras existentes
+        if (initialRanuras.length > 0) {
+            slotContainer.innerHTML = ''; // Limpia el placeholder inicial
+            initialRanuras.forEach(slotData => {
+                createSlotElement(slotData.id_ranura, slotData);
+            });
+        }
+        
+        // 3. Finalizar la inicialización
+        updateSlotTitle();
+    }
+    
+    // 💡 Ejecutar la inicialización al cargar la ventana
+    window.onload = initializeForm; 
 </script>
 </body>
 </html>

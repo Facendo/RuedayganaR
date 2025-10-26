@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\ClienteRuleta;
 use App\Models\Ranura;
 use App\Models\Ruleta;
@@ -152,7 +153,7 @@ class RuletaController extends Controller
                     
                 }
 
-                elseif($last_slot->type == 'premiomenor' || $last_slot->type == 'premiomayor'){
+                elseif($last_slot->type == 'premio_menor' || $last_slot->type == 'premio_mayor'){
                     $clienteRuleta->oportunidades -= 1;
                     $clienteRuleta->save();
                     
@@ -176,16 +177,38 @@ class RuletaController extends Controller
 
     public function BuildRulet(Request $request)
     {
-        $clienteRuleta = ClienteRuleta::where('cedula', $request->input('cedula'))->first();
+        $client = ClienteRuleta::where('cedula', $request->input('cedula'))->first();
         $id_sorteo = $request->input('id_sorteo');
         $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
         $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
-        $data = [
-            'clienteRuleta' => $clienteRuleta,
-            'ruleta' => $ruleta,
-            'ranuras' => $ranuras,
+
+        $cliente=Cliente::where('cedula',$request->input('cedula'))->first();
+        $clienteReturn=[
+            'nombre'=>$cliente->nombre,
+            'cedula'=>$cliente->cedula,
+            'oportunidades'=>$client->oportunidades,
         ];
-        return $data;
+        foreach ($ranuras as $ranura) {
+            $ranurasReturn[] = [
+                
+                'type' => $ranura->type,
+                'color' => $ranura->color,
+            ];
+        }
+        $ruletaReturn = [
+            'id_ruleta' => $ruleta->id_ruleta,
+            'nombre' => $ruleta->nombre,
+            'dir_imagen' => $ruleta->dir_imagen,
+            'nro_ranuras' => $ruleta->nro_ranuras,
+        ];
+        
+
+       
+        return response()->json([
+            'ruleta' => $ruletaReturn,
+            'ranuras' => $ranurasReturn,
+            'cliente'=>$clienteReturn,
+        ]);
     }
 
     

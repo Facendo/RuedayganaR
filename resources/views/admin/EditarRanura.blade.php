@@ -223,25 +223,10 @@
     
     <h1>Gestión de Ranuras (Slots)</h1>
 
-    <div class="slot-info">
-        <p>Utiliza este formulario para configurar (agregar o editar) las ranuras de una ruleta existente. **Asegúrate de ingresar el ID de la Ruleta**.</p>
-        <div class="form-group">
-            <label for="id_ruleta_global">ID de la Ruleta a Configurar</label>
-            <div style="display: flex; gap: 10px;">
-                <input type="number" id="id_ruleta_global" placeholder="Ingresa el ID de la ruleta (Ej: 42)" required>
-                <button type="button" class="btn btn-info" id="loadSlotsBtn" title="Simula cargar datos desde el servidor">
-                    Cargar Ranuras
-                </button>
-            </div>
-        </div>
-    </div>
-    
     <!-- El formulario usa POST y multipart/form-data para enviar el array de ranuras y archivos -->
     <!-- RECUERDA: Debes reemplazar "/tu-ruta-de-guardado-ranuras" con la URL real de tu controlador. -->
     <form id="slotForm" method="POST" action="/tu-ruta-de-guardado-ranuras" enctype="multipart/form-data">
-        
-        <!-- IMPORTANTE PARA LARAVEL: Incluir el token CSRF. Si usas Blade, sería @csrf -->
-        <input type="hidden" name="_token" value="REEMPLAZAR_CON_CSRF_TOKEN">
+        @csrf
 
         <!-- Campo Oculto para enviar el ID de la Ruleta con cada envío -->
         <input type="hidden" id="hidden_id_ruleta" name="id_ruleta" value=""> 
@@ -409,7 +394,13 @@
             
             <div class="form-group">
                 <label for="ranura_${index}_type">Tipo (Type)</label>
-                <input type="text" id="ranura_${index}_type" name="ranuras[${index}][type]" value="${type}" placeholder="Ej: Premio, Descuento, Vacío" required>
+                <select id="ranura_${index}_type" name="ranuras[${index}][type]" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="premio_menor">Premio Menor</option>
+                    <option value="premio_mayor">Premio Mayor</option>
+                    <option value="intentar_de_nuevo">Intentar de Nuevo</option>
+                    <option value="bancarrota">Bancarrota</option>
+                </select>
             </div>
             
             <div class="form-group">
