@@ -195,6 +195,7 @@ class RuletaController extends Controller
             ];
         }
         $ruletaReturn = [
+            'id_sorteo' => $ruleta->id_sorteo,
             'id_ruleta' => $ruleta->id_ruleta,
             'nombre' => $ruleta->nombre,
             'dir_imagen' => $ruleta->dir_imagen,
