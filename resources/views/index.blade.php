@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
              <div class="container_r">
          
-                <div class="one">pipe</div>
+                <div class="one">bancarrota</div>
                 <div class="two">50%</div>
                 <div class="three">100%</div>
                 <div class="four">200%</div>
