@@ -335,8 +335,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="arrow"></span>
            <form action="{{route('ruleta.spin')}}" method="POST">
                 @csrf
-                <input type="hidden" name="id_sorteo" value="#">
-                <input type="hidden" name="cedula" value="#">
+                <input id="spin_sorteo" type="hidden" name="id_sorteo">
+                <input id="spin_cedula" type="hidden" name="cedula">
                 
                 <button type="submit" id="spin">Spin</button>
                 
