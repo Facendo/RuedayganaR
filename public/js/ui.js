@@ -80,12 +80,12 @@ export function openModal(data = {}) {
 
     const spinForm = document.querySelector(".content_ruleta form");
     if (spinForm) {
-        spinForm.querySelector('input[name="id_sorteo"]').value = idSorteoInput
+        // se toman valor del input anterior
+        spinForm.getElementById("spin_sorteo").value = idSorteoInput
             ? idSorteoInput.value
             : "";
 
-        spinForm.querySelector('input[name="cedula"]').value =
-            cedulaInput.value.trim();
+        spinForm.getElementById("spin_cedula").value = cedulaInput.value.trim();
     }
 }
 
