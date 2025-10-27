@@ -38,7 +38,6 @@ class RuletaController extends Controller
         $ruleta->id_sorteo = $request->input('id_sorteo');
         $ruleta->nombre = $request->input('nombre');
         $ruleta->cantidad_de_opotunidades_por_dar = $request->input('cantidad_de_opotunidades_por_dar');
-        $ruleta->nro_ranuras = $request->input('nro_ranuras');
         if ($request->hasFile('dir_imagen')) {
             $image = $request->file('dir_imagen');
             $filename = $image->getClientOriginalName();
@@ -184,7 +183,7 @@ class RuletaController extends Controller
 
         $cliente=Cliente::where('cedula',$request->input('cedula'))->first();
         $clienteReturn=[
-            'nombre'=>$cliente->nombre,
+            'nombre'=>$cliente->nombre_y_apellido,
             'cedula'=>$cliente->cedula,
             'oportunidades'=>$client->oportunidades,
         ];
