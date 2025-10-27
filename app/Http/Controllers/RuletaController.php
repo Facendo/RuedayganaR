@@ -171,6 +171,7 @@ class RuletaController extends Controller
 
         $ranuraResult = null;
         $ranuraResult=360/ $ruleta->nro_ranuras * ($last_slot);
+
         return $ranuraResult;
     }
 

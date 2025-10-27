@@ -765,6 +765,6 @@ p.mostrar_data {
     background-color: rgb(254, 180, 3);
     border-radius: 10px;
     display: inline;
-    margin: 100px auto 100px auto;
+    margin: 0 auto;
     padding: 10px;
 }
