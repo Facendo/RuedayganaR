@@ -692,10 +692,11 @@ p.mostrar_data {
 
 .arrow {
     position: absolute;
-    top: 0;
+    top: 22%;
     left: 50%;
     transform: translateX(-50%);
-    color: #fff;
+    color: black;
+    z-index: 100000;
 }
 
 .arrow::before {
@@ -755,4 +756,15 @@ p.mostrar_data {
 .container_r .eight {
     background-color: #f44336;
     transform: rotate(315deg);
+}
+
+/* ------------------- vaciado de datos ruleta ----------------------- */
+
+.nombre_ruleta {
+    color: #fff;
+    background-color: rgb(254, 180, 3);
+    border-radius: 10px;
+    display: inline;
+    margin: 100px auto 100px auto;
+    padding: 10px;
 }

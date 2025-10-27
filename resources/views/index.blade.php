@@ -326,7 +326,10 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="x_modal_rulet">
             <img src="{{asset('img/x.png')}}" alt="" >
         </div>
-
+        
+        <h1 class="nombre_ruleta">nombre ruleta</h1>
+         <div class="nombre_jugador"><p>Julio Galanton</p></div>
+        <div class="cont_cant_op">Giros disponibles <p>20</p></div>
        
            <div class="content_ruleta">
             <span class="arrow"></span>
@@ -339,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
             </form>
 
+
              <div class="container_r">
          
                 <div class="one">pipe</div>
@@ -349,12 +353,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="six">400%</div>
                 <div class="seven">500%</div>
                 <div class="eight">Jackpot</div>
-                    <div class="nine">Bancarrota</div>
 
-            
+                
 
             </div>
         </div>
+
+        <div class="mensaje_result"><p>Bancarrota</p></div>
     </div>
 
     
@@ -363,22 +368,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <!-- RULET MAIN JS  -->
 
+<script>
+    window.APP_ROUTES = {
+        check: "{{ route('ruleta.searchclient') }}",
+        spin: "{{ route('ruleta.spin') }}",
+        token: "{{ csrf_token() }}" // También inyectamos el token
+    };
+</script>
+
+
+<script src="{{asset('js/api.js')}}"></script>
+<script src="{{asset('js/ui.js')}}"></script>
+<script type="module" src="{{asset('js/main.js')}}"></script>
 
     
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.querySelector('.cont_modal_rulet');
     const form = document.querySelector('.form_rulet'); 
-    const form_spin = document.querySelector('.form_spin')
     const closeButton = document.querySelector('.x_modal_rulet');
     const cedulaInput = document.getElementById('cedula');
     const submitBtn = document.querySelector('.submit_btn');
-    const idSorteoInput = document.querySelector('input[name="id_sorteo"]');
+    const idSorteoInput = document.querySelector('.form_rulet input[name="id_sorteo"]'); 
 
-    // Funciones de la modal (mantienen su propósito)
-    function openModal() {
+    function openModal(data) {
         modal.style.transform = 'translateX(0)';
         modal.style.display = 'block';
+        
+        const spinForm = document.querySelector('.content_ruleta form');
+        if (spinForm) {
+            spinForm.querySelector('input[name="id_sorteo"]').value = idSorteoInput ? idSorteoInput.value : '';
+            spinForm.querySelector('input[name="cedula"]').value = cedulaInput.value.trim();
+        }
     }
 
     function closeModal() {
@@ -402,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const cedula = cedulaInput.value.trim();
             const url = form.getAttribute('action');
-            const token = document.querySelector('input[name="_token"]').value; 
+            const token = document.querySelector('.form_rulet input[name="_token"]').value; 
             
             if (cedula === '' || url === '') {
                 alert('Ingrese su cédula y asegúrese de que la ruta del formulario esté configurada.');
@@ -432,27 +453,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(data => {
-                // ------------------------------------------------------------------
-                // MODIFICACIÓN CLAVE: Abrir la modal SIEMPRE que la petición sea OK.
-                // ------------------------------------------------------------------
-                console.log('Datos de respuesta recibidos:', data);
+                console.log('Datos de respuesta de verificación recibidos:', data);
                 
-                // Abrir la modal con la ruleta sin verificar data.success ni giros.
-                openModal(); 
+                openModal(data); 
                 
-                // Opcional: Si quieres mostrar una alerta *adentro* de la modal 
-                // para indicar que no hay giros, puedes hacerlo aquí, 
-                // pero la modal se abre de todas formas.
                 if (!data.success) {
                     console.warn(data.message || 'Cédula no válida o sin giros.');
                 }
-                // ------------------------------------------------------------------
             })
             .catch(error => {
                 console.error('Error al verificar la cédula:', error);
-                // Mantenemos la alerta de "Error de conexión" solo para fallos 
-                // de red o del servidor (4xx, 5xx)
-                alert('Hubo un error de conexión. Inténtelo más tarde.');
+                alert('Hubo un error de conexión o el servidor no respondió correctamente.');
             })
             .finally(() => {
                 submitBtn.disabled = false;
@@ -462,24 +473,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     
-    // --- Lógica de la Ruleta (Sin Cambios) ---
     let container = document.querySelector(".container_r");
     let btn = document.getElementById("spin");
     const TARGET_SLOT_ANGLE = 30; 
-    const FULL_ROUNDS = 5; 
+    const FULL_ROUNDS = 5;       
 
-    btn.onclick = function () {
-        let newRotation = (FULL_ROUNDS * 360) + TARGET_SLOT_ANGLE; 
-        container.style.transform = "rotate(-" + newRotation + "deg)";
+    btn.onclick = function (event) {
+        event.preventDefault(); 
         
         btn.disabled = true;
-        setTimeout(() => {
-            btn.disabled = false;
-            console.log("¡El resultado es la ranura " + (TARGET_SLOT_ANGLE / 45 + 1) + "!");
-        }, 5000); 
+
+        const spinForm = document.querySelector('.content_ruleta form');
+        const url = spinForm.getAttribute('action');
+        const token = spinForm.querySelector('input[name="_token"]').value;
+        const idSorteo = spinForm.querySelector('input[name="id_sorteo"]').value;
+        const cedula = spinForm.querySelector('input[name="cedula"]').value;
+
+        const formData = new FormData();
+        formData.append('id_sorteo', idSorteo);
+        formData.append('cedula', cedula);
+
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'X-CSRF-TOKEN': token 
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error de servidor: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('✅ Datos de la ranura recibidos del servidor:', data);
+
+            let newRotation = (FULL_ROUNDS * 360) + TARGET_SLOT_ANGLE; 
+            container.style.transform = "rotate(-" + newRotation + "deg)";
+            
+            setTimeout(() => {
+                btn.disabled = false;
+                console.log("¡El resultado es la ranura " + (TARGET_SLOT_ANGLE / 45 + 1) + "!");
+            }, 5000);
+        })
+        .catch(error => {
+            console.error('❌ Error al girar la ruleta (Error de red o servidor):', error);
+            alert('Hubo un error de conexión o el servidor falló. Inténtelo más tarde.');
+            btn.disabled = false; 
+        });
     };
 });
-</script>
+</script> -->
 
     
     
