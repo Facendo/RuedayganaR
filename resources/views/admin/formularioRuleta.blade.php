@@ -26,8 +26,8 @@
         @csrf
         <div class="cont_input">
                 
-                <label for="id_sorteo">ID del Sorteo</label>
-                <input type="number" class="input_form" id="id_sorteo" name="id_sorteo" placeholder="Ej: 101" required>
+                
+                <input type="hidden" class="input_form" id="id_sorteo" name="id_sorteo" placeholder="Ej: 101" value="{{$id_sorteo}}">
 
 
             

@@ -23,9 +23,9 @@ class RuletaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id_sorteo)
     {
-        return view('admin.formularioRuleta');
+        return view('admin.formularioRuleta',['id_sorteo'=>$id_sorteo]);
     }
 
     /**
@@ -113,70 +113,92 @@ class RuletaController extends Controller
         }
     }
 
-    public function Spin(Request $request)
-    {
-        $id_sorteo = $request->input('id_sorteo');
-        $cedula = $request->input('cedula');
-        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
-        $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
-        $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
 
-        // Lógica para lanzar la ruleta y determinar ganadores
-        $total_rate = 0;
-        $last_slot = null;
-        //Se saca el total de rates
-        foreach ($ranuras as $ranura) {
-            if(!$ranura->Blocked){
-               $total_rate += $ranura->rate;
-            }
-        }
-        //Se genera un numero random entre 1 y el total de rates
-        $number_random = rand(1, $total_rate);
-        foreach($ranuras as $ranura){
-            if(!$ranura->Blocked){
-            //Se va restando el rate al numero random hasta que sea menor o igual a 0
-            if($number_random <= 0){
-                //Se retorna la ranura ganadora
-                break;
 
-                if($last_slot->type == 'bancarrota'){
-                    //Si la ranura es bancarrota, se eliminan todas las oportunidades del cliente
-                    $clienteRuleta->oportunidades -= 1;
-                    $clienteRuleta->save();
-                    
-                    
-                }
-                elseif($last_slot->type == 'intentar_de_nuevo'){
-                    //Si la ranura es intentar de nuevo, no se le resta oportunidades al cliente
-                    
-                    
-                }
 
-                elseif($last_slot->type == 'premio_menor' || $last_slot->type == 'premio_mayor'){
-                    $clienteRuleta->oportunidades -= 1;
-                    $clienteRuleta->save();
-                    
-                }
-                
-            }
-            //Si no es menor o igual a 0, se resta el rate de la ranura actual
-            else{
-                $number_random -= $ranura->rate;
-                $last_slot = $ranura->id_ranura;
-            }
-            
-        }
 
-        }
+   public function Spin(Request $request)
+{
+    $id_sorteo = $request->input('id_sorteo');
+    $cedula = $request->input('cedula');
 
-        $ranuraResult = null;
-        $ranuraResult=360/ $ruleta->nro_ranuras * ($last_slot);
-
-        return $ranuraResult;
+    // 1. Verificación de Ruleta (Evita Error 500 si la ruleta no existe)
+    $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
+    if (!$ruleta) {
+        return response()->json(['error' => 'Sorteo de Ruleta no encontrado.'], 404);
     }
+    
+    // 2. Verificación de Cliente (Evita Error 500 si el cliente no existe)
+    $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
+    if (!$clienteRuleta) {
+        return response()->json(['error' => 'Cliente no encontrado.'], 404);
+    }
+    
+    // 3. Obtener y Filtrar Ranuras Elegibles (Ranuras no bloqueadas y con rate > 0)
+    $ranuras_disponibles = Ranura::where('id_ruleta', $ruleta->id_ruleta)
+        ->orderBy('id_ranura') // Mantiene el orden para el cálculo del ángulo
+        ->get()
+        ->filter(fn ($ranura) => !$ranura->blocked && $ranura->rate > 0);
+    
+    $total_rate = $ranuras_disponibles->sum('rate');
+    
+    // Manejo del caso donde no hay nada que seleccionar
+    if ($total_rate <= 0) {
+        return response()->json(['error' => 'Todas las ranuras elegibles están bloqueadas o sin probabilidad.'], 403);
+    }
+    
+    $number_random = rand(1, $total_rate);
+    $last_slot = null;
+    
+    // 4. Lógica de Selección Ponderada (Solo itera sobre las ranuras elegibles)
+    foreach($ranuras_disponibles as $ranura){
+        $number_random -= $ranura->rate;
+        if($number_random <= 0){
+            $last_slot = $ranura;
+            break;
+        }
+    }
+    
+    // Doble verificación (si falla la lógica de selección, aunque es poco probable aquí)
+    if (!$last_slot) {
+        return response()->json(['error' => 'Error al seleccionar ranura final.'], 500);
+    }
+    
+    $premio = null;
+    
+    // 5. Actualización de Oportunidades y Guardado
+    if($last_slot->type == 'bancarrota' || $last_slot->type == 'premio_menor' || $last_slot->type == 'premio_mayor'){
+        $clienteRuleta->oportunidades -= 1;
+        $premio = $last_slot->type;
+        $clienteRuleta->save(); // ⬅️ ¡Guardar el cambio en la base de datos!
+    }
+    elseif($last_slot->type == 'intentar_de_nuevo'){
+        $premio = $last_slot->type;
+    }
+    
+    // 6. Cálculo del Ángulo (apuntando al centro de la ranura para mejor animación)
+    $ancho_ranura = 360 / $ruleta->nro_ranuras;
+    
+    // Fórmula que utiliza el id_ranura como índice (1-basado)
+    $angulo_centro = ($ancho_ranura * ($last_slot->id_ranura - 1)) + ($ancho_ranura / 2);
+    $angle = (int)$angulo_centro;
+
+    // 7. Retorno de Respuesta JSON COMPLETO
+    return response()->json([
+        'angle' => $angle,
+        'premio' => $premio,
+        
+        'last_slot' => $last_slot 
+    ]);
+}
+
+
+
+
 
     public function BuildRulet(Request $request)
     {
+        
         $client = ClienteRuleta::where('cedula', $request->input('cedula'))->first();
         $id_sorteo = $request->input('id_sorteo');
         $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
