@@ -169,7 +169,12 @@ class RuletaController extends Controller
     // 5. Actualización de Oportunidades y Guardado
     if($last_slot->type == 'bancarrota' || $last_slot->type == 'premio_menor' || $last_slot->type == 'premio_mayor'){
         $clienteRuleta->oportunidades -= 1;
-        $premio = $last_slot->type;
+        if($last_slot->texto==null){
+            $premio = $last_slot->type;
+        }
+        else{
+            $premio= $last_slot->texto;
+        }
         $clienteRuleta->save(); // ⬅️ ¡Guardar el cambio en la base de datos!
     }
     elseif($last_slot->type == 'intentar_de_nuevo'){
@@ -187,7 +192,6 @@ class RuletaController extends Controller
     return response()->json([
         'angle' => $angle,
         'premio' => $premio,
-        
         'last_slot' => $last_slot 
     ]);
 }
@@ -203,7 +207,7 @@ class RuletaController extends Controller
         $id_sorteo = $request->input('id_sorteo');
         $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
         $ranuras = Ranura::where('id_ruleta', $ruleta->id_ruleta)->get();
-
+        $texto='';
         $cliente=Cliente::where('cedula',$request->input('cedula'))->first();
         $clienteReturn=[
             'nombre'=>$cliente->nombre_y_apellido,
@@ -211,12 +215,20 @@ class RuletaController extends Controller
             'oportunidades'=>$client->oportunidades,
         ];
         foreach ($ranuras as $ranura) {
+                if($ranura->texto==null){
+                    $texto= $ranura->type;
+                }
+                else{
+                    $texto= $ranura->texto;
+                }
+
             $ranurasReturn[] = [
-                
-                'type' => $ranura->type,
                 'color' => $ranura->color,
+                'texto' => $texto
             ];
         }
+
+        
         $ruletaReturn = [
             'id_sorteo' => $ruleta->id_sorteo,
             'id_ruleta' => $ruleta->id_ruleta,
