@@ -191,8 +191,7 @@ class RuletaController extends Controller
     // 7. Retorno de Respuesta JSON COMPLETO
     return response()->json([
         'angle' => $angle,
-        'premio' => $premio,
-        'last_slot' => $last_slot 
+        'premio' => $premio
     ]);
 }
 
@@ -228,7 +227,7 @@ class RuletaController extends Controller
             ];
         }
 
-        
+
         $ruletaReturn = [
             'id_sorteo' => $ruleta->id_sorteo,
             'id_ruleta' => $ruleta->id_ruleta,
