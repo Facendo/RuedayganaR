@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ranura;
+use App\Models\Ruleta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -39,8 +40,13 @@ class RanuraController extends Controller
             return response()->json(['error' => '❌ El ID de la Ruleta es obligatorio.'], 400);
         }
 
+
         // 2. Obtener los arrays de ranuras y IDs a eliminar
         $slots = $request->input('ranuras', []);
+        $ruleta = Ruleta::find($ruletaId);
+        $ruleta->nro_ranuras = count($slots);
+        $ruleta->save();
+
         $deletedIdsString = $request->input('deleted_ids', '');
 
         // Usamos una transacción para asegurar la atomicidad de las operaciones

@@ -26,8 +26,8 @@
         @csrf
         <div class="cont_input">
                 
-                <label for="id_sorteo">ID del Sorteo</label>
-                <input type="number" class="input_form" id="id_sorteo" name="id_sorteo" placeholder="Ej: 101" required>
+                
+                <input type="hidden" class="input_form" id="id_sorteo" name="id_sorteo" placeholder="Ej: 101" value="{{$id_sorteo}}">
 
 
             
@@ -39,9 +39,6 @@
     
                 <label for="cant_oportunidades">Cantidad de Oportunidades por Dar</label>
                 <input type="number" class="input_form" id="cant_oportunidades" name="cantidad_de_opotunidades_por_dar" value="1" min="0" required>
-            
-                <label for="nro_ranuras">Número de Ranuras (Solo Referencia)</label>
-                <input type="number" class="input_form" id="nro_ranuras" name="nro_ranuras" value="8" min="1" required>
             
                 <label for="dir_imagen_ruleta">Imagen de la Ruleta (Opcional)</label>
                 <input type="file" class="input_form" id="dir_imagen_ruleta" name="dir_imagen" accept="image/*">

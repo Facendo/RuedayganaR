@@ -241,7 +241,7 @@
                         </form>
 
                             <div class="button btn_modal">
-                                <a href="{{route('ruletas.creacion')}}">Agregar Ruleta</a>
+                                <a href="{{route('ruletas.creacion',$sorteo->id_sorteo)}}">Agregar Ruleta</a>
                             </div>
 
                         <div class="button btn_modal"

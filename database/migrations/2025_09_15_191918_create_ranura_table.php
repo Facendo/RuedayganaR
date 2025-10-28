@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('color');
             $table->string('dir_imagen')->nullable();
             $table->string('type');
-            $table->string('texto');
-            $table->integer('Rate');
-            $table->boolean('Blocked')->default(false);
+            $table->string('texto')->nullable();
+            $table->integer('rate');
+            $table->boolean('blocked')->default(false);
             $table->timestamps();
 
             $table->foreign('id_ruleta')

@@ -369,8 +369,8 @@
             </div>
             
             <div class="form-group">
-                <label for="ranura_${index}_texto">Texto</label>
-                <input type="text" id="ranura_${index}_texto" name="ranuras[${index}][texto]" placeholder="Texto en la ruleta" value="${defaults.texto}" required>
+                <label for="ranura_${index}_texto">Texto (Opcional)</label>
+                <input type="text" id="ranura_${index}_texto" name="ranuras[${index}][texto]" placeholder="Texto en la ruleta" value="${defaults.texto}" >
             </div>
             
             <div class="form-group">
