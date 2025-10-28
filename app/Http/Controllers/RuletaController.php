@@ -209,6 +209,7 @@ class RuletaController extends Controller
         $texto='';
         $cliente=Cliente::where('cedula',$request->input('cedula'))->first();
         $clienteReturn=[
+            'nombre_ruleta' => $ruleta->nombre,
             'nombre'=>$cliente->nombre_y_apellido,
             'cedula'=>$cliente->cedula,
             'oportunidades'=>$client->oportunidades,
@@ -226,22 +227,10 @@ class RuletaController extends Controller
                 'texto' => $texto
             ];
         }
-
-
-        $ruletaReturn = [
-            'id_sorteo' => $ruleta->id_sorteo,
-            'id_ruleta' => $ruleta->id_ruleta,
-            'nombre' => $ruleta->nombre,
-            'dir_imagen' => $ruleta->dir_imagen,
-            'nro_ranuras' => $ruleta->nro_ranuras,
-        ];
         
-
-       
         return response()->json([
-            'ruleta' => $ruletaReturn,
             'ranuras' => $ranurasReturn,
-            'cliente'=>$clienteReturn,
+            'cliente'=> $clienteReturn,
         ]);
     }
 
