@@ -1,3 +1,5 @@
+// ui.js
+
 const modal = document.querySelector(".cont_modal_rulet");
 const container = document.querySelector(".container_r");
 const cedulaInput = document.getElementById("cedula");
@@ -6,13 +8,16 @@ const idSorteoInput = document.querySelector(
 );
 
 const FULL_ROUNDS = 5;
-const TARGET_SLOT_ANGLE = 30;
+// const TARGET_SLOT_ANGLE = 90;
+
+let ruletaState = {};
 
 /**
 
  * @param {Object} data 
  */
 export function openModal(data = {}) {
+    ruletaState = data;
     modal.style.transform = "translateX(0)";
     modal.style.display = "block";
 
@@ -20,6 +25,8 @@ export function openModal(data = {}) {
     const nombreJugador = document.querySelector(".nombre_jugador p");
     const girosDisponibles = document.querySelector(".cont_cant_op p");
     const mensajeResult = document.querySelector(".mensaje_result p");
+
+    generateRuleta(data.ranuras);
 
     if (nombreRuleta && data.ruleta.nombre) {
         nombreRuleta.textContent = data.ruleta.nombre;
@@ -63,12 +70,49 @@ export function closeModal() {
 export function animateRuleta(data) {
     console.log("Datos usados para animar:", data);
 
-    let newRotation = FULL_ROUNDS * 360 + TARGET_SLOT_ANGLE;
+    const cantRanuras = ruletaState.ranuras.length;
+    const precision = 360 / cantRanuras;
+
+    const randomizador = Math.floor(Math.random() * (precision - 2 + 1)) + 2;
+
+    console.log("random: ", randomizador);
+
+    const angle = data.angle;
+
+    let newRotation = FULL_ROUNDS * 360 + angle + randomizador;
+
     container.style.transform = "rotate(-" + newRotation + "deg)";
 
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve();
         }, 5000);
+    });
+}
+
+export function generateRuleta(ranuraData) {
+    console.log("se imprimen las ranuras");
+    const container_rulet = document.querySelector(".container_r");
+
+    const totalRanuras = ranuraData.length;
+    const sizeSlot = 360 / totalRanuras;
+    console.log(totalRanuras);
+    console.log(sizeSlot);
+
+    // while (container_rulet.firstChild) {
+    //     container_rulet.removeChild(container_rulet.firstChild);
+    // }
+
+    ranuraData.forEach((ranura, cont) => {
+        const elementRanura = document.createElement("div");
+        elementRanura.classList.add("ranura_rulet");
+
+        const position = cont * sizeSlot;
+
+        elementRanura.style.backgroundColor = ranura.color;
+
+        elementRanura.style.transform = `rotate(${position}deg)`;
+
+        container_rulet.appendChild(elementRanura);
     });
 }

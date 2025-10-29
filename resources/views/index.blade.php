@@ -343,18 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </form>
 
 
-             <div class="container_r">
-         
-                <div class="one">bancarrota</div>
-                <div class="two">50%</div>
-                <div class="three">100%</div>
-                <div class="four">200%</div>
-                <div class="five">300%</div>
-                <div class="six">400%</div>
-                <div class="seven">500%</div>
-                <div class="eight">Jackpot</div>
-
-                
+             <div class="container_r">         
 
             </div>
         </div>

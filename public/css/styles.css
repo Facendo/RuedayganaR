@@ -664,30 +664,44 @@ p.mostrar_data {
 }
 
 .container_r div {
+    /* 1. Dimensiones */
     height: 50%;
-    width: 200px;
+    width: 100%; /* <-- ¡CORRECCIÓN CLAVE! Debe ser 100% para cubrir el círculo */
+
+    /* 2. Posicionamiento */
     position: absolute;
-    clip-path: polygon(100% 0, 50% 100%, 0 0);
-    transform: translateX(-50%);
-    transform-origin: bottom;
+    top: 0;
+    left: 0; /* <-- CORRECCIÓN: Posicionar en la esquina superior izquierda */
+
+    /* 3. Clip Path (Asegura que la base esté arriba y el vértice en el centro inferior) */
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+
+    /* 4. Origen de la Transformación */
+    transform-origin: 50% 100%; /* <-- ¡CRÍTICO! Pone el pivote en el centro de la base del triángulo */
+
+    /* Nota: Se elimina transform: translateX(-50%) */
+
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Esto centrará el texto dentro del área triangular */
     font-size: 20px;
     font-weight: bold;
     font-family: sans-serif;
     color: #fff;
-    left: 135px;
+
+    /* El transform: rotate(Xdeg) 
+       se aplica por JavaScript para rotar la ranura
+    */
 }
 
-.container_r div {
-    /* ... */
-    height: 50%;
-    width: 200px; /* FIJO */
-    clip-path: polygon(100% 0, 50% 100%, 0 0);
-    /* ... */
-    left: 135px; /* FIJO */
+/* También debes asegurar que el contenedor es un círculo */
+.container_r {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    overflow: hidden; /* Oculta cualquier imperfección del borde */
 }
 
 .arrow {
@@ -723,6 +737,21 @@ p.mostrar_data {
     cursor: pointer;
     outline: none;
     letter-spacing: 1px;
+}
+
+.ranura_rulet {
+    /* 1. Posicionamiento */
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    /* 2. Dimensiones (50% = Radio) */
+    width: 50%;
+    height: 100%;
+
+    /* 3. ¡Punto de Origen Crítico! */
+    transform-origin: 0% 50%;
+    border-left: 1px solid rgba(0, 0, 0, 0.1); /* Línea divisoria */
 }
 
 .container_r .one {
