@@ -81,11 +81,13 @@ export function animateRuleta(data) {
 
     let newRotation = FULL_ROUNDS * 360 + angle + randomizador;
 
+    const finalStop = angle + randomizador;
+
     container.style.transform = "rotate(-" + newRotation + "deg)";
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve();
+            resolve(finalStop);
         }, 5000);
     });
 }
@@ -106,13 +108,15 @@ export function generateRuleta(ranuraData) {
     ranuraData.forEach((ranura, cont) => {
         const elementRanura = document.createElement("div");
         elementRanura.classList.add("ranura_rulet");
-
         const position = cont * sizeSlot;
-
         elementRanura.style.backgroundColor = ranura.color;
-
         elementRanura.style.transform = `rotate(${position}deg)`;
 
+        const textWrapper = document.createElement("div");
+        textWrapper.classList.add("slot-text-wrapper");
+        textWrapper.textContent = ranura.texto;
+
+        elementRanura.appendChild(textWrapper);
         container_rulet.appendChild(elementRanura);
     });
 }

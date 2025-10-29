@@ -73,8 +73,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then((data) => {
                     return animateRuleta(data);
                 })
-                .then(() => {
-                    spinBtn.disabled = false;
+                .then((finalStop) => {
+                    const container = document.querySelector(".container_r");
+                    container.style.transition = "none";
+                    container.style.transform = "rotate(-" + finalStop + "deg)";
+
+                    setTimeout(() => {
+                        container.style.transition =
+                            "transform 5s cubic-bezier(0.25, 0.1, 0.25, 1)";
+                        spinBtn.disabled = false;
+                    }, 50);
                 })
                 .catch((error) => {
                     console.error("Error al girar:", error);
