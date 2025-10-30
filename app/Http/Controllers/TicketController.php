@@ -94,8 +94,9 @@ class TicketController extends Controller
         $pago->save();
 
         //Espacio para Manejar el Residuo y la Asignacion de Oportunidades
-
-        $this->CalcularResiduo($cliente->cedula, $pago->cantidad_de_tickets, $sorteo->id_sorteo);
+        if(ClienteRuleta::where('cedula',$cliente->cedula)->exists()){
+            $this->CalcularResiduo($cliente->cedula, $pago->cantidad_de_tickets, $sorteo->id_sorteo);
+        }
         //Crear Ticket
         $ticket = new Ticket();
         $ticket->cedula_cliente = $request->cedula_cliente;

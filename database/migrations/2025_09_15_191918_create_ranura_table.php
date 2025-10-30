@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('ranura', function (Blueprint $table) {
             $table->integer('id_ruleta');
             $table->integer('id_ranura')->primary()->autoIncrement();
+            $table->integer('orden')->default(0);
             $table->string('color');
             $table->string('dir_imagen')->nullable();
             $table->string('type');
             $table->string('texto')->nullable();
             $table->integer('rate');
             $table->boolean('blocked')->default(false);
+            $table->boolean('activo')->default(true);
             $table->timestamps();
 
             $table->foreign('id_ruleta')

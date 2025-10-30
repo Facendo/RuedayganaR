@@ -34,6 +34,7 @@ class RuletaController extends Controller
      */
     public function store(Request $request)
     {
+        
         $ruleta = new Ruleta();
         $ruleta->id_sorteo = $request->input('id_sorteo');
         $ruleta->nombre = $request->input('nombre');
@@ -136,7 +137,7 @@ class RuletaController extends Controller
     
     // 3. Obtener y Filtrar Ranuras Elegibles (Ranuras no bloqueadas y con rate > 0)
     $ranuras_disponibles = Ranura::where('id_ruleta', $ruleta->id_ruleta)
-        ->orderBy('id_ranura') // Mantiene el orden para el cálculo del ángulo
+        ->orderBy('orden') // Mantiene el orden para el cálculo del ángulo
         ->get()
         ->filter(fn ($ranura) => !$ranura->blocked && $ranura->rate > 0);
     
@@ -185,10 +186,10 @@ class RuletaController extends Controller
     $ancho_ranura = 360 / $ruleta->nro_ranuras;
     
     // Fórmula que utiliza el id_ranura como índice (1-basado)
-    $angulo_centro = ($ancho_ranura * ($last_slot->id_ranura - 1)) - ($ancho_ranura / 2);
+    $angulo_centro = ($ancho_ranura * ($last_slot->orden - 1)) - ($ancho_ranura / 2);
     $angle = (int)$angulo_centro;
-
     // 7. Retorno de Respuesta JSON COMPLETO
+    
     return response()->json([
         'angle' => $angle,
         'premio' => $premio

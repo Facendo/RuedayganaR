@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('cedula');
             $table->integer('residuo')->default(0);
             $table->integer('oportunidades')->default(0);
-            $table->integer('id_ruleta');
+            $table->integer('id_ruleta')->nullable();
 
             $table->foreign('cedula')
                     ->references('cedula')

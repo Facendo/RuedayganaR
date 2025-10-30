@@ -34,125 +34,83 @@ class RanuraController extends Controller
    
     public function store(Request $request)
     {
-        // 1. Validar el ID de la ruleta (obligatorio)
-        $ruletaId = $request->input('id_ruleta');
-        if (empty($ruletaId)) {
-            return response()->json(['error' => '❌ El ID de la Ruleta es obligatorio.'], 400);
+        $id_ruleta = $request->input('id_ruleta');
+
+        // 1. Validar ID de Ruleta
+        if (empty($id_ruleta)) {
+            return redirect()->back()->with('error', '❌ El ID de la ruleta es obligatorio para guardar las ranuras.');
         }
 
-
-        // 2. Obtener los arrays de ranuras y IDs a eliminar
         $slots = $request->input('ranuras', []);
-        $ruleta = Ruleta::find($ruletaId);
-        $ruleta->nro_ranuras = count($slots);
-        $ruleta->save();
 
-        $deletedIdsString = $request->input('deleted_ids', '');
-
-        // Usamos una transacción para asegurar la atomicidad de las operaciones
+        // 2. INICIAR TRANSACCIÓN (Garantiza que la operación es todo o nada)
         DB::beginTransaction();
 
         try {
-            // =========================================================
-            // A. MANEJO DE ELIMINACIONES (DELETE)
-            // =========================================================
-            if (!empty($deletedIdsString)) {
-                $deletedIds = explode(',', $deletedIdsString);
-                
-                // Buscar y eliminar físicamente las imágenes antes de borrar el registro de la DB
-                $ranurasToDelete = Ranura::whereIn('id_ranura', $deletedIds)
-                                          ->where('id_ruleta', $ruletaId)
-                                          ->get();
+            // --- FASE 1: ELIMINACIÓN SEGURA ---
+            
+            // 2.1 Buscar y eliminar físicamente las imágenes de las ranuras existentes
+            $ranurasToDelete = Ranura::where('id_ruleta', $id_ruleta)->get();
 
-                foreach ($ranurasToDelete as $ranura) {
-                    if ($ranura->dir_imagen) {
-                        // Borra la imagen antigua
-                        Storage::disk('public')->delete($ranura->dir_imagen);
-                    }
+            foreach ($ranurasToDelete as $ranura) {
+                if ($ranura->dir_imagen) {
+                    // Borra la imagen antigua del disco
+                    Storage::disk('public')->delete($ranura->dir_imagen);
                 }
-                
-                // Eliminar los registros de la base de datos
-                Ranura::whereIn('id_ranura', $deletedIds)
-                      ->where('id_ruleta', $ruletaId)
-                      ->delete();
             }
+            
+            // 2.2 Eliminar los registros de la base de datos (SELECTIVE DELETE)
+            Ranura::where('id_ruleta', $id_ruleta)->delete();
+            
+            
+            // --- FASE 2: INSERCIÓN DE NUEVOS REGISTROS ---
+            
+            $orden = 0; // Contador para la nueva columna 'orden' (1, 2, 3...)
 
-            // =========================================================
-            // B. MANEJO DE ACTUALIZACIONES/INSERCIONES (UPSERT)
-            // =========================================================
-            foreach ($slots as $uniqueIndex => $slotData) {
-                $ranuraId = $slotData['id_ranura'] ?? null;
-                $ranura = null;
-
-                // 2.1 Determinar si es UPDATE o INSERT
-                if ($ranuraId) {
-                    // UPDATE: Buscar el registro existente
-                    $ranura = Ranura::where('id_ranura', $ranuraId)
-                                    ->where('id_ruleta', $ruletaId)
-                                    ->first();
-                    
-                    // Si no se encuentra (posiblemente borrado o error), forzamos un INSERT.
-                    if (!$ranura) {
-                        $ranura = new Ranura();
-                    }
-                } else {
-                    // INSERT: Crear una nueva instancia
-                    $ranura = new Ranura();
-                }
-
-                // Almacenamos la imagen antigua (si existe) por si necesitamos borrarla
-                $oldImage = $ranura->dir_imagen;
+            foreach($slots as $uniqueIndex => $ranuraData) {
+                $orden++; // Incrementar el valor de orden para esta ranura
                 
-                // 2.2 Asignar datos básicos
-                $ranura->id_ruleta = $ruletaId;
-                $ranura->color = $slotData['color'] ?? '#000000';
-                $ranura->type = $slotData['type'] ?? 'default';
-                $ranura->texto = $slotData['texto'] ?? '';
-                $ranura->Rate = (int)($slotData['rate'] ?? 0); // Ajustado a 'rate' minúscula del JS
+                $newSlot = new Ranura();
                 
-                // 2.3 Manejo del checkbox 'Blocked'
-                $ranura->Blocked = $request->input("ranuras.{$uniqueIndex}.blocked", 0);
-
-
-                // 2.4 Manejo de la subida de imagen (dir_imagen)
+                // 3. ASIGNACIÓN DE DATOS (Usando sintaxis de array [])
+                $newSlot->id_ruleta = $id_ruleta;
+                $newSlot->orden     = $orden; // 🌟 Nuevo campo de orden secuencial
+                $newSlot->type      = $ranuraData['type'] ?? 'default'; 
+                $newSlot->color     = $ranuraData['color'] ?? '#000000';
+                $newSlot->texto     = $ranuraData['texto'] ?? null;
+                $newSlot->Rate      = (int)($ranuraData['rate'] ?? 0);
+                $newSlot->Blocked   = (int)($ranuraData['blocked'] ?? 0); 
+                
+                
+                // 4. MANEJO DE LA SUBIDA DE IMAGEN
+                // Usamos $uniqueIndex para identificar el archivo subido en el Request
                 if ($request->hasFile("ranuras.{$uniqueIndex}.dir_imagen")) {
                     $image = $request->file("ranuras.{$uniqueIndex}.dir_imagen");
                     
-                    // Si hay una imagen antigua, la eliminamos ANTES de guardar la nueva.
-                    if ($oldImage) {
-                        Storage::disk('public')->delete($oldImage);
-                    }
-                    
-                    // === TU LÓGICA DE GUARDADO ESPECÍFICA MANTENIDA AQUÍ ===
+                    // Lógica de guardado
                     $filename = time() . '_' . $uniqueIndex . '.' . $image->getClientOriginalExtension();
                     $path = $image->storeAs('ranura', $filename, 'public'); 
-                    $ranura->dir_imagen = $path;
-                    // =======================================================
-                    
-                } 
-                // Nota: Si no se sube un archivo, dir_imagen mantendrá su valor original (o null si es nuevo).
-
-                // 2.5 Guardar la ranura (INSERT o UPDATE)
-                $ranura->save();
+                    $newSlot->dir_imagen = $path;
+                }
+                
+                $newSlot->save();
             }
 
-            // 3. Confirmar la transacción
+            // 5. CONFIRMAR la transacción
             DB::commit();
 
         } catch (\Exception $e) {
-            // 4. Revertir la transacción si ocurre un error
+            // 6. REVERTIR si algo falla
             DB::rollBack();
             Log::error("Error al guardar ranuras: " . $e->getMessage());
             
-            return response()->json([
-                'error' => '❌ Ocurrió un error al guardar las ranuras.', 
-                'details' => $e->getMessage()
-            ], 500);
+            return redirect()->back()
+                             ->with('error', '❌ Error al guardar las ranuras. Se ha revertido la operación. Detalles: ' . $e->getMessage());
         }
 
-        // 5. Redirección exitosa
+        // 7. Redirección exitosa
         return redirect()->route('pago.index')
-                         ->with('success', '✅ Las ranuras de la ruleta se han guardado exitosamente.');
+            ->with('success', '✅ Las ranuras de la ruleta se han guardado exitosamente.');
     }
     /**
      * Display the specified resource.
