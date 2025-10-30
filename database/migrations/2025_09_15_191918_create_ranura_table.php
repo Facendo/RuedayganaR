@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('texto')->nullable();
             $table->integer('rate');
             $table->boolean('blocked')->default(false);
-            $table->boolean('activo')->default(true);
+            
             $table->timestamps();
 
             $table->foreign('id_ruleta')

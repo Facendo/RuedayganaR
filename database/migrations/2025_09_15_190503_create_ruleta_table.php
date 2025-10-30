@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('nro_ranuras')->default(0);
             $table->string('dir_imagen')->nullable();
             $table->integer('Condicional_Oportunidades')->default(0);
+            $table->boolean('activo')->default(true);
             $table->timestamps();
 
             $table->foreign('id_sorteo')
