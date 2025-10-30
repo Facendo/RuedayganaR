@@ -213,10 +213,7 @@
     // =================================================================================
     // 💡 INYECCIÓN DE DATOS DESDE BLADE (PHP)
     // ---------------------------------------------------------------------------------
-    // Ranuras existentes: Array de objetos Ranura.
     const initialRanuras = @json($ranuras ?? []); 
-    
-    // ID de la ruleta que se está editando.
     const initialRuletaId = '{{ $id_ruleta ?? '' }}'; 
     // =================================================================================
 
@@ -224,18 +221,19 @@
     const addSlotBtn = document.getElementById('addSlotBtn');
     const slotForm = document.getElementById('slotForm');
     const ranurasTitle = document.getElementById('ranuras-title');
-    // const ruletaIdInput = document.getElementById('id_ruleta_global'); // ELIMINADO
     const hiddenRuletaId = document.getElementById('hidden_id_ruleta');
     const submitBtn = document.getElementById('submitBtn');
     
     let deletedSlotIds = []; 
+    // 🌟 CORRECCIÓN CLAVE 1: Contador para nuevas ranuras. Usamos un prefijo 'new_' y un número.
+    let newSlotCounter = 0; 
 
     /**
      * Valida que exista el ID de la ruleta (ya cargado) y al menos una acción (ranura o eliminación) antes de enviar.
      */
     slotForm.addEventListener('submit', function(event) {
         const slotCount = slotContainer.querySelectorAll('.slot-item').length;
-        const ruletaId = hiddenRuletaId.value; // Usamos el ID cargado
+        const ruletaId = hiddenRuletaId.value; 
 
         if (!ruletaId) {
             event.preventDefault(); 
@@ -243,7 +241,6 @@
             return;
         }
 
-        // Permitimos el envío si hay ranuras O si hay IDs para eliminar.
         if (slotCount === 0 && deletedSlotIds.length === 0) {
             event.preventDefault(); 
             showErrorFeedback('❌ Agrega al menos una Ranura o ingresa una Ruleta válida!');
@@ -267,6 +264,7 @@
      * Muestra retroalimentación visual de error en el botón de submit.
      */
     function showErrorFeedback(message) {
+        // ... (código de showErrorFeedback sin cambios)
         const originalText = 'Guardar Todas las Ranuras'; 
         const originalColor = submitBtn.style.backgroundColor;
         
@@ -284,6 +282,7 @@
      * Actualiza el contador en el título y re-enumera las ranuras visibles.
      */
     function updateSlotTitle() {
+        // ... (código de updateSlotTitle sin cambios, excepto que usa .slot-item)
         const items = slotContainer.querySelectorAll('.slot-item');
         let visibleCount = 0;
         
@@ -298,7 +297,6 @@
 
         ranurasTitle.textContent = `Ranuras Actuales: ${visibleCount} Ranuras Agregadas`;
         
-        // Muestra u oculta el placeholder
         const placeholder = slotContainer.querySelector('p');
         if (visibleCount === 0) {
             if (!placeholder) {
@@ -314,12 +312,14 @@
 
     /**
      * Crea un nuevo bloque de formulario para una ranura (slot) con o sin datos iniciales.
-     * @param {number} uniqueId - El índice único (ID de DB o Timestamp) para la clave del array en PHP.
+     * @param {string|number} uniqueKey - La clave única (ID de DB o 'new_X') para la clave del array en PHP.
      * @param {object} [slotData={}] - Datos opcionales para precargar (si es edición).
      */
-    function createSlotElement(uniqueId, slotData = {}) {
+    function createSlotElement(uniqueKey, slotData = {}) {
         const isExisting = !!slotData.id_ranura;
-        const index = isExisting ? slotData.id_ranura : uniqueId; 
+        
+        // 🌟 CORRECCIÓN CLAVE 2: Usamos el uniqueKey proporcionado para la nomenclatura
+        const index = uniqueKey; 
         
         const slotDiv = document.createElement('div');
         slotDiv.classList.add('slot-item');
@@ -333,11 +333,11 @@
             type: slotData.type || '',
             texto: slotData.texto || '',
             rate: slotData.rate || 10,
-            blocked: slotData.blocked || 0,
+            // Aseguramos que 'blocked' sea un valor numérico para la comparación en JS
+            blocked: slotData.blocked || 0, // Usamos 'Blocked' del backend
             dir_imagen: slotData.dir_imagen || '' 
         };
         
-        // Prepara la URL de la imagen si existe
         const imageHtml = defaults.dir_imagen 
             ? `<p style="font-size: 0.85em; color: var(--success); margin-top: -5px;">
                   Imagen actual: <a href="${defaults.dir_imagen}" target="_blank">Ver</a> (Sube un archivo para reemplazarla)
@@ -385,7 +385,7 @@
             </div>
 
             <div class="form-group checkbox-group">
-                <input type="checkbox" id="ranura_${index}_blocked" name="ranuras[${index}][blocked]" value="1" ${defaults.blocked ? 'checked' : ''}>
+                <input type="checkbox" id="ranura_${index}_blocked" name="ranuras[${index}][blocked]" value="1" ${defaults.blocked == 1 ? 'checked' : ''}>
                 <label for="ranura_${index}_blocked">Bloqueada (Blocked)</label>
             </div>
         `;
@@ -396,11 +396,11 @@
 
     // Función global para remover una ranura
     window.removeSlot = function(buttonElement) {
+        // ... (código de removeSlot sin cambios)
         const slotItem = buttonElement.closest('.slot-item');
         if (slotItem) {
             const slotId = slotItem.dataset.id;
             
-            // Si la ranura NO es 'new' (tiene un ID de DB), se añade a la lista de eliminación.
             if (slotId && slotId !== 'new') {
                 deletedSlotIds.push(slotId);
             }
@@ -412,15 +412,16 @@
 
     // Listener para el botón de agregar ranura
     addSlotBtn.addEventListener('click', () => {
-        const uniqueIndex = Date.now(); 
-        createSlotElement(uniqueIndex);
+        // 🌟 CORRECCIÓN CLAVE 3: Generamos una clave alfanumérica única para las inserciones
+        newSlotCounter++;
+        const uniqueKey = `new_${newSlotCounter}`; 
+        createSlotElement(uniqueKey);
     });
     
     /**
      * Función que inicializa el formulario con los datos recibidos de Blade ($ranuras).
      */
     function initializeForm() {
-        // 1. Mostrar el ID de Ruleta en el encabezado
         const displayIdElement = document.getElementById('display_ruleta_id');
         if (displayIdElement && initialRuletaId) {
             displayIdElement.textContent = initialRuletaId;
@@ -430,11 +431,11 @@
         if (initialRanuras.length > 0) {
             slotContainer.innerHTML = ''; // Limpia el placeholder inicial
             initialRanuras.forEach(slotData => {
+                // 🌟 CORRECCIÓN CLAVE 4: Usamos directamente el ID de la base de datos como clave
                 createSlotElement(slotData.id_ranura, slotData);
             });
         }
         
-        // 3. Finalizar la inicialización
         updateSlotTitle();
     }
     
