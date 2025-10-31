@@ -243,7 +243,7 @@
                             <div class="button btn_modal">
                                 <a href="{{route('ruletas.creacion',$sorteo->id_sorteo)}}">Agregar Ruleta</a>
                             </div>
-
+                        
                         <div class="button btn_modal"
                              data-modal="sorteo"
                              data-id="{{ $sorteo->id_sorteo }}"
@@ -290,7 +290,7 @@
                     <td>{{ $ruleta->nombre }}</td>
                     <td>{{ $ruleta->cantidad_de_opotunidades_por_dar }}</td>
                     <td>{{ $ruleta->nro_ranuras}}</td>
-                    <td>{{ $ruleta->Condicional_Oportunidades}}</td>
+                    <td>{{ $ruleta->condicional_oportunidades}}</td>
                     <td>
                         <div class="button btn_modal">
                             <a href="{{route('ruletas.editar', $ruleta->id_ruleta)}}">Editar Ruleta</a>
@@ -298,6 +298,15 @@
                         <div class="button btn_modal">
                         <a href="{{route('ranuras.creacion',$ruleta->id_ruleta)}}">Gestion de Ranuras</a>
                         </div>
+                        <form action={{route('ruleta.cambio_estado',$ruleta->id_ruleta)}} method="POST">
+                            @csrf
+                            @method('PUT')
+                            @if ($ruleta->activo == 1)
+                                <button type="submit" class="button">Desactivar</button>
+                            @else
+                                <button type="submit" class="button">Activar</button>
+                            @endif
+                        </form>
                     </td>
                 </tr>
                 @endforeach

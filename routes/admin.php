@@ -25,4 +25,5 @@ Route::put('/ranuras/update', [RanuraController::class,'update'])->name('ranuras
 Route::post('/ruleta/RuletClient',[RuletaController::class,'BuildRulet'])->name('ruleta.searchclient');
 //Route for spinning the Rulet
 Route::post('/ruleta/spin', [RuletaController::class,'Spin'])->name('ruleta.spin');
+Route::put('/ruleta/ChangeState',[RuletaController::class,'ActivarRuleta'])->name('ruleta.cambio_estado');
 

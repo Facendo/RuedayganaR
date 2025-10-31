@@ -50,14 +50,11 @@
                 <label for="cant_oportunidades">Cantidad de Oportunidades por Dar</label>
                 <input type="number" class="input_form" id="cant_oportunidades" name="cantidad_de_opotunidades_por_dar" value="{{ $ruleta->cantidad_de_opotunidades_por_dar }}" min="0" required>
 
-                <label for="nro_ranuras">Número de Ranuras (Solo Referencia)</label>
-                <input type="number" class="input_form" id="nro_ranuras" name="nro_ranuras" value="{{ old('nro_ranuras', $ruleta->nro_ranuras) }}" min="1" required>
-
                 <label for="dir_imagen_ruleta">Imagen de la Ruleta (Opcional) <small>(dejar vacío para no cambiar)</small></label>
                 <input type="file" class="input_form" id="dir_imagen_ruleta" name="dir_imagen" accept="image/*">
 
                 <label for="condicional_oportunidades">Condicional Oportunidades (Valor)</label>
-                <input type="number" class="input_form" id="condicional_oportunidades" name="Condicional_Oportunidades" value="{{ old('Condicional_Oportunidades', $ruleta->Condicional_Oportunidades) }}" min="0" required>
+                <input type="number" class="input_form" id="condicional_oportunidades" name="Condicional_Oportunidades" value="{{ old('condicional_oportunidades', $ruleta->condicional_oportunidades) }}" min="0" required>
             </div>
         
             <button type="submit" class="button submit_btn" id="submitBtn">

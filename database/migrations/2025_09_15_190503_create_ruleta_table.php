@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('cantidad_de_opotunidades_por_dar')->default('0');
             $table->integer('nro_ranuras')->default(0);
             $table->string('dir_imagen')->nullable();
-            $table->integer('Condicional_Oportunidades')->default(0);
+            $table->integer('condicional_oportunidades')->default(0);
             $table->boolean('activo')->default(true);
             $table->timestamps();
 
