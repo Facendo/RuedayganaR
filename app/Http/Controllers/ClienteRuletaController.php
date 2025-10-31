@@ -15,12 +15,7 @@ class ClienteRuletaController extends Controller
      */
     public function CalcularResiduo(int $cedulaCliente, int $CantidadComprados, int $id_sorteo)
     {
-        $cliente = Cliente::where('cedula', $cedulaCliente)->first();
-        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
-        $clienteRuleta = ClienteRuleta::where('cedula', $cedulaCliente)->first();
-
-        $clienteRuleta->oportunidades += ($clienteRuleta->residuo + $CantidadComprados) / $ruleta->condicional_oportunidades;
-        $clienteRuleta->residuo = ($clienteRuleta->residuo + $CantidadComprados) % $ruleta->condicional_oportunidades;
+      
         
     }
 

@@ -72,7 +72,6 @@ class RuletaController extends Controller
         $ruleta = Ruleta::find($request->id);
         $ruleta->nombre = $request->nombre;
         $ruleta->cantidad_de_opotunidades_por_dar = $request->cantidad_de_opotunidades_por_dar;
-        $ruleta->nro_ranuras = $request->nro_ranuras;
         if ($request->hasFile('dir_imagen')) {
             $image = $request->file('dir_imagen');
             $filename = $image->getClientOriginalName();
@@ -81,7 +80,19 @@ class RuletaController extends Controller
         }
         $ruleta->Condicional_Oportunidades = $request->Condicional_Oportunidades;
 
-        $this->ActualizarOportunidades($ruleta->id_sorteo);
+        //Actualizar opotunidades 
+
+        $condicional = $ruleta->Condicional_Oportunidades;
+
+        $clientesRuleta = ClienteRuleta::all();
+        
+        foreach ($clientesRuleta as $cliente) {
+            if($cliente->residuo >= $condicional){
+                $cliente->oportunidades = floor(($cliente->residuo/$condicional) * $ruleta->cantidad_de_opotunidades_por_dar);
+                $cliente->residuo = $cliente->residuo %$condicional;
+                $cliente->save();
+            }
+        }
         $ruleta->save();
         return redirect()->route('pago.index');
     }
@@ -100,18 +111,7 @@ class RuletaController extends Controller
 
     public function ActualizarOportunidades(int $id_sorteo)
     {
-        $ruleta = Ruleta::where('id_sorteo', $id_sorteo)->first();
-        $condicional = $ruleta->Condicional_Oportunidades;
-
-        $clientesRuleta = ClienteRuleta::all();
         
-        foreach ($clientesRuleta as $cliente) {
-            if($cliente->residuo >= $condicional){
-                $cliente->oportunidades = floor($cliente->residuo/$condicional) * $ruleta->cantidad_de_opotunidades_por_dar;
-                $cliente->residuo = $cliente->residuo %$condicional;
-                $cliente->save();
-            }
-        }
     }
 
 
@@ -242,6 +242,18 @@ class RuletaController extends Controller
         ]);
     }
 
+    public function ActivarRuleta($id_ruleta){
+        $ruleta=Ruleta::find($id_ruleta);
+
+         if($ruleta->activo == 1){
+            $ruleta->activo = 0;
+        }
+        else if($ruleta->activo == 0){
+            $ruleta->activo = 1;
+        }
+        $ruleta->save();
+        return redirect()->route('pago.index');
+    }
     
 
    
