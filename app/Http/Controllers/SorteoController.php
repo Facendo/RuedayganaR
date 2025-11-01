@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sorteo;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use App\Models\Ruleta;
 use App\Models\Ticket;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
