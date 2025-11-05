@@ -366,8 +366,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
-<script src="{{asset('js/api.js')}}"></script>
-<script src="{{asset('js/ui.js')}}"></script>
+<script type="module" src="{{asset('js/api.js')}}"></script>
+<script type="module" src="{{asset('js/ui.js')}}"></script>
 <script type="module" src="{{asset('js/main.js')}}"></script>
 
     

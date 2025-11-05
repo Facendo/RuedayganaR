@@ -180,7 +180,7 @@ class RuletaController extends Controller
     $ancho_ranura = 360 / $ruleta->nro_ranuras;
     
     // Fórmula que utiliza el id_ranura como índice (1-basado)
-    $angulo_centro = ($ancho_ranura * ($last_slot->orden - 1)) - ($ancho_ranura / 2);
+    $angulo_centro = ($ancho_ranura * ($last_slot->orden - 1));
     $angle = (int)$angulo_centro;
     // 7. Retorno de Respuesta JSON COMPLETO
     
