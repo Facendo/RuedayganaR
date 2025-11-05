@@ -107,12 +107,6 @@ class RuletaController extends Controller
     }
 
 
-    //Implementacion de Actualizacion de Oportunidades de los Clientes
-
-    public function ActualizarOportunidades(int $id_sorteo)
-    {
-        
-    }
 
 
 
@@ -241,6 +235,8 @@ class RuletaController extends Controller
             'cliente'=> $clienteReturn,
         ]);
     }
+
+
 
     public function ActivarRuleta($id_ruleta){
         $ruleta=Ruleta::find($id_ruleta);

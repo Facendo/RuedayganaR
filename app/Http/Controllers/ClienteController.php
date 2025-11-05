@@ -56,17 +56,17 @@ class ClienteController extends Controller
             
             //Crear clienteRuleta si la ruleta esta creada para este sorteo
             if(Ruleta::where('id_sorteo',$request->id_sorteo)->exists()){
-   
-                $clienteRuleta= new ClienteRuleta();
-                $clienteRuleta->cedula = $request->cedula;
-                $Ruleta=Ruleta::where('id_sorteo', $request->id_sorteo)->first();
-                $clienteRuleta->id_ruleta = $Ruleta->id_ruleta;
-                $clienteRuleta->oportunidades = 0;
-                $clienteRuleta->residuo = 0;
-                $clienteRuleta->created_at = now();
-                $clienteRuleta->updated_at = now();
-                $clienteRuleta->save();       
-        
+                $ruleta=Ruleta::where('id_sorteo', $request->id_sorteo)->first();
+                if($ruleta->activo){
+                    $clienteRuleta= new ClienteRuleta();
+                    $clienteRuleta->cedula = $request->cedula;
+                    $clienteRuleta->id_ruleta = $ruleta->id_ruleta;
+                    $clienteRuleta->oportunidades = 0;
+                    $clienteRuleta->residuo = 0;
+                    $clienteRuleta->created_at = now();
+                    $clienteRuleta->updated_at = now();
+                    $clienteRuleta->save();       
+                }
             }
 
            

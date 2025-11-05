@@ -95,13 +95,15 @@ class TicketController extends Controller
 
         //Espacio para Manejar el Residuo y la Asignacion de Oportunidades
         if(ClienteRuleta::where('cedula',$cliente->cedula)->exists()){
+            $ruleta = Ruleta::where('id_sorteo', $sorteo->id_sorteo)->first();
             $cedulaCliente=$cliente->cedula;
             $cliente = Cliente::where('cedula', $cedulaCliente)->first();
-            $ruleta = Ruleta::where('id_sorteo', $sorteo->id_sorteo)->first();
             $clienteRuleta = ClienteRuleta::where('cedula', $cedulaCliente)->first();
-            $clienteRuleta->oportunidades += floor(($clienteRuleta->residuo + $pago->cantidad_de_tickets) / $ruleta->condicional_oportunidades);
-            $clienteRuleta->residuo = floor(($clienteRuleta->residuo + $pago->cantidad_de_tickets) % $ruleta->condicional_oportunidades);
-            $clienteRuleta->save();
+                if($ruleta->activo){
+                    $clienteRuleta->oportunidades += floor(($clienteRuleta->residuo + $pago->cantidad_de_tickets) / $ruleta->condicional_oportunidades);
+                    $clienteRuleta->residuo = floor(($clienteRuleta->residuo + $pago->cantidad_de_tickets) % $ruleta->condicional_oportunidades);
+                    $clienteRuleta->save();
+                }
         }
         //Crear Ticket
         $ticket = new Ticket();
