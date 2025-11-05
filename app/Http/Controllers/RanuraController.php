@@ -66,10 +66,10 @@ class RanuraController extends Controller
             // --- FASE 2: INSERCIÓN DE NUEVOS REGISTROS ---
             
             $orden = 0; // Contador para la nueva columna 'orden' (1, 2, 3...)
-
+            $cont_ranuras=0;
             foreach($slots as $uniqueIndex => $ranuraData) {
                 $orden++; // Incrementar el valor de orden para esta ranura
-                
+                $cont_ranuras++;
                 $newSlot = new Ranura();
                 
                 // 3. ASIGNACIÓN DE DATOS (Usando sintaxis de array [])
@@ -80,7 +80,6 @@ class RanuraController extends Controller
                 $newSlot->texto     = $ranuraData['texto'] ?? null;
                 $newSlot->Rate      = (int)($ranuraData['rate'] ?? 0);
                 $newSlot->Blocked   = (int)($ranuraData['blocked'] ?? 0); 
-                
                 
                 // 4. MANEJO DE LA SUBIDA DE IMAGEN
                 // Usamos $uniqueIndex para identificar el archivo subido en el Request
@@ -95,6 +94,12 @@ class RanuraController extends Controller
                 
                 $newSlot->save();
             }
+
+            //Asignacion de contador de ranuras
+            $ruleta=Ruleta::find($id_ruleta);
+            $ruleta->nro_ranuras=$cont_ranuras;
+            $ruleta->save();
+
 
             // 5. CONFIRMAR la transacción
             DB::commit();
