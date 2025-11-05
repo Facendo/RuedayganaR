@@ -185,6 +185,7 @@ class RuletaController extends Controller
     // 7. Retorno de Respuesta JSON COMPLETO
     
     return response()->json([
+        'oportunidades_cliente' => $clienteRuleta->oportunidades,
         'angle' => $angle,
         'premio' => $premio
     ]);
