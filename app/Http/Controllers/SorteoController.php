@@ -16,10 +16,11 @@ class SorteoController extends Controller
     
     public function index()
     {
+        $ruletas= Ruleta::all();
         $tickets = Ticket::all();
         $clientes = Cliente::orderBy('cantidad_comprados', 'desc')->take(5)->get();
         $sorteos = Sorteo::all();
-        return view('index', compact('sorteos','clientes', 'tickets'));
+        return view('index', compact('sorteos','clientes', 'tickets', 'ruletas'));
     }
 
     

@@ -17,7 +17,6 @@
 
 
 
-
 <!------------------ TODO EL CONTENIDO DE LA APP  --------------------->
 
 <body class="back_rg" style="--bg-image: url('{{ asset('img/backrueda.PNG') }}');" >
@@ -143,33 +142,37 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p>Los sorteos están en mantenimiento y no están disponibles en este momento.</p>
                     </div>
                 @endif
+                    
+                    @foreach($ruletas as $ruleta) 
+                            @if($ruleta->id_sorteo == $sorteo->id_sorteo) 
+                                <section id="view_rulet">
+                                    <div class="container">
 
+                                        <h2 class="section_subtitle">PRUEBA TU SUERTE</h2>
+                                        <h2 class="section_subtitle">Ruleta rueda y gana</h2>
 
-                     <section id="view_rulet">
-                        <div class="container">
-
-                            <h2 class="section_subtitle">PRUEBA TU SUERTE</h2>
-                            <h2 class="section_subtitle">Ruleta rueda y gana</h2>
-
-                            <div class="container_reg">
-                                <div class="cont_form">
-                                    <form action="{{route('ruleta.searchclient')}}" class="form content_form form_rulet" method="POST" enctype="multipart/form-data">
-                                        <div class="header">
-                                            <h1>Ingrese su cedula</h1>
+                                        <div class="container_reg">
+                                            <div class="cont_form">
+                                                <form action="{{route('ruleta.searchclient')}}" class="form content_form form_rulet" method="POST" enctype="multipart/form-data">
+                                                    <div class="header">
+                                                        <h1>Ingrese su cedula</h1>
+                                                    </div>
+                                                    @csrf
+                                                    <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
+                                                    <input type="text" name="cedula" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
+                                                    <br>
+                                                    <button type="submit" class="button button_rulet submit_btn">Enviar</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                        @csrf
-                                        <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
-                                        <input type="text" name="cedula" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
-                                        <br>
-                                        <button type="submit" class="button button_rulet submit_btn">Enviar</button>
-                                    </form>
-                                </div>
-                            </div>
-                            
-                        
-                        </div>
-</section>
-
+                                        
+                                    
+                                    </div>
+                                </section>
+                                
+                             @endif 
+                                
+                    @endforeach
 
             @endforeach
         @else
