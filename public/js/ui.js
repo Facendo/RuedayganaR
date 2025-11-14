@@ -6,6 +6,10 @@ const cedulaInput = document.getElementById("cedula");
 const idSorteoInput = document.querySelector(
     '.form_rulet input[name="id_sorteo"]'
 );
+const girosDisponibles = document.querySelector(".cont_cant_op p");
+
+const mensajeResult = document.getElementById("result_rulet");
+const mensajeContainResult = document.querySelector(".mensaje_result");
 
 const FULL_ROUNDS = 5;
 // const TARGET_SLOT_ANGLE = 90;
@@ -23,7 +27,6 @@ export function openModal(data = {}) {
 
     const nombreRuleta = document.querySelector(".nombre_ruleta");
     const nombreJugador = document.querySelector(".nombre_jugador p");
-    const girosDisponibles = document.querySelector(".cont_cant_op p");
     const mensajeResult = document.querySelector(".mensaje_result p");
 
     generateRuleta(data.ranuras);
@@ -84,6 +87,12 @@ export function animateRuleta(data) {
     const finalStop = angle + randomizador;
 
     container.style.transform = "rotate(-" + newRotation + "deg)";
+
+    setTimeout(() => {
+        girosDisponibles.textContent = data.oportunidades_cliente;
+        mensajeResult.textContent = data.premio;
+        mensajeContainResult.style.backgroundColor = data.color;
+    }, 5100);
 
     return new Promise((resolve) => {
         setTimeout(() => {
