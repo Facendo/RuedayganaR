@@ -184,10 +184,13 @@ class RuletaController extends Controller
     $angle = (int)$angulo_centro;
     // 7. Retorno de Respuesta JSON COMPLETO
     
+    $colorRanura = $last_slot->color;
+
     return response()->json([
         'oportunidades_cliente' => $clienteRuleta->oportunidades,
         'angle' => $angle,
-        'premio' => $premio
+        'premio' => $premio,
+        'color' => $colorRanura,
     ]);
 }
 
