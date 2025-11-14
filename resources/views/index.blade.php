@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{asset('css/cards.css')}}">
     <link rel="stylesheet" href="{{asset('css/forms.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@209&family=Sixtyfour&display=swap" rel="stylesheet">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Cal+Sans&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Rubik+Mono+One&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('img/favicon-32x32.png')}}">
@@ -330,18 +332,31 @@ document.addEventListener('DOMContentLoaded', function() {
             <img src="{{asset('img/x.png')}}" alt="" >
         </div>
         
-        <h1 class="nombre_ruleta">nombre ruleta</h1>
+       <div class="data_rulet">
+         <h1 class="nombre_ruleta">nombre ruleta</h1>
+         <br>
          <div class="nombre_jugador"><p>Julio Galanton</p></div>
         <div class="cont_cant_op">Giros disponibles <p>20</p></div>
+        <br>
        
-           <div class="content_ruleta">
-            <span class="arrow"></span>
+       </div>
+
+       <br>
+        
+        <div class="mensaje_result" ><h2 id="result_rulet">rueda papi rueda</h2></div>
+
+        <br>
+       
+         <div class="container_ruleta_flex">
+              <div class="content_ruleta">
+            
            <form action="{{route('ruleta.spin')}}" method="POST">
                 @csrf
                 <input id="spin_sorteo" type="hidden" name="id_sorteo">
                 <input id="spin_cedula" type="hidden" name="cedula">
                 
                 <button type="submit" id="spin">Spin</button>
+                <img src="{{asset('img/arrow_rulet.png')}}" class="arrow" alt="">
                 
             </form>
 
@@ -350,8 +365,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             </div>
         </div>
+         </div>
 
-        <div class="mensaje_result"><p>Bancarrota</p></div>
     </div>
 
     

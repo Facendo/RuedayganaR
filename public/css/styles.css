@@ -624,6 +624,7 @@ p.mostrar_data {
     justify-content: center;
     align-items: center;
     position: relative;
+    margin-top: -100px;
 }
 
 .x_modal_rulet {
@@ -653,12 +654,14 @@ p.mostrar_data {
 }
 
 .container_r {
-    width: 500px;
-    height: 500px;
-    background-color: #ccc;
+    width: 520px;
+    height: 520px;
+
     border-radius: 50%;
-    border: 15px solid #dde;
+    background-color: rgba(238, 202, 6, 0.6);
+    border: 15px dotted rgb(255, 255, 119);
     position: relative;
+    filter: drop-shadow(0 0 20px rgba(238, 202, 6, 1));
     overflow: hidden;
     transition: 5s;
 }
@@ -708,10 +711,12 @@ p.mostrar_data {
 
 .arrow {
     position: absolute;
-    top: 22%;
+    top: 8%;
     left: 50%;
     transform: translateX(-50%);
     color: black;
+    width: 50px;
+    height: 65px;
     z-index: 100000;
 }
 
@@ -744,10 +749,53 @@ p.mostrar_data {
 /* ------------------- vaciado de datos ruleta ----------------------- */
 
 .nombre_ruleta {
-    color: #fff;
+    position: relative;
+    top: 0;
+    color: white;
     background-color: rgb(254, 180, 3);
+    border-radius: 10px 10px 0 0;
+}
+
+.data_rulet {
+    width: 60%;
+    background-color: rgb(200, 220, 230, 0.9);
+    margin: 50px auto 0 auto;
+    text-align: center;
+    color: black;
     border-radius: 10px;
-    display: inline;
+}
+
+.mensaje_result {
+    background-color: #109911;
+    text-align: center;
+    color: black;
+    width: 45%;
+    border-radius: 10px;
+    padding: 5px;
     margin: 0 auto;
-    padding: 10px;
+}
+
+.cont_cant_op p {
+    display: inline;
+    background-color: #007bff;
+    border-radius: 5px;
+    padding: 3px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#result_rulet {
+    font-family: "Bitcount Grid Double", system-ui;
+    font-weight: 600;
+    font-size: 40px;
+    color: white;
+}
+
+.container_ruleta_flex {
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
