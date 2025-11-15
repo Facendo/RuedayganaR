@@ -128,6 +128,10 @@ class RuletaController extends Controller
     if (!$clienteRuleta) {
         return response()->json(['error' => 'Cliente no encontrado.'], 404);
     }
+
+    if ($clienteRuleta->oportunidades <= 0) {
+        return response()->json(['error' => 'No tienes oportunidades disponibles para girar la ruleta.'], 403);
+    }
     
     // 3. Obtener y Filtrar Ranuras Elegibles (Ranuras no bloqueadas y con rate > 0)
     $ranuras_disponibles = Ranura::where('id_ruleta', $ruleta->id_ruleta)
