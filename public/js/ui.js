@@ -22,8 +22,11 @@ let ruletaState = {};
  */
 export function openModal(data = {}) {
     ruletaState = data;
-    modal.style.transform = "translateX(0)";
     modal.style.display = "block";
+
+    setTimeout(() => {
+        modal.style.transform = "translateX(0)";
+    }, 200);
 
     const nombreRuleta = document.querySelector(".nombre_ruleta");
     const nombreJugador = document.querySelector(".nombre_jugador p");
@@ -70,28 +73,76 @@ export function closeModal() {
  * @param {Object} data - Datos de la API con el resultado del giro.
  * @returns {Promise<void>} Una promesa que se resuelve al terminar la animación.
  */
-export function animateRuleta(data) {
-    console.log("Datos usados para animar:", data);
 
+let hasShownZeroGirosAlert = false;
+
+export function animateRuleta(data) {
+    const spinBtn = document.getElementById("spin");
+    const emergentWindow = document.querySelector(".emergent_window");
+    const close = document.querySelector(".close_window");
+    const msg = document.querySelector(".message_alert_window");
+
+    if (data.oportunidades_cliente <= 0 && hasShownZeroGirosAlert) {
+        msg.textContent =
+            "No tienes giros disponibles. Compra más tickets para obtener más intentos.";
+
+        emergentWindow.style.display = "block";
+
+        setTimeout(() => {
+            emergentWindow.style.transform = "scale(1)";
+        }, 10);
+
+        if (spinBtn) {
+            spinBtn.disabled = false;
+        }
+
+        close.onclick = () => {
+            emergentWindow.style.transform = "scale(0)";
+            setTimeout(() => {
+                emergentWindow.style.display = "none";
+            }, 300);
+        };
+
+        return Promise.resolve(null);
+    }
+
+    console.log("datos de animacion", data);
     const cantRanuras = ruletaState.ranuras.length;
     const precision = 360 / cantRanuras;
-
     const randomizador = Math.floor(Math.random() * (precision - 2 + 1)) + 2;
-
-    console.log("random: ", randomizador);
-
     const angle = data.angle;
-
     let newRotation = FULL_ROUNDS * 360 + angle + randomizador;
-
     const finalStop = angle + randomizador;
-
     container.style.transform = "rotate(-" + newRotation + "deg)";
 
     setTimeout(() => {
+        // 3. Actualización de UI y Alerta Tras el Último Giro
         girosDisponibles.textContent = data.oportunidades_cliente;
         mensajeResult.textContent = data.premio;
         mensajeContainResult.style.backgroundColor = data.color;
+
+        // La ventana emergente aparece si el conteo es 0 (último giro)
+        if (data.oportunidades_cliente <= 0 && !hasShownZeroGirosAlert) {
+            msg.textContent =
+                "¡Último giro completado! No tienes más intentos disponibles.";
+            emergentWindow.style.display = "block";
+            setTimeout(() => {
+                emergentWindow.style.transform = "scale(1)";
+            }, 10);
+
+            if (spinBtn) {
+                spinBtn.disabled = false;
+            }
+
+            close.onclick = () => {
+                emergentWindow.style.transform = "scale(0)";
+                setTimeout(() => {
+                    emergentWindow.style.display = "none";
+                }, 300);
+            };
+
+            hasShownZeroGirosAlert = true;
+        }
     }, 5100);
 
     return new Promise((resolve) => {
@@ -112,11 +163,9 @@ export function generateRuleta(ranuraData) {
     const totalRanuras = ranuraData.length;
     const sizeSlot = 360 / totalRanuras;
 
-    // El radio se toma como 50 para usar coordenadas de porcentaje (0% a 100%)
     const radius = 50;
-    const center = "50% 50%"; // El centro del círculo (esquina superior izquierda 0%, 0%)
+    const center = "50% 50%";
 
-    // --- FUNCIÓN AUXILIAR DE TRIGONOMETRÍA MEJORADA ---
     const getCoords = (angle) => {
         const rad = (angle - 90) * (Math.PI / 180);
         const x = (radius * Math.cos(rad) + 50).toFixed(4);
@@ -136,38 +185,28 @@ export function generateRuleta(ranuraData) {
         const elementRanura = document.createElement("div");
         elementRanura.classList.add("ranura_rulet");
 
-        // Calcular el ángulo de inicio, fin y CENTRAL
         const startAngle = cont * sizeSlot;
         const endAngle = (cont + 1) * sizeSlot;
-        const centerAngle = startAngle + sizeSlot / 2; // Ángulo central para el texto
+        const centerAngle = startAngle + sizeSlot / 2;
 
-        // 1. Aplicar el recorte (el resto de tu lógica de ranura)
         const coord1 = getCoords(startAngle);
         const coord2 = getCoords(endAngle);
         elementRanura.style.backgroundColor = ranura.color;
         elementRanura.style.clipPath = `polygon(${center}, ${coord1}, ${coord2})`;
 
         const textWrapper = document.createElement("div");
-        // ... Aplicar clase y calcular rotación (centerAngle)
         textWrapper.style.transform = `rotate(${centerAngle}deg)`;
         textWrapper.classList.add("slot-text-wrapper");
 
-        // **Crear un span interno para el texto** (esencial para la doble transformación)
         const textContent = document.createElement("span");
         textContent.textContent = ranura.texto;
         textWrapper.appendChild(textContent);
-
-        // ¡LA CLAVE! El texto debe ser hijo directo del contenedor principal
         container_rulet.appendChild(textWrapper);
 
-        container_rulet.appendChild(elementRanura); // La ranura se queda aquí
+        container_rulet.appendChild(elementRanura);
     });
 
-    const halfSlot = sizeSlot / 2; // Ejemplo: Si sizeSlot es 90, halfSlot es 45
-
-    // Aplica una rotación antihoraria (negativa) para que el centro de la
-    // primera ranura se alinee con el punto de 0 grados (arriba).
-    // container_rulet.style.transform = `rotate(-${halfSlot}deg)`;
+    const halfSlot = sizeSlot / 2;
 }
 
 // export function generateRuleta(ranuraData) {

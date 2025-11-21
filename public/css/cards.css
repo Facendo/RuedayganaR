@@ -1,80 +1,95 @@
-/* --------- MOSTRAR TARGETAS DE PREMIOS  -----------   */
+/* --------- MOSTRAR TARGETAS DE PREMIOS ----------- */
 
-
-.img_card{
+.container_card {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
     width: 100%;
-    height: 350px;
+}
+
+#premios {
+    margin-top: 100px;
+}
+
+.card {
+    flex: 1 1 300px;
+    background-color: rgb(55, 55, 55);
+    border-radius: 10px;
+    margin: 15px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+.img_card {
+    width: 100%;
+    object-fit: cover;
     border-radius: 10px 10px 0 0;
 }
 
+.title_card {
+    text-align: center;
+    margin: 15px;
+    color: rgb(254, 180, 3);
+}
 
-.container_card{
-    width: 100%;
-    height: 100%;
+p.text_card {
+    text-align: center;
+    margin: 15px;
+    flex-grow: 1;
+}
+
+li {
+    margin: 15px;
+    font-family: "Roboto Mono", monospace;
+}
+
+.contenido {
     display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100%;
 }
 
-.card{
-    width: 30%;
-    height: 600px;
-    background-color: rgb(55, 55, 55);  
-    border-radius: 10px;
-    margin: 30px 0;
+.button.submit_btn {
+    width: 80%;
+    margin: 0 auto 15px auto;
 }
-
-.title_card{
-    text-align: center;
-    margin: 15px;
-    color: rgb(254, 180, 3)
-}
-
-p.text_card{
-    text-align: center;
-    margin: 15px;
-}
-
-li{
-  margin: 15px;  
-  font-family: "Roboto Mono", monospace;
-}
-
 
 /* --------- INFRMACION DE PAGO -----------   */
 
-img.logo_bdv{
+img.logo_bdv {
     width: 70px;
     margin: 10px 0 15px 0;
 }
 
-img.logo_bp{
+img.logo_bp {
     width: 150px;
     margin: 10px 0 15px 0;
 }
 
-img.logo_zin{
+img.logo_zin {
     width: 55px;
     margin: 10px 0 15px 0;
 }
 
-img.logo_binance{
+img.logo_binance {
     width: 55px;
     margin: 10px 0 15px 0;
 }
 
-.card_datos{
+.card_datos {
     width: 300px;
     height: 300px;
     background-color: rgb(55, 55, 55);
-    margin: 30px;  
+    margin: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
 }
 
-.container_datos{
+.container_datos {
     width: 80%;
     height: 80%;
     text-align: center;

@@ -238,9 +238,7 @@ h3 {
 .imagen_head {
     width: 380px;
     height: 380px;
-    border-radius: 50%;
     padding: 10px;
-    border: 5px solid blue;
     transition: 0.3s;
 }
 
@@ -798,4 +796,82 @@ p.mostrar_data {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.emergent_window {
+    z-index: 99999999;
+    width: 70%;
+    height: 300px;
+    color: black;
+    background-color: rgb(200, 220, 230, 0.9);
+    position: fixed;
+    top: 40%;
+    left: 15%;
+    border-radius: 10px;
+    display: none;
+    transform: scale(0);
+    transition: 0.4s;
+}
+
+.emergent_window h2 {
+    color: black;
+    margin-top: 50px;
+}
+
+.close_window {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-block;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    user-select: none;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close_window:hover {
+    background-color: crimson;
+    color: white;
+}
+
+/* CSS */
+
+/* Contenedor principal: Necesita posición relativa */
+.container_r {
+    position: relative;
+    /* Asegúrate que el width y height sean el tamaño de tu ruleta */
+}
+
+/* 1. El envoltorio (slot-text-wrapper) actúa como un rayo que pivota desde el centro */
+.slot-text-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* El punto de pivote debe estar en el centro (0,0) del rayo para que gire correctamente */
+    transform-origin: 0% 0%;
+
+    /* Dale un ancho para que el texto se posicione correctamente */
+    width: 50%;
+    height: 1px; /* Mínimo para que exista */
+    pointer-events: none; /* Ignora clics en esta capa */
+    z-index: 99999999999999;
+}
+
+/* 2. El texto (slot-text) se contrarota y se desplaza hacia el borde */
+.slot-text {
+    position: absolute;
+    z-index: 9999999999999;
+
+    /* Empuja el texto desde el centro de la ruleta */
+    /* Ajusta 'left' y 'top' según el tamaño de tu texto y ruleta para centrarlo visualmente */
+    left: 15px; /* Empuja 15px desde el centro */
+    top: -10px; /* Ajusta la verticalidad */
+    text-align: center;
+
+    /* El transform: rotate(-...) del JS lo mantiene horizontal */
 }
