@@ -86,7 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                 .catch((error) => {
                     console.error("Error al girar:", error);
-                    alert("Fallo la conexión al girar la ruleta.");
+                    alert(
+                        "No Tienes Giros Disponibles, obten mas giros comprando tickets"
+                    );
                     spinBtn.disabled = false;
                 });
         };
