@@ -324,6 +324,13 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </section>
 
+
+    <div class="emergent_window">
+        <p class="close_window">X</p>
+        <h2>¡Atencion!</h2>
+        <h4 class="message_alert_window">no tienes giros disponibles. compra mas tickets para obtener mas intentos</h4>
+    </div>
+
    
        
    
@@ -336,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
          <h1 class="nombre_ruleta">nombre ruleta</h1>
          <br>
          <div class="nombre_jugador"><p>Julio Galanton</p></div>
-        <div class="cont_cant_op">Giros disponibles <p>20</p></div>
+        <div class="cont_cant_op">Giros disponibles <p></p></div>
         <br>
        
        </div>
