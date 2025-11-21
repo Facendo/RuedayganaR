@@ -5,43 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión Dinámica de Ranuras (Slots)</title>
     <style>
+        /* Nueva Paleta de Colores y Ajustes de Fondo Oscuro */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
         :root {
-            --primary: #10b981; /* Verde para esta gestión */
-            --secondary: #3b82f6;
-            --bg-light: #f9fafb;
-            --bg-dark: #ffffff;
-            --border: #e5e7eb;
-            --shadow: rgba(0, 0, 0, 0.05);
-            --danger: #ef4444;
-            --success: #10b981;
+            /* Mapeo de Colores del tema 'Compra' */
+            --primary: #ff9100; /* Orange (Usado para énfasis y botones principales) */
+            --secondary: #007bff; /* Blue (Usado para el encabezado del slot) */
+            --bg-light: #232323; /* Dark Grey/Black (Fondo general del body) */
+            --bg-dark: #646464; /* Medium Grey (Fondo del container principal) */
+            --border: #808080; /* Grey para bordes y separadores */
+            --shadow: rgba(255, 255, 255, 0.05); /* Sombra clara en fondo oscuro */
+            --danger: #db322cff; /* Selected Red */
+            --success: #e57200; /* Dark Orange (Para mensajes de éxito/info) */
+            --text-color: #f0f0f0; /* Color de texto general (Light Grey) */
+            --input-bg: #808080; /* Fondo de inputs/selects */
+            --slot-bg: #5a5a5a; /* Fondo del ítem de slot */
         }
+        
+        /* Reset y tipografía */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
+            background-color: var(--bg-light); 
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
         }
+        
+        /* Contenedor principal */
         .container {
             width: 100%;
             max-width: 900px;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-dark); 
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 10px 20px var(--shadow);
             border: 1px solid var(--border);
+            color: var(--text-color); /* Asegura que el texto principal sea claro */
         }
+        
+        /* Títulos */
         h1, h2 {
-            color: #1f2937;
+            color: var(--text-color);
             border-bottom: 2px solid var(--border);
             padding-bottom: 10px;
             margin-top: 0;
         }
         h1 {
-            color: var(--primary);
+            color: var(--primary); /* Naranja */
         }
+        
+        /* Grupos de formulario y etiquetas */
         .form-group {
             margin-bottom: 20px;
         }
@@ -49,8 +64,10 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #4b5563;
+            color: var(--text-color); /* Texto de label claro */
         }
+        
+        /* Inputs, Selects, Textareas */
         input:not([type="checkbox"]), select, textarea {
             width: 100%;
             padding: 10px 12px;
@@ -58,35 +75,45 @@
             border-radius: 8px;
             box-sizing: border-box;
             transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: var(--input-bg); /* Fondo de input */
+            color: var(--text-color); /* Texto dentro de input */
         }
         input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary); /* Naranja al enfocar */
+            box-shadow: 0 0 0 3px rgba(255, 145, 0, 0.2); 
             outline: none;
         }
+
+        /* Información de la Ruleta (Slot Info) */
         .slot-info {
             margin-bottom: 30px;
             padding: 20px;
-            background-color: #ecfdf5;
+            background-color: rgba(255, 145, 0, 0.2); /* Fondo semi-transparente del color primario */
             border-radius: 10px;
             border: 1px solid var(--primary);
         }
+        
+        /* Contenedor de ranuras */
         .slot-container {
             border: 2px dashed var(--border);
             padding: 20px 15px;
             border-radius: 10px;
         }
+        
+        /* Ítem de ranura individual */
         .slot-item {
-            background-color: var(--bg-light);
+            background-color: var(--slot-bg); /* Fondo del ítem */
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 8px;
-            border-left: 5px solid var(--secondary);
+            border-left: 5px solid var(--secondary); /* Borde azul */
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             position: relative;
         }
+        
+        /* Encabezado de ranura */
         .slot-header {
             grid-column: 1 / -1;
             display: flex;
@@ -98,8 +125,10 @@
         }
         .slot-header h4 {
             margin: 0;
-            color: var(--secondary);
+            color: var(--secondary); /* Título de ranura azul */
         }
+        
+        /* Botones base */
         .btn {
             padding: 10px 18px;
             border: none;
@@ -108,37 +137,47 @@
             cursor: pointer;
             transition: background-color 0.3s, opacity 0.3s;
         }
+        
+        /* Botón de Guardar (Primary) */
         .btn-primary {
-            background-color: var(--secondary);
-            color: white;
+            background-color: var(--primary); /* Naranja */
+            color: var(--text-color);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .btn-primary:hover {
-            background-color: #2563eb;
+            background-color: var(--success); /* Naranja oscuro al hover */
         }
+        
+        /* Botón de Agregar Ranura (Secondary) */
         .btn-secondary {
-            background-color: var(--primary);
+            background-color: var(--secondary); /* Azul */
             color: white;
         }
         .btn-secondary:hover {
-            background-color: #059669;
+            background-color: #0056b3; /* Azul más oscuro al hover */
         }
+        
+        /* Botón de Eliminar (Danger) */
         .btn-danger {
-            background-color: #ef4444;
+            background-color: var(--danger); /* Rojo */
             color: white;
             padding: 5px 10px;
         }
         .btn-danger:hover {
-            background-color: #dc2626;
+            background-color: #b02420; /* Rojo más oscuro al hover */
         }
+        
+        /* Botones de pie de página */
         .footer-buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
             align-items: center;
         }
+        
+        /* Checkbox */
         .checkbox-group {
             display: flex;
             align-items: center;
@@ -148,11 +187,18 @@
             margin-left: 10px;
             margin-bottom: 0;
         }
+        
+        /* Input de Color */
         input[type="color"] {
             height: 38px;
             padding: 4px;
         }
         
+        /* Placeholder en contenedor de ranuras vacías */
+        .slot-container p {
+            color: var(--text-color) !important; 
+        }
+
         /* Responsive adjustments */
         @media (max-width: 600px) {
             .container {
@@ -183,7 +229,7 @@
 
     <div class="slot-info">
         <p>Estás configurando las ranuras para la Ruleta con el ID: 
-           <strong id="display_ruleta_id">{{ $id_ruleta ?? 'N/A (Crea una nueva)' }}</strong>.</p>
+            <strong id="display_ruleta_id">{{ $id_ruleta ?? 'N/A (Crea una nueva)' }}</strong>.</p>
         <p>Modifica, elimina o agrega nuevas ranuras a continuación.</p>
     </div>
     
@@ -195,7 +241,7 @@
         <h2 id="ranuras-title">Ranuras Actuales: 0 Ranuras Agregadas</h2>
         
         <div id="slotContainer" class="slot-container">
-            <p style="text-align: center; color: #6b7280;">Presiona "Agregar Ranura" para empezar a configurar las opciones de la ruleta.</p>
+            <p style="text-align: center; color: var(--text-color);">Presiona "Agregar Ranura" para empezar a configurar las opciones de la ruleta.</p>
         </div>
         
         <div class="footer-buttons">
@@ -264,7 +310,7 @@
      * Muestra retroalimentación visual de error en el botón de submit.
      */
     function showErrorFeedback(message) {
-        // ... (código de showErrorFeedback sin cambios)
+        // Usamos la variable CSS --danger
         const originalText = 'Guardar Todas las Ranuras'; 
         const originalColor = submitBtn.style.backgroundColor;
         
@@ -301,7 +347,7 @@
         if (visibleCount === 0) {
             if (!placeholder) {
                 const newPlaceholder = document.createElement('p');
-                newPlaceholder.style.cssText = 'text-align: center; color: #6b7280;';
+                newPlaceholder.style.cssText = 'text-align: center; color: var(--text-color);'; // Usamos la variable de texto
                 newPlaceholder.textContent = 'Presiona "Agregar Ranura" para empezar a configurar las opciones de la ruleta.';
                 slotContainer.appendChild(newPlaceholder);
             }
@@ -340,8 +386,8 @@
         
         const imageHtml = defaults.dir_imagen 
             ? `<p style="font-size: 0.85em; color: var(--success); margin-top: -5px;">
-                  Imagen actual: <a href="${defaults.dir_imagen}" target="_blank">Ver</a> (Sube un archivo para reemplazarla)
-               </p>`
+                  Imagen actual: <a href="${defaults.dir_imagen}" target="_blank" style="color: var(--primary);">Ver</a> (Sube un archivo para reemplazarla)
+                 </p>`
             : '';
 
         slotDiv.innerHTML = `
