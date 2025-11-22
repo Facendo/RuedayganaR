@@ -238,7 +238,9 @@ h3 {
 .imagen_head {
     width: 380px;
     height: 380px;
+    border-radius: 50%;
     padding: 10px;
+    border: 5px solid blue;
     transition: 0.3s;
 }
 
@@ -599,13 +601,11 @@ p.mostrar_data {
     margin: 0 auto;
 }
 
-/* ---------------  STYLE RULET ---------------------- */
-
 .cont_modal_rulet {
     transform: translateX(100%);
     display: none;
     position: fixed;
-    z-index: 9999;
+    z-index: 777;
     left: 0;
     top: 0;
     width: 100%;
@@ -654,57 +654,28 @@ p.mostrar_data {
 .container_r {
     width: 520px;
     height: 520px;
-
     border-radius: 50%;
     background-color: rgba(238, 202, 6, 0.6);
     border: 15px dotted rgb(255, 255, 119);
+
     position: relative;
-    filter: drop-shadow(0 0 20px rgba(238, 202, 6, 1));
     overflow: hidden;
-    transition: 5s;
-}
 
-.container_r div {
-    height: 200%;
-    width: 200%;
-
-    position: absolute;
-    top: -25;
-    left: -25;
-
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-
-    transform-origin: 50% 100%;
-
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    font-family: sans-serif;
-    color: #fff;
+    filter: drop-shadow(0 0 20px rgba(238, 202, 6, 1));
+    transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity: 1;
+    z-index: 10;
 }
 
 .ranura_rulet {
     position: absolute;
-    top: -50%;
-    left: -50%;
-
-    width: 200%;
-    height: 200%;
-
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
     transform-origin: 50% 100%;
-    border-left: 1px solid rgba(0, 0, 0, 0.1); /* Línea divisoria */
-}
-
-/* También debes asegurar que el contenedor es un círculo */
-.container_r {
-    position: relative;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    overflow: hidden; /* Oculta cualquier imperfección del borde */
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 5;
 }
 
 .arrow {
@@ -728,7 +699,7 @@ p.mostrar_data {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10;
+    z-index: 100; /* Z-index alto para el botón */
     background-color: #e2e2e2;
     text-transform: uppercase;
     border: 8px solid #fff;
@@ -799,7 +770,7 @@ p.mostrar_data {
 }
 
 .emergent_window {
-    z-index: 99999999;
+    z-index: 9999;
     width: 70%;
     height: 300px;
     color: black;
@@ -838,40 +809,41 @@ p.mostrar_data {
     color: white;
 }
 
-/* CSS */
+/* CSS para el texto de la ruleta (slot-text) */
 
-/* Contenedor principal: Necesita posición relativa */
-.container_r {
-    position: relative;
-    /* Asegúrate que el width y height sean el tamaño de tu ruleta */
-}
-
-/* 1. El envoltorio (slot-text-wrapper) actúa como un rayo que pivota desde el centro */
 .slot-text-wrapper {
     position: absolute;
     top: 50%;
     left: 50%;
-
-    /* El punto de pivote debe estar en el centro (0,0) del rayo para que gire correctamente */
+    width: 260px; /* Radio de la ruleta (aproximadamente 520px/2) */
+    height: 1px;
     transform-origin: 0% 0%;
-
-    /* Dale un ancho para que el texto se posicione correctamente */
-    width: 50%;
-    height: 1px; /* Mínimo para que exista */
-    pointer-events: none; /* Ignora clics en esta capa */
-    z-index: 99999999999999;
+    pointer-events: none;
+    z-index: 20;
 }
 
-/* 2. El texto (slot-text) se contrarota y se desplaza hacia el borde */
 .slot-text {
     position: absolute;
-    z-index: 9999999999999;
+    width: auto;
+    height: auto;
+    z-index: 9999;
+    color: white;
+    font-size: 20px;
+    white-space: nowrap;
 
-    /* Empuja el texto desde el centro de la ruleta */
-    /* Ajusta 'left' y 'top' según el tamaño de tu texto y ruleta para centrarlo visualmente */
-    left: 15px; /* Empuja 15px desde el centro */
-    top: -10px; /* Ajusta la verticalidad */
+    /* Desplaza el texto 80px hacia afuera desde el centro */
+    left: 80px;
+
+    /* Ajuste vertical */
+    top: -10px;
+
     text-align: center;
+}
 
-    /* El transform: rotate(-...) del JS lo mantiene horizontal */
+.data_ranura {
+    width: 50%;
+    padding: 20px;
+    border: 2px solid red;
+    background-color: white;
+    color: black;
 }

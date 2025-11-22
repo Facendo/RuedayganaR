@@ -109,7 +109,12 @@ export function animateRuleta(data) {
     console.log("datos de animacion", data);
     const cantRanuras = ruletaState.ranuras.length;
     const precision = 360 / cantRanuras;
-    const randomizador = Math.floor(Math.random() * (precision - 2 + 1)) + 2;
+
+    const MINIMO = 2;
+    const MAXIMO = precision - 1; //
+
+    const randomizador =
+        Math.floor(Math.random() * (MAXIMO - MINIMO + 1)) + MINIMO;
     const angle = data.angle;
     let newRotation = FULL_ROUNDS * 360 + angle + randomizador;
     const finalStop = angle + randomizador;
@@ -170,11 +175,8 @@ export function generateRuleta(ranuraData) {
         const rad = (angle - 90) * (Math.PI / 180);
         const x = (radius * Math.cos(rad) + 50).toFixed(4);
         const y = (radius * Math.sin(rad) + 50).toFixed(4);
-        console.log("Valores x= ", x);
-        console.log("Valores y= ", y);
         return `${x}% ${y}%`;
     };
-    // ----------------------------------------------------
 
     // Limpia las ranuras anteriores
     while (container_rulet.firstChild) {
@@ -182,12 +184,12 @@ export function generateRuleta(ranuraData) {
     }
 
     ranuraData.forEach((ranura, cont) => {
-        const elementRanura = document.createElement("div");
-        elementRanura.classList.add("ranura_rulet");
-
         const startAngle = cont * sizeSlot;
         const endAngle = (cont + 1) * sizeSlot;
         const centerAngle = startAngle + sizeSlot / 2;
+
+        const elementRanura = document.createElement("div");
+        elementRanura.classList.add("ranura_rulet");
 
         const coord1 = getCoords(startAngle);
         const coord2 = getCoords(endAngle);
@@ -195,18 +197,21 @@ export function generateRuleta(ranuraData) {
         elementRanura.style.clipPath = `polygon(${center}, ${coord1}, ${coord2})`;
 
         const textWrapper = document.createElement("div");
-        textWrapper.style.transform = `rotate(${centerAngle}deg)`;
         textWrapper.classList.add("slot-text-wrapper");
 
-        const textContent = document.createElement("span");
+        const rotationAngle = centerAngle - 90;
+        textWrapper.style.transform = `rotate(${rotationAngle}deg)`;
+
+        const textContent = document.createElement("div");
+        textContent.classList.add("slot-text");
         textContent.textContent = ranura.texto;
+
+        textContent.style.transform = `rotate(${-rotationAngle}deg)`;
+
         textWrapper.appendChild(textContent);
-        container_rulet.appendChild(textWrapper);
-
         container_rulet.appendChild(elementRanura);
+        container_rulet.appendChild(textWrapper);
     });
-
-    const halfSlot = sizeSlot / 2;
 }
 
 // export function generateRuleta(ranuraData) {
