@@ -307,6 +307,12 @@
                                 <button type="submit" class="button">Activar</button>
                             @endif
                         </form>
+                        <form action={{route('ruleta.destroy')}} method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" value="{{$ruleta->id_ruleta}}" name="id_ruleta">
+                            <button type="submit" class="button">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
