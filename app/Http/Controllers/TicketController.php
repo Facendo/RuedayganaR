@@ -94,17 +94,35 @@ class TicketController extends Controller
         $pago->save();
 
         //Espacio para Manejar el Residuo y la Asignacion de Oportunidades
-        if(ClienteRuleta::where('cedula',$cliente->cedula)->exists()){
-            $ruleta = Ruleta::where('id_sorteo', $sorteo->id_sorteo)->first();
-            $cedulaCliente=$cliente->cedula;
-            $cliente = Cliente::where('cedula', $cedulaCliente)->first();
-            $clienteRuleta = ClienteRuleta::where('cedula', $cedulaCliente)->first();
-                if($ruleta->activo){
-                    $clienteRuleta->oportunidades += floor(($clienteRuleta->residuo + $pago->cantidad_de_tickets) / $ruleta->condicional_oportunidades);
-                    $clienteRuleta->residuo = floor(($clienteRuleta->residuo + $pago->cantidad_de_tickets) % $ruleta->condicional_oportunidades);
-                    $clienteRuleta->save();
+            // 1. Obtener la Ruleta y verificar su existencia/actividad
+                $ruleta = Ruleta::where('id_sorteo', $sorteo->id_sorteo)->first();
+
+                if ($ruleta && $ruleta->activo) {
+                    
+                    // 2. BUSCAR DIRECTAMENTE el registro ClienteRuleta (Uso eficiente de la DB)
+                    $clienteRuletaFound = ClienteRuleta::where('id_ruleta', $ruleta->id_ruleta)
+                                                    ->where('cedula', $cliente->cedula)
+                                                    ->first();
+
+                    // 3. Si el registro existe, actualizar las oportunidades y residuo
+                    if ($clienteRuletaFound) {
+                        
+                        // Variables para claridad
+                        $totalTickets = $clienteRuletaFound->residuo + $pago->cantidad_de_tickets;
+                        $condicional = $ruleta->condicional_oportunidades;
+                        
+                        // Calcular nuevas oportunidades (División Entera)
+                        $nuevasOportunidades = floor($totalTickets / $condicional);
+                        
+                        // Calcular nuevo residuo (Operador Módulo)
+                        $nuevoResiduo = $totalTickets % $condicional; 
+
+                        // Actualizar el modelo y guardar
+                        $clienteRuletaFound->oportunidades += $nuevasOportunidades;
+                        $clienteRuletaFound->residuo = $nuevoResiduo;
+                        $clienteRuletaFound->save();
+                    }
                 }
-        }
         //Crear Ticket
         $ticket = new Ticket();
         $ticket->cedula_cliente = $request->cedula_cliente;
