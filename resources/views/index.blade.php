@@ -32,7 +32,9 @@
     <div class="panel_nav">
                     <a href="#header" class="option_panel_nav">Inicio</a>
                     <a href="#premios" class="option_panel_nav">Participar</a>
+                    <a href="#premios" class="option_panel_nav">Ruleta</a>
                     <a href="#top_ventas" class="option_panel_nav">Top de ventas</a>
+                    <a href="#section_tick" class="option_panel_nav">Verificar tickets</a>
                     <a href="#foot" class="option_panel_nav">Contactanos</a>
     </div>
 
@@ -150,8 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <section id="view_rulet">
                                     <div class="container">
 
-                                        <h2 class="section_subtitle">PRUEBA TU SUERTE</h2>
-                                        <h2 class="section_subtitle">Ruleta rueda y gana</h2>
+                                        <h2 class="section_subtitle">Ruleta rueda y gana sorteo ( {{$sorteo->sorteo_nombre}} )</h2>
 
                                         <div class="container_reg">
                                             <div class="cont_form">
@@ -172,7 +173,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                 </section>
                                 
-                             @endif 
+                             @else 
+                                <div class="message_alert message">
+                                     <p>Este sorteo no cuenta con ruleta</p>
+                                </div>
+                            @endif
+
                                 
                     @endforeach
 
@@ -348,6 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
        
        </div>
 
+
        <br>
         
         <div class="mensaje_result" ><h2 id="result_rulet">rueda papi rueda</h2></div>
@@ -396,155 +403,9 @@ document.addEventListener('DOMContentLoaded', function() {
 <script type="module" src="{{asset('js/main.js')}}"></script>
 
     
-<!-- <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.querySelector('.cont_modal_rulet');
-    const form = document.querySelector('.form_rulet'); 
-    const closeButton = document.querySelector('.x_modal_rulet');
-    const cedulaInput = document.getElementById('cedula');
-    const submitBtn = document.querySelector('.submit_btn');
-    const idSorteoInput = document.querySelector('.form_rulet input[name="id_sorteo"]'); 
-
-    function openModal(data) {
-        modal.style.transform = 'translateX(0)';
-        modal.style.display = 'block';
-        
-        const spinForm = document.querySelector('.content_ruleta form');
-        if (spinForm) {
-            spinForm.querySelector('input[name="id_sorteo"]').value = idSorteoInput ? idSorteoInput.value : '';
-            spinForm.querySelector('input[name="cedula"]').value = cedulaInput.value.trim();
-        }
-    }
-
-    function closeModal() {
-        modal.style.transform = 'translateX(110%)';
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 500);
-    }
-
-    closeButton.addEventListener('click', closeModal);
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
     
- 
-    if (form) {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            
-            const cedula = cedulaInput.value.trim();
-            const url = form.getAttribute('action');
-            const token = document.querySelector('.form_rulet input[name="_token"]').value; 
-            
-            if (cedula === '' || url === '') {
-                alert('Ingrese su cédula y asegúrese de que la ruta del formulario esté configurada.');
-                return;
-            }
-
-            submitBtn.disabled = true;
-
-            const formData = new FormData();
-            formData.append('cedula', cedula);
-            
-            if (idSorteoInput) {
-                formData.append('id_sorteo', idSorteoInput.value);
-            }
-            
-            fetch(url, {
-                method: 'POST', 
-                headers: {
-                    'X-CSRF-TOKEN': token 
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error de servidor: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Datos de respuesta de verificación recibidos:', data);
-                
-                openModal(data); 
-                
-                if (!data.success) {
-                    console.warn(data.message || 'Cédula no válida o sin giros.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al verificar la cédula:', error);
-                alert('Hubo un error de conexión o el servidor no respondió correctamente.');
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-            });
-            
-        });
-    }
-
-    
-    let container = document.querySelector(".container_r");
-    let btn = document.getElementById("spin");
-    const TARGET_SLOT_ANGLE = 30; 
-    const FULL_ROUNDS = 5;       
-
-    btn.onclick = function (event) {
-        event.preventDefault(); 
-        
-        btn.disabled = true;
-
-        const spinForm = document.querySelector('.content_ruleta form');
-        const url = spinForm.getAttribute('action');
-        const token = spinForm.querySelector('input[name="_token"]').value;
-        const idSorteo = spinForm.querySelector('input[name="id_sorteo"]').value;
-        const cedula = spinForm.querySelector('input[name="cedula"]').value;
-
-        const formData = new FormData();
-        formData.append('id_sorteo', idSorteo);
-        formData.append('cedula', cedula);
-
-        fetch(url, {
-            method: 'POST', 
-            headers: {
-                'X-CSRF-TOKEN': token 
-            },
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error de servidor: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('✅ Datos de la ranura recibidos del servidor:', data);
-
-            let newRotation = (FULL_ROUNDS * 360) + TARGET_SLOT_ANGLE; 
-            container.style.transform = "rotate(-" + newRotation + "deg)";
-            
-            setTimeout(() => {
-                btn.disabled = false;
-                console.log("¡El resultado es la ranura " + (TARGET_SLOT_ANGLE / 45 + 1) + "!");
-            }, 5000);
-        })
-        .catch(error => {
-            console.error('❌ Error al girar la ruleta (Error de red o servidor):', error);
-            alert('Hubo un error de conexión o el servidor falló. Inténtelo más tarde.');
-            btn.disabled = false; 
-        });
-    };
-});
-</script> -->
-
-    
-    
-
-    
-    <div class="cont_modal">
+<section id="section_tick">
+     <div class="cont_modal">
 
         <div class="x_modal">
             <img src="{{asset('img/x.png')}}" alt="" >
@@ -557,6 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
     </div>
+</section>
     
     
 
