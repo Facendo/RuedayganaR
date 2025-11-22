@@ -100,9 +100,12 @@ class RuletaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ruleta $ruleta)
+    public function destroy(Request $request)
     {
-        $ruleta->delete();
+        $ruleta = Ruleta::find($request->id_ruleta);
+        if ($ruleta) {
+            $ruleta->delete();
+        }
         return redirect()->route('pago.index');
     }
 

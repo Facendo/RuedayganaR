@@ -23,6 +23,7 @@ Route::get('/ruletas/editar/{id_ruleta}', [RuletaController::class,'edit'])->nam
 Route::put('/ruletas/update', [RuletaController::class,'update'])->name('ruletas.update');
 Route::put('/ranuras/update', [RanuraController::class,'update'])->name('ranuras.update');
 Route::post('/ruleta/RuletClient',[RuletaController::class,'BuildRulet'])->name('ruleta.searchclient');
+Route::delete('/ruleta/destroy',[RuletaController::class,'destroy'])->name('ruleta.destroy');
 //Route for spinning the Rulet
 Route::post('/ruleta/spin', [RuletaController::class,'Spin'])->name('ruleta.spin');
 Route::put('/ruleta/ChangeState/{id_ruleta}',[RuletaController::class,'ActivarRuleta'])->name('ruleta.cambio_estado');

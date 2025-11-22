@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 @endif
                     
                     @foreach($ruletas as $ruleta) 
-                            @if($ruleta->id_sorteo == $sorteo->id_sorteo) 
+                            @if($ruleta->id_sorteo == $sorteo->id_sorteo && $ruleta->activo == 1) 
                                 <section id="view_rulet">
                                     <div class="container">
 

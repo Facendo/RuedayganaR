@@ -28,20 +28,37 @@ class ClienteController extends Controller
             $clienteregistrado->fecha_de_pago = $request->fecha_de_pago;
             $clienteregistrado->save();
             $clienteregistrado->id_sorteo = $request->id_sorteo;
+            
             //Cliente registrado pero no como Cliente de ruleta
-            if(Ruleta::where('id_sorteo',$request->id_sorteo)->exists()){
-                if(!ClienteRuleta::where('cedula',$clienteregistrado->cedula)->exists()){
-                    $clienteRuleta= new ClienteRuleta();
-                    $clienteRuleta->cedula = $request->cedula;
-                    $Ruleta=Ruleta::where('id_sorteo', $request->id_sorteo)->first();
-                    $clienteRuleta->id_ruleta = $Ruleta->id_ruleta;
-                    $clienteRuleta->oportunidades = 0;
-                    $clienteRuleta->residuo = 0;
-                    $clienteRuleta->created_at = now();
-                    $clienteRuleta->updated_at = now();
-                    $clienteRuleta->save();     
+            $ruleta = Ruleta::where('id_sorteo', $request->id_sorteo)->first();
+
+                if ($ruleta && $ruleta->activo) {
+                    // 2. Optimizar: Intentar encontrar directamente el ClienteRuleta.
+                    // Usamos el id de la ruleta encontrado ($ruleta->id) y la cédula del request.
+                    $clienteRuletaExistente = ClienteRuleta::where('id_ruleta', $ruleta->id) // Asumiendo que el ID de la tabla Ruleta es 'id'
+                                                        ->where('cedula', $request->cedula)
+                                                        ->first();
+
+                    // 3. Registrar al cliente solo si NO existe
+                    if (!$clienteRuletaExistente) {
+                        $clienteRuleta = new ClienteRuleta();
+                        $clienteRuleta->cedula = $request->cedula;
+                        // Ojo: Asumo que el campo 'id_ruleta' en ClienteRuleta es la FK al campo 'id' de Ruleta
+                        $clienteRuleta->id_ruleta = $ruleta->id_ruleta; 
+                        $clienteRuleta->oportunidades = 0;
+                        $clienteRuleta->residuo = 0;
+                        // created_at y updated_at se gestionan automáticamente por Eloquent, 
+                        // pero puedes mantenerlas si tienes un caso de uso especial.
+                        $clienteRuleta->created_at = now();
+                        $clienteRuleta->updated_at = now(); 
+                        $clienteRuleta->save();
+                        
+                        // Retornar éxito, etc.
+                    }
+                    
+                    // Retornar mensaje de que ya estaba registrado, etc.
+
                 }
-            }
         }
         else{
             $cliente = new Cliente();

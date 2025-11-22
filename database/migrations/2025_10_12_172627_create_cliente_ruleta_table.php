@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('cliente_ruleta', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_ruleta')->nullable();
             $table->string('cedula');
             $table->integer('residuo')->default(0);
             $table->integer('oportunidades')->default(0);
-            $table->integer('id_ruleta')->nullable();
+            
 
-            $table->foreign('cedula')
-                    ->references('cedula')
-                    ->on('cliente')
+            $table->foreign('id_ruleta')
+                    ->references('id_ruleta')
+                    ->on('ruleta')
                     ->onDelete('cascade');
 
             $table->timestamps();
