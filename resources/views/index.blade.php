@@ -118,78 +118,87 @@ document.addEventListener('DOMContentLoaded', function() {
         
     
     <section id="premios" class="container">  
-
-    <h2 class="section_subtitle">SORTEOS DISPONIBLES</h2>
-    <div class="container">
-        @if(count($sorteos) > 0)
-            @foreach($sorteos as $sorteo)
-                @if($sorteo->sorteo_activo == 1)
-                <div class="container_card">
-                    <div class="card">
-                        <figure>
-                           @if($sorteo->sorteo_imagen)
-                                <img src="{{ asset('storage/'.$sorteo->sorteo_imagen) }}" class="img_card" alt="imagen_premio">   
-                            @else
-                                <img src="{{ asset('img/default.webp') }}" alt="Imagen por defecto">
-                            @endif
-                        </figure>
-                        <div class="contenido">
-                            <h3 class="title_card">{{$sorteo->sorteo_nombre}}</h3>
-                            <p class="text_card">{{$sorteo->sorteo_descripcion}}</p>
-                            <br><br><br>
-                            <a href="{{ route('compra', $sorteo->id_sorteo) }}" class="button submit_btn">Participar</a>
+                @foreach($sorteos as $sorteo)
+                    
+                    {{-- Lógica del Sorteo Activo/Inactivo --}}
+                    @if($sorteo->sorteo_activo == 1)
+                        <div class="container_card">
+                            <div class="card">
+                                <figure>
+                                    @if($sorteo->sorteo_imagen)
+                                        <img src="{{ asset('storage/'.$sorteo->sorteo_imagen) }}" class="img_card" alt="imagen_premio">  
+                                    @else
+                                        <img src="{{ asset('img/default.webp') }}" alt="Imagen por defecto">
+                                    @endif
+                                </figure>
+                                <div class="contenido">
+                                    <h3 class="title_card">{{$sorteo->sorteo_nombre}}</h3>
+                                    <p class="text_card">{{$sorteo->sorteo_descripcion}}</p>
+                                    <br><br><br>
+                                    <a href="{{ route('compra', $sorteo->id_sorteo) }}" class="button submit_btn">Participar</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                @else
+                    @else
+                        {{-- Mensaje para el sorteo individual inactivo --}}
+                        <div class="message_alert message">
+                            <p>Los sorteos están en mantenimiento y no están disponibles en este momento.</p>
+                        </div>
+                    @endif
+
+                    @php
+                        // Buscamos la primera ruleta en la colección $ruletas que tenga el ID del sorteo actual
+                        $ruleta_asociada = $ruletas->firstWhere('id_sorteo', $sorteo->id_sorteo);
+                    @endphp
+
+                    {{-- 2. Mostrar la ruleta o el mensaje según el resultado de la búsqueda --}}
+                    @if($ruleta_asociada)
+                        
+                        {{-- Si la ruleta existe, comprobamos si está ACTIVA --}}
+                        @if($ruleta_asociada->activo == 1)
+                            <section id="view_rulet">
+                                <div class="container">
+                                    <h2 class="section_subtitle">Ruleta rueda y gana sorteo ( {{$sorteo->sorteo_nombre}} )</h2>
+                                    <div class="container_reg">
+                                        <div class="cont_form">
+                                            <form action="{{route('ruleta.searchclient')}}" class="form content_form form_rulet" method="POST" enctype="multipart/form-data">
+                                                <div class="header">
+                                                    <h1>Ingrese su cedula</h1>
+                                                </div>
+                                                @csrf
+                                                <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
+                                                <input type="text" name="cedula" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
+                                                <br>
+                                                <button type="submit" class="button button_rulet submit_btn">Enviar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        @else 
+                            {{-- Si la ruleta existe pero está INACTIVA --}}
+                            <div class="message_alert message">
+                                <p>La ruleta de este sorteo está desactivada temporalmente.</p>
+                            </div>
+                        @endif
+
+                    @else 
+                        {{-- Si la ruleta NO EXISTE para este sorteo --}}
+                        <div class="message_alert message">
+                            <p>Este sorteo no cuenta con ruleta</p>
+                        </div>
+                    @endif
+
+                @endforeach
+
+                {{-- Bloque final para cuando no hay sorteos --}}
+                @if($sorteos->isEmpty())
                     <div class="message_alert message">
-                        <p>Los sorteos están en mantenimiento y no están disponibles en este momento.</p>
+                        <p>No hay sorteos disponibles en este momento.</p>
                     </div>
                 @endif
-                    
-                    @foreach($ruletas as $ruleta) 
-                            @if($ruleta->id_sorteo == $sorteo->id_sorteo && $ruleta->activo == 1) 
-                                <section id="view_rulet">
-                                    <div class="container">
-
-                                        <h2 class="section_subtitle">Ruleta rueda y gana sorteo ( {{$sorteo->sorteo_nombre}} )</h2>
-
-                                        <div class="container_reg">
-                                            <div class="cont_form">
-                                                <form action="{{route('ruleta.searchclient')}}" class="form content_form form_rulet" method="POST" enctype="multipart/form-data">
-                                                    <div class="header">
-                                                        <h1>Ingrese su cedula</h1>
-                                                    </div>
-                                                    @csrf
-                                                    <input type="hidden" name="id_sorteo" value="{{$sorteo->id_sorteo}}">
-                                                    <input type="text" name="cedula" id="cedula" placeholder="Verifique sus datos para girar" class="input_form" min="0" max="9999">
-                                                    <br>
-                                                    <button type="submit" class="button button_rulet submit_btn">Enviar</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        
-                                    
-                                    </div>
-                                </section>
-                                
-                             @else 
-                                <div class="message_alert message">
-                                     <p>Este sorteo no cuenta con ruleta</p>
-                                </div>
-                            @endif
-
-                                
-                    @endforeach
-
-            @endforeach
-        @else
-            <div class="message_alert message">
-                <p>No hay sorteos disponibles en este momento.</p>
             </div>
-        @endif
-    </div>
-</section>
+        </section>
 
 
 <!----------------------- SECCION TOP DE VENTAS ----------------------------->
