@@ -84,7 +84,7 @@ class RuletaController extends Controller
 
         $condicional = $ruleta->Condicional_Oportunidades;
 
-        $clientesRuleta = ClienteRuleta::all();
+        $clientesRuleta = ClienteRuleta::where('id_ruleta', $ruleta->id_ruleta)->get();
         
         foreach ($clientesRuleta as $cliente) {
             if($cliente->residuo >= $condicional){
