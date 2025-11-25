@@ -8,6 +8,7 @@ use App\Models\Ranura;
 use App\Models\Ruleta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class RuletaController extends Controller
 {
@@ -127,7 +128,9 @@ class RuletaController extends Controller
     }
     
     // 2. Verificación de Cliente (Evita Error 500 si el cliente no existe)
-    $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
+    $clienteRuleta = ClienteRuleta::where('id_ruleta', $ruleta->id_ruleta)
+        ->where('cedula', $cedula)
+        ->first();
     if (!$clienteRuleta) {
         return response()->json(['error' => 'Cliente no encontrado.'], 404);
     }
@@ -192,13 +195,39 @@ class RuletaController extends Controller
     // 7. Retorno de Respuesta JSON COMPLETO
     
     $colorRanura = $last_slot->color;
+    //Si cae en bancarrota o intentar de nuevo
+    if($last_slot->premio=='intentar_de_nuevo'|| $last_slot->type=='bancarrota'){
 
-    return response()->json([
-        'oportunidades_cliente' => $clienteRuleta->oportunidades,
-        'angle' => $angle,
-        'premio' => $premio,
-        'color' => $colorRanura,
-    ]);
+        return response()->json([
+            'oportunidades_cliente' => $clienteRuleta->oportunidades,
+            'angle' => $angle,
+            'premio' => $premio,
+            'color' => $colorRanura,
+        ]);
+    }
+        //Si gana un premio mayor o premio menor
+        else{
+            $cliente_info = Cliente::where('cedula', $clienteRuleta->cedula)->first();
+            $correoContent= [
+                'nombre' => $cliente_info->nombre_y_apellido,
+                'cedula' => $cliente_info->cedula,
+                'premio' => $premio,
+                'telefono' => $cliente_info->telefono,
+            ];
+            //Para el cliente
+                $correo = new \App\Mail\mailCreated($correoContent);
+                Mail::to($cliente_info->correo)->send($correo);
+            //para el admin
+                $correoAdmin = new \App\Mail\mailCreated($correoContent);
+                Mail::to('Rocktoyonyo@gmail.com')->send($correoAdmin);
+            
+            return response()->json([
+                'oportunidades_cliente' => $clienteRuleta->oportunidades,
+                'angle' => $angle,
+                'premio' => $premio,
+                'color' => $colorRanura,
+            ]);
+        }
 }
 
 
