@@ -231,12 +231,41 @@ class RuletaController extends Controller
 }
 
 
+     public function handleMailRequest(Request $request)
+    {
+        // Se obtiene el cuerpo de la petición JSON
+        $correoContent = $request->all();
 
-    public function sendMails($correoContent){
-        $clienteCorreo= new \App\Mail\ruletWinnerMail($correoContent);
-        $adminCorreo= new \App\Mail\ruletAdminMain($correoContent);
-        $clienteCorreo= Mail::to($correoContent['correo'])->send($clienteCorreo);
-        $adminCorreo= Mail::to('Rocktoyonyo@gmail.com')->send($adminCorreo);
+        if (empty($correoContent) || !isset($correoContent['correo'])) {
+             return response()->json(['error' => 'Datos de correo faltantes o incorrectos.'], 400);
+        }
+
+        try {
+            
+            $this->sendMails($correoContent); // <-- Esta es la invocación
+            return response()->json(['message' => 'Correos enviados con éxito.'], 200);
+        } catch (\Exception $e) {
+            // Loguea el error real (problema con el servidor SMTP, etc.)
+            Log::error('Error al enviar correos desde handleMailRequest: ' . $e->getMessage());
+            // Devuelve un error 500 para que el frontend lo capture.
+            return response()->json(['error' => 'Fallo el envío de correos. Verifique logs.'], 500);
+        }
+    }
+
+
+
+    public function sendMails(array $correoContent){
+
+        // Convertimos el array a objeto para usarlo en el constructor Mailable
+        $dataObject = (object) $correoContent;
+
+        Mail::to($correoContent['correo'])->send(new ruletWinnerMail($dataObject));
+        Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
+
+        // $clienteCorreo= new \App\Mail\ruletWinnerMail($correoContent);
+        // $adminCorreo= new \App\Mail\ruletAdminMain($correoContent);
+        // $clienteCorreo= Mail::to($correoContent['correo'])->send($clienteCorreo);
+        // $adminCorreo= Mail::to('Rocktoyonyo@gmail.com')->send($adminCorreo);
 
     }
 

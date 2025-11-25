@@ -1,6 +1,6 @@
 // main.js
 
-import { checkCedula, spinRuleta } from "./api.js";
+import { checkCedula, spinRuleta, sendSecondData } from "./api.js";
 import { openModal, closeModal, animateRuleta } from "./ui.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -55,10 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Evento: Botón Spin de la ruleta
     if (spinBtn) {
         spinBtn.onclick = function (event) {
-            event.preventDefault(); // ¡VITAL! Evita el envío del formulario de spin.
+            event.preventDefault();
 
             spinBtn.disabled = true;
 
@@ -71,6 +70,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
             spinRuleta(idSorteo, cedula)
                 .then((data) => {
+                    const contentToSend = data.correoContent;
+
+                    if (
+                        contentToSend &&
+                        typeof contentToSend === "object" &&
+                        Object.keys(contentToSend).length > 0
+                    ) {
+                        console.log(
+                            "¡Premio detectado! Enviando datos de contacto (sendSecondData)..."
+                        );
+                        // No esperamos el resultado de sendSecondData para no frenar la animación.
+                        // Solo logueamos el resultado.
+                        sendSecondData(contentToSend)
+                            .then((response) =>
+                                console.log(
+                                    "Envío de correos exitoso:",
+                                    response
+                                )
+                            )
+                            .catch((mailError) =>
+                                console.error(
+                                    "Error FATAL en el envío de correos:",
+                                    mailError
+                                )
+                            );
+                    } else {
+                        console.log(
+                            "No hay premios (bancarrota/reintento), no se hace la segunda petición."
+                        );
+                    }
+
                     return animateRuleta(data);
                 })
                 .then((finalStop) => {
@@ -86,9 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                 .catch((error) => {
                     console.error("Error al girar:", error);
-                    alert(
-                        "No Tienes Giros Disponibles, obten mas giros comprando tickets"
-                    );
+                    const errorMessage = error.message.includes(
+                        "No tienes oportunidades"
+                    )
+                        ? error.message
+                        : "Hubo un error inesperado al girar.";
+
+                    console.log(`Error: ${errorMessage}`);
+
                     spinBtn.disabled = false;
                 });
         };

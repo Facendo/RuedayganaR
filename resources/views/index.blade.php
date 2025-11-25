@@ -397,6 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.APP_ROUTES = {
         check: "{{ route('ruleta.searchclient') }}",
         spin: "{{ route('ruleta.spin') }}",
+        mail: "{{route('ruleta.sendmail')}}",
         token: "{{ csrf_token() }}" // También inyectamos el token
     };
 </script>
