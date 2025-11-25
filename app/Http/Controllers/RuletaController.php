@@ -128,9 +128,8 @@ class RuletaController extends Controller
     }
     
     // 2. Verificación de Cliente (Evita Error 500 si el cliente no existe)
-    $clienteRuleta = ClienteRuleta::where('id_ruleta', $ruleta->id_ruleta)
-        ->where('cedula', $cedula)
-        ->first();
+    $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->where('id_ruleta', $ruleta->id_ruleta)->first();
+    
     if (!$clienteRuleta) {
         return response()->json(['error' => 'Cliente no encontrado.'], 404);
     }
@@ -206,33 +205,40 @@ class RuletaController extends Controller
         ]);
     }
         //Si gana un premio mayor o premio menor
+        // Tu Controlador
+
+//...
         else{
             $cliente_info = Cliente::where('cedula', $clienteRuleta->cedula)->first();
+            
             $correoContent= [
                 'nombre' => $cliente_info->nombre_y_apellido,
                 'cedula' => $cliente_info->cedula,
                 'premio' => $premio,
                 'telefono' => $cliente_info->telefono,
+                'correo' => $cliente_info->correo
             ];
-            //Para el cliente
-                $correo = new \App\Mail\mailCreated($correoContent);
-                Mail::to($cliente_info->correo)->send($correo);
-            //para el admin
-                $correoAdmin = new \App\Mail\mailCreated($correoContent);
-                Mail::to('Rocktoyonyo@gmail.com')->send($correoAdmin);
             
             return response()->json([
+                'correoContent' => $correoContent, 
                 'oportunidades_cliente' => $clienteRuleta->oportunidades,
                 'angle' => $angle,
                 'premio' => $premio,
                 'color' => $colorRanura,
             ]);
+            
         }
 }
 
 
 
+    public function sendMails($correoContent){
+        $clienteCorreo= new \App\Mail\ruletWinnerMail($correoContent);
+        $adminCorreo= new \App\Mail\ruletAdminMain($correoContent);
+        $clienteCorreo= Mail::to($correoContent['correo'])->send($clienteCorreo);
+        $adminCorreo= Mail::to('Rocktoyonyo@gmail.com')->send($adminCorreo);
 
+    }
 
     public function BuildRulet(Request $request)
     {
