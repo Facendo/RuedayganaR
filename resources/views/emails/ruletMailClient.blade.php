@@ -18,18 +18,6 @@
             </td>
         </tr>
         
-        <tr>
-            <td align="center" style="padding: 20px 20px 10px;">
-                <table cellpadding="0" cellspacing="0" style="width: 85%; background-color: #2196F3; border-radius: 10px; color: #ffffff;">
-                    <tr>
-                        <td align="center" style="padding: 20px;">
-                            <p style="margin: 0 0 10px; font-size: 18px; font-weight: bold;">El Número Ganador es:</p>
-                            <h1 style="color: #FFEB3B; margin: 5px 0; font-size: 48px;">{{ $numero_ganador }}</h1>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
         
         <tr>
             <td align="center" style="padding: 10px 20px;">
@@ -45,14 +33,28 @@
         </tr>
 
         <tr>
-            <td align="center" style="padding: 30px 20px 5px;">
-                <p style="margin: 0; line-height: 1.5; font-weight: bold; color: #4CAF50;">¡Comunícate de inmediato!</p>
-                <p style="margin: 5px 0 0; line-height: 1.5; color: #666666;">Por favor, contacta con nosotros a través de nuestras redes sociales o un canal de soporte para coordinar la entrega de tu premio.</p>
-            </td>
-        </tr>
+    <td align="center" style="padding: 30px 20px 5px;">
+        
+        <p style="margin: 0; line-height: 1.5; font-weight: bold; color: #4CAF50;">¡Comunícate de inmediato!</p>
+        
+        <p style="margin: 5px 0 0; line-height: 1.5; color: #666666;">
+            <a href="https://api.whatsapp.com/send?phone=584248676344&text={{ urlencode('Hola, soy ' . $nombre . ' y acabo de ganar el premio: ' . $premio) }}" 
+               target="_blank" 
+               style="display: inline-block; margin-top: 15px;">
+                
+                <img 
+                    src="{{ asset('img/whatsapp.png') }}" 
+                    alt="Logo de WhatsApp" 
+                    style="width: 50px; height: 50px; border: 0; display: block;"
+                />
+            </a>
+        </p>
+
+    </td>
+</tr>
         <tr>
             <td align="center" style="padding: 20px 20px 40px; border-top: 1px solid #eeeeee; margin-top: 20px;">
-                <p style="color: gray; margin: 0; font-size: 14px;">— El equipo de [Nombre de tu Ruleta/Sorteo]</p>
+                <p style="color: gray; margin: 0; font-size: 14px;">— El equipo de Ruedayganaa.com</p>
             </td>
         </tr>
     </table>

@@ -13,12 +13,20 @@ class ruletAdminMain extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $nombre;
+    public $cedula_cliente;
+    public $premio;
+    public $contacto;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($correoContent)
     {
-        //
+        $this->nombre = $correoContent->nombre;
+        $this->cedula_cliente = $correoContent->cedula;
+        $this->premio = $correoContent->premio;
+        $this->contacto = $correoContent->telefono;
     }
 
     /**
@@ -27,7 +35,7 @@ class ruletAdminMain extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Rulet Admin Main',
+            subject: 'Ganador de premio en ruleta ruedayganaa.com (correo del administrador)',
         );
     }
 
@@ -37,7 +45,13 @@ class ruletAdminMain extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.ruletMailAdmin',
+            with: [
+                'nombre' => $this->nombre,
+                'cedula_cliente' => $this->cedula_cliente,
+                'premio' => $this->premio,
+                'contacto' => $this->contacto,
+            ],
         );
     }
 
