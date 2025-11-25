@@ -1,0 +1,943 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+/* ------ API FONT ------- */
+
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&display=swap");
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: #fff;
+    font-family: arial;
+    background-color: rgb(35, 35, 35);
+}
+
+.container {
+    width: 100%;
+}
+
+img.img_logo {
+    width: 70%;
+    height: 50%;
+}
+
+.section_subtitle {
+    text-align: center;
+    margin: 50px;
+    color: rgb(10, 180, 171);
+}
+
+.button {
+    border: none;
+    width: 120px;
+    background-color: rgb(254, 180, 3);
+    font-family: "Roboto Mono", monospace;
+    font-weight: 40px;
+    text-decoration: none;
+    outline: none;
+    padding: 12px;
+    margin: 0 auto;
+    color: black;
+    border-radius: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/*  
+COLORS
+RGB(17,17,17) PRINCIPAL (BACKGROUND COLOR)
+RGB(254,180,3) OBJECT COLOR
+RGB(34,34,34) WINDOWED
+RGB(50,50,61) SELECTOR
+RGB(10, 180, 171) BLUE COLOR
+
+*/
+
+/* ------- PANEL DE MENU --------- */
+
+.button_menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+    display: none;
+}
+
+.button_menu:hover {
+    background-color: #eee;
+}
+
+.button_menu img {
+    width: 40px;
+    height: 40px;
+}
+
+.panel_nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #333;
+    padding-top: 60px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.panel_nav.show {
+    transform: translateX(0);
+}
+
+.option_panel_nav {
+    display: block;
+    color: white;
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.option_panel_nav:hover {
+    background-color: #575757;
+}
+
+/* ------------------------- */
+
+.text_presentacion {
+    font-family: "Luckiest Guy", sans-serif;
+}
+
+h1 {
+    font-family: "Luckiest Guy", sans-serif;
+    color: rgb(254, 180, 3);
+}
+
+nav.menu {
+    width: 100%;
+    height: 10vh;
+    background-color: rgb(15, 15, 15);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.button_nav {
+    border: 1px solid rgb(254, 180, 3);
+    border: none;
+    outline: none;
+    background-color: #0056b3;
+    padding: 7px 12px;
+    text-decoration: none;
+    color: white;
+    border-radius: 25px;
+    margin: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.button_nav:hover {
+    background-color: #0036b3;
+}
+
+.button_contact {
+    border: 2px solid rgb(254, 180, 3);
+}
+
+.button_contact:hover {
+    background-color: rgb(254, 180, 3);
+    color: black;
+}
+
+h2 {
+    font-family: sans-serif;
+    color: rgb(254, 180, 3);
+    margin: 15px auto;
+    text-align: center;
+}
+
+h3 {
+    font-family: "Cal Sans", sans-serif;
+    text-align: center;
+    margin: 15px auto;
+    color: rgb(254, 180, 3);
+}
+
+.imagen_nav {
+    border-radius: 50%;
+    height: 95%;
+    padding: 2px;
+    border: 1px solid rgb(254, 180, 3);
+}
+
+.separador_nav {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_info,
+.back_rg {
+    background-image: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.8) 20%,
+            rgba(0, 0, 0, 0.7) 94%
+        ),
+        var(--bg-image);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top;
+    width: 100%;
+    height: 90vh;
+}
+
+.text_presentacion {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.container_presentacion {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.press {
+    width: 40%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.container_content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.imagen_head {
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    padding: 10px;
+    border: 5px solid blue;
+    transition: 0.3s;
+}
+
+.imagen_head:hover {
+    transform: scale(1.08);
+}
+
+footer#foot {
+    width: 100%;
+
+    background-color: rgb(254, 180, 3);
+    margin-top: 100px;
+}
+
+.contenido_foot {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cont_foot {
+    width: 20%;
+    height: 100%;
+    text-align: center;
+}
+
+.cont_cert {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img_cert {
+    width: 200px;
+    height: 200px;
+    margin: 15px;
+    border-radius: 50%;
+    padding: 7px;
+    border: 5px solid blue;
+}
+
+/* ---------- COMPRAS ----------- */
+.contador {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.contador button {
+    font-size: 1.5em;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background: gold;
+    border: none;
+    border-radius: 10px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+.cantidad {
+    font-size: 2em;
+    color: yellow;
+}
+
+.icon_contact {
+    width: 50px;
+    height: 50px;
+    margin: 0 10px;
+}
+
+/* --------------- CAMBIOS INDEX------------------------ */
+
+.titulo {
+    font-family: "Alfa Slab One", serif;
+}
+
+.text_presentacion {
+    font-family: "Alfa Slab One", serif;
+}
+
+.text_center {
+    font-family: "Roboto Mono", monospace;
+    font-size: 20px;
+}
+
+p {
+    font-family: "Roboto Mono", monospace;
+}
+
+h2.section_subtitle {
+    font-family: "Cal Sans", sans-serif;
+}
+
+h3.title_card,
+h3 {
+    font-family: "Cal Sans", sans-serif;
+}
+
+.button {
+    background-color: var(--dark-orange);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.button_ini {
+    background-color: var(--dark-orange);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.contenido {
+    text-align: center;
+    width: 100%;
+}
+
+h2.slogan_footer {
+    font-family: "Alfa Slab One", serif;
+    color: black;
+}
+
+.section_ventas {
+    width: 100%;
+}
+
+/* --------------------- compra cambios -------------------- */
+
+.selector_ticket {
+    width: 200px;
+    height: 70px;
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 1px solid rgb(254, 180, 3);
+    cursor: pointer;
+    margin: 5px;
+    user-select: none;
+}
+
+.selector_ticket:hover {
+    background-color: rgb(254, 180, 3);
+    color: black;
+    transform: scale(1.05);
+    transition: 0.2s;
+}
+
+.selector_ticket:active {
+    background-color: rgb(254, 180, 3);
+    color: black;
+    transform: scale(1.05);
+    transition: 0.2s;
+}
+
+.container_tick {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: 20px auto;
+}
+
+.copy {
+    color: rgb(254, 180, 3);
+    width: 20px;
+}
+
+.copy-icon {
+    width: 20px;
+    cursor: pointer;
+    margin-left: 8px;
+    font-size: 1em;
+    color: #007bff;
+    transition: color 0.2s ease-in-out;
+}
+
+.copy-icon:hover {
+    color: #0056b3;
+}
+
+/* ------------------- TABLA DE TOPS VENTA -------------------- */
+
+.th_top {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    padding: 20px;
+}
+
+tr.tr_top .td_top {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    color: white;
+}
+
+img.img_trofeo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+thead.table_top_header {
+    background-color: rgba(110, 110, 110, 0.5);
+}
+
+tr.tr_top {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-collapse: collapse;
+}
+
+.table_top {
+    border-radius: 10px;
+    width: 70%;
+    background: rgba(0, 0, 0, 0.3);
+    border-collapse: collapse;
+}
+
+.table_top_header {
+    border-radius: 5px;
+}
+
+tr.td_top:nth-child(1) {
+    color: green;
+}
+
+#message {
+    width: 100%;
+}
+
+.mesage_success {
+    margin: 15px 0;
+    width: 100%;
+    padding: 30px 20px;
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #155724; /* Propiedad corregida */
+    border-radius: 5px;
+    transition: 0.4s; /* Propiedad corregida */
+}
+
+.mesage_error {
+    margin: 15px 0;
+    width: 100%;
+    padding: 30px 20px;
+    color: #d31;
+    background-color: #f8d7da;
+    border: 1px solid #c11; /* Propiedad corregida */
+    border-radius: 5px;
+    transition: 0.4s;
+}
+
+.message-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+}
+
+.cont_modal {
+    transform: translateX(110%);
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.6s;
+}
+
+.ventana_tickets {
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 5px 5px 20px 5px gray;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 8px;
+    position: relative;
+}
+
+/* .filtro_admin{
+    position: absolute;
+    top: 10%;
+    right: 20px;
+} */
+
+.contenedor_tickets {
+    width: 90%;
+    background-color: rgba(170, 170, 170);
+    margin: 0 auto;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+p.mostrar_data {
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+}
+
+.x_modal {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.x_modal img {
+    width: 40px;
+    height: 40px;
+}
+
+.x_modal:hover {
+    background-color: #f33;
+}
+
+.data_tickets_modal {
+    color: rgb(254, 180, 3);
+    display: block;
+    font-weight: 600;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.contenedor_desp {
+    width: 30%;
+    margin: 0 auto;
+}
+
+/* -------------------- RULETT ----------------------------- */
+
+/* -------------------- RULETT (MODAL Y CONTENEDORES PRINCIPALES) ----------------------------- */
+
+.cont_modal_rulet {
+    /* Propiedades de un modal (overlay de pantalla completa) */
+    transform: translateX(100%);
+    display: none; /* Controlar con JavaScript */
+    position: fixed;
+    z-index: 777;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.6s;
+}
+
+.container_ruleta_flex {
+    /* Nuevo contenedor de flex para centrar mejor el content_ruleta si el modal tiene otros elementos */
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content_ruleta {
+    /* Contenedor principal de la ruleta y botón */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* Apila la flecha, el botón/formulario y la ruleta verticalmente */
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 0; /* Eliminado el margen negativo */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Botón de Cierre del Modal (X) */
+.x_modal_rulet {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 100;
+}
+
+.x_modal_rulet img {
+    width: 40px;
+    height: 40px;
+}
+
+.x_modal_rulet:hover {
+    background-color: #f33;
+}
+
+/* -------------------- CONTENEDOR DE LA RULETA (CIRCULAR Y RESPONSIVE) ----------------------------- */
+
+.container_r {
+    /* RESPONSIVE: Usa 'vw' y 'max-width' */
+    width: 80vw;
+    height: 80vw;
+    max-width: 520px;
+    max-height: 520px;
+
+    border-radius: 50%;
+    background-color: rgba(238, 202, 6, 0.6);
+    border: 15px dotted rgb(255, 255, 119);
+
+    position: relative;
+    overflow: hidden;
+
+    filter: drop-shadow(0 0 20px rgba(238, 202, 6, 1));
+    transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    opacity: 1;
+    z-index: 10;
+}
+
+.ranura_rulet {
+    /* Estilos para las divisiones/ranuras internas */
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    transform-origin: 50% 100%;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}
+
+.button_rulet {
+    width: 30%;
+    text-align: center;
+}
+
+/* -------------------- ARROW (CORRECCIÓN DE POSICIÓN) ----------------------------- */
+
+.arrow {
+    /* CORRECCIÓN: Posicionamiento absoluto relativo a .content_ruleta */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Ajuste inicial de posición para que esté encima del círculo */
+    top: 20%;
+
+    color: black;
+    width: 50px;
+    height: 65px;
+    z-index: 100000;
+}
+
+.arrow::before {
+    content: "\1F817"; /* El código Unicode de la flecha */
+    font-size: 50px;
+}
+
+/* Ajuste fino para la flecha en pantallas grandes */
+@media (min-width: 600px) {
+    .arrow {
+        /* Calcular la posición fija: (50% del padre) - (radio de 260px) - (margen) */
+        top: calc(50% - 260px - 40px);
+    }
+}
+
+/* -------------------- BOTÓN SPIN ----------------------------- */
+
+#spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100; /* Z-index alto para el botón */
+    background-color: #e2e2e2;
+    text-transform: uppercase;
+    border: 8px solid #fff;
+    font-weight: bold;
+    font-size: 20px;
+    color: #a2a2a2;
+    width: 80px;
+    height: 80px;
+    font-family: sans-serif;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    letter-spacing: 1px;
+}
+
+/* ------------------- VACIADO DE DATOS RULETA Y RESULTADOS ----------------------- */
+
+.data_rulet {
+    /* RESPONSIVE: Ajuste de ancho */
+    width: 90%;
+    max-width: 450px;
+    background-color: rgb(200, 220, 230, 0.9);
+    margin: 20px auto 10px auto;
+    text-align: center;
+    color: black;
+    border-radius: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.nombre_ruleta {
+    position: relative;
+    top: 0;
+    color: white;
+    background-color: rgb(254, 180, 3);
+    border-radius: 10px 10px 0 0;
+}
+
+.mensaje_result {
+    /* RESPONSIVE: Ajuste de ancho */
+    width: 80%;
+    max-width: 300px;
+    margin: 10px auto;
+
+    background-color: #109911;
+    text-align: center;
+    color: black;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.cont_cant_op p {
+    display: inline;
+    background-color: #007bff;
+    border-radius: 5px;
+    padding: 3px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#result_rulet {
+    font-family: "Bitcount Grid Double", system-ui;
+    font-weight: 600;
+    font-size: 40px;
+    color: white;
+}
+
+/* ------------------- VENTANA EMERGENTE DE RESULTADO ----------------------- */
+
+.emergent_window {
+    z-index: 9999;
+    /* RESPONSIVE: Centrado absoluto y ancho flexible */
+    width: 90%;
+    max-width: 500px;
+    height: auto;
+    padding: 20px;
+    color: black;
+    background-color: rgb(200, 220, 230, 0.9);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Centrado y oculto inicialmente */
+    border-radius: 10px;
+    display: none;
+    transition: 0.4s;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.emergent_window h2 {
+    color: black;
+    margin-top: 50px;
+}
+
+.close_window {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-block;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    user-select: none;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close_window:hover {
+    background-color: crimson;
+    color: white;
+}
+
+/* ------------------- CSS para el texto de la ruleta (slot-text) ----------------------- */
+
+.slot-text-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 260px; /* Radio de la ruleta (aproximadamente 520px/2) */
+    height: 1px;
+    transform-origin: 0% 0%;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.slot-text {
+    position: absolute;
+    width: auto;
+    height: auto;
+    z-index: 9999;
+    color: black;
+    font-size: 20px;
+    white-space: nowrap;
+
+    /* Desplaza el texto 80px hacia afuera desde el centro */
+    left: 100px; /* Ajuste para centrar mejor el texto */
+
+    /* Ajuste vertical */
+    top: -10px;
+    text-align: center;
+}
+
+.data_ranura {
+    width: 50%;
+    padding: 20px;
+    border: 2px solid red;
+    background-color: white;
+    color: black;
+}
+
+/* -------------------- MEDIA QUERIES PARA PANTALLAS PEQUEÑAS (Móviles) ----------------------------- */
+
+@media (max-width: 600px) {
+    /* Contenedor Ruleta: Ajusta el tamaño de la ruleta para que quepa en la pantalla */
+    .container_r {
+        width: 90vmin; /* 90% del viewport más pequeño (ancho o alto) */
+        height: 90vmin;
+        max-width: 90vmin;
+        max-height: 90vmin;
+        border-width: 10px; /* Borde más pequeño */
+    }
+
+    /* Flecha (Arrow) */
+    .arrow {
+        top: 80px; /* Posiciona la flecha para que esté debajo de los datos y encima de la ruleta */
+        width: 40px;
+        height: 50px;
+    }
+
+    .arrow::before {
+        font-size: 40px;
+    }
+
+    /* Botón de cerrar (X) */
+    .x_modal_rulet {
+        top: 10px;
+        right: 10px;
+    }
+
+    .x_modal_rulet img {
+        width: 30px;
+        height: 30px;
+    }
+
+    /* Texto de Slots */
+    .slot-text {
+        font-size: 14px; /* Texto más pequeño */
+        left: 60px; /* Distancia menor al centro de la ruleta más pequeña */
+    }
+
+    /* Wrapper del texto (radio) */
+    .slot-text-wrapper {
+        /* Asegura que el contenedor del texto se ajuste al nuevo tamaño de la ruleta */
+        width: 50vmin;
+    }
+}

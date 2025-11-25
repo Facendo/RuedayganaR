@@ -1,0 +1,175 @@
+@media (max-width: 1250px) {
+    .container_info {
+        display: flex;
+        width: 100%;
+    }
+
+    .content_text_presentacion {
+        width: 40%;
+    }
+}
+
+@media (max-width: 1170px) {
+    h2.slogan_footer {
+        font-size: 15px;
+    }
+
+    .text_footer {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .content_img_presentacion {
+        width: 80%;
+        margin: 50px auto 0 auto;
+    }
+
+    .button_menu {
+        display: block;
+    }
+
+    .menu_pc_exist {
+        display: none;
+    }
+
+    .content_text_presentacion {
+        width: 80%;
+    }
+
+    .container_content {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 630px) {
+    .contenido_foot {
+        flex-direction: column;
+    }
+
+    .cont_foot {
+        width: 80%;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 210px) {
+}
+
+@media (max-width: 1000px) {
+    .cont_form {
+        width: 70%;
+    }
+}
+
+@media (max-width: 830px) {
+    .cont_form {
+        width: 80%;
+    }
+}
+/*
+ * -------------------------------------
+ * Tablas (Estilos Base)
+ * -------------------------------------
+ * Estos estilos definen el aspecto de la tabla en escritorios.
+ */
+.container_table {
+    overflow-x: auto; /* Permite scroll horizontal si la tabla es más ancha que la pantalla */
+    width: 100%;
+}
+
+.table_gestion {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #2a2a2a; /* Mantiene tu color de fondo */
+}
+
+.table_gestion th,
+.table_gestion td {
+    border: 1px solid #555; /* Mantiene tu color de borde */
+    padding: 12px;
+    text-align: left;
+}
+
+/*
+ * -------------------------------------
+ * Reglas para Dispositivos Móviles (≤ 600px)
+ * -------------------------------------
+ * Estas reglas transforman la tabla para que sea legible en móviles.
+ */
+@media (max-width: 600px) {
+    .table_gestion thead {
+        display: none; /* Oculta el encabezado de la tabla */
+    }
+
+    .table_gestion,
+    .table_gestion tbody,
+    .table_gestion tr,
+    .table_gestion td {
+        display: block; /* Muestra cada celda como un bloque */
+        width: 100%; /* Cada celda ocupa todo el ancho */
+    }
+
+    .table_gestion tr {
+        margin-bottom: 15px; /* Espacio entre cada "fila virtual" */
+        border: 1px solid #555;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #333; /* Un color ligeramente diferente para diferenciar las filas */
+    }
+
+    .table_gestion td {
+        text-align: right; /* Alinea el contenido a la derecha */
+        padding-left: 50%;
+        position: relative;
+    }
+
+    /* Crea una "etiqueta" para cada celda usando un pseudo-elemento */
+    .table_gestion td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    /* Asegúrate de que tu HTML tenga el atributo `data-label` en cada `td` para que esto funcione. */
+    /* Ejemplo: <td data-label="Teléfono">123-456-7890</td> */
+    .table_gestion td:nth-of-type(1)::before {
+        content: "Cedula";
+    }
+    .table_gestion td:nth-of-type(2)::before {
+        content: "Telefono";
+    }
+    .table_gestion td:nth-of-type(3)::before {
+        content: "Referencia";
+    }
+    .table_gestion td:nth-of-type(4)::before {
+        content: "Comprobante";
+    }
+    .table_gestion td:nth-of-type(5)::before {
+        content: "Monto";
+    }
+    .table_gestion td:nth-of-type(6)::before {
+        content: "Cantidad de Tickets";
+    }
+    .table_gestion td:nth-of-type(7)::before {
+        content: "Fecha pago";
+    }
+    .table_gestion td:nth-of-type(8)::before {
+        content: "Metodo de pago";
+    }
+    .table_gestion td:nth-of-type(9)::before {
+        content: "Estado de pago";
+    }
+    .table_gestion td:nth-of-type(10)::before {
+        content: "Acciones";
+    }
+    .table_gestion td:nth-of-type(11)::before {
+        content: "Tickets";
+    }
+}
