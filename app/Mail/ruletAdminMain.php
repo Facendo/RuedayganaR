@@ -16,17 +16,17 @@ class ruletAdminMain extends Mailable
     public $nombre;
     public $cedula_cliente;
     public $premio;
-    public $contacto;
+    public $telefono;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($correoContent)
+    public function __construct(object $correoContent)
     {
         $this->nombre = $correoContent->nombre;
         $this->cedula_cliente = $correoContent->cedula;
         $this->premio = $correoContent->premio;
-        $this->contacto = $correoContent->telefono;
+        $this->telefono = $correoContent->telefono;
     }
 
     /**
@@ -50,7 +50,7 @@ class ruletAdminMain extends Mailable
                 'nombre' => $this->nombre,
                 'cedula_cliente' => $this->cedula_cliente,
                 'premio' => $this->premio,
-                'contacto' => $this->contacto,
+                'contacto' => $this->telefono,
             ],
         );
     }

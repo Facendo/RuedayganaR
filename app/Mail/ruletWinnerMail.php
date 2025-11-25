@@ -16,10 +16,10 @@ class ruletWinnerMail extends Mailable
     public $nombre;
     public $premio;
 
-    public function __construct($correoContent)
+    public function __construct(object $correoContent)
     {
-        $this->nombre = $ruleta->nombre;
-        $this->premio = $ruleta->premio;
+        $this->nombre = $correoContent->nombre;
+        $this->premio = $correoContent->premio;
     }
 
 
