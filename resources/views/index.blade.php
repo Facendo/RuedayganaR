@@ -349,48 +349,43 @@ document.addEventListener('DOMContentLoaded', function() {
    
        
    
-    <div class="cont_modal_rulet">
-        <div class="x_modal_rulet">
-            <img src="{{asset('img/x.png')}}" alt="" >
-        </div>
-        
-       <div class="data_rulet">
-         <h1 class="nombre_ruleta">nombre ruleta</h1>
-         <br>
-         <div class="nombre_jugador"><p>Julio Galanton</p></div>
+   <div class="cont_modal_rulet">
+    <div class="x_modal_rulet">
+        <img src="{{asset('img/x.png')}}" alt="">
+    </div>
+
+    <div class="data_rulet">
+        <h1 class="nombre_ruleta">nombre ruleta</h1>
+        <br>
+        <div class="nombre_jugador"><p>Julio Galanton</p></div>
         <div class="cont_cant_op">Giros disponibles <p></p></div>
         <br>
-       
-       </div>
+    </div>
 
+    <br>
 
-       <br>
-        
-        <div class="mensaje_result" ><h2 id="result_rulet">rueda papi rueda</h2></div>
+    <div class="mensaje_result"><h2 id="result_rulet">rueda papi rueda</h2></div>
 
-        <br>
-       
-         <div class="container_ruleta_flex">
-              <div class="content_ruleta">
-            
-           <form action="{{route('ruleta.spin')}}" method="POST">
+    <br>
+
+    <div class="container_ruleta_flex">
+        <div class="content_ruleta">
+
+            <img src="{{asset('img/arrow_rulet.png')}}" class="arrow" alt=""> 
+
+            <form action="{{route('ruleta.spin')}}" method="POST">
                 @csrf
                 <input id="spin_sorteo" type="hidden" name="id_sorteo">
                 <input id="spin_cedula" type="hidden" name="cedula">
-                
+
                 <button type="submit" id="spin">Spin</button>
-                <img src="{{asset('img/arrow_rulet.png')}}" class="arrow" alt="">
-                
             </form>
 
-
-             <div class="container_r">         
-
-            </div>
+            <div class="container_r"> 
+                </div>
         </div>
-         </div>
-
     </div>
+</div>
 
     
 
