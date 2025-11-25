@@ -601,9 +601,14 @@ p.mostrar_data {
     margin: 0 auto;
 }
 
+/* -------------------- RULETT ----------------------------- */
+
+/* -------------------- RULETT (MODAL Y CONTENEDORES PRINCIPALES) ----------------------------- */
+
 .cont_modal_rulet {
+    /* Propiedades de un modal (overlay de pantalla completa) */
     transform: translateX(100%);
-    display: none;
+    display: none; /* Controlar con JavaScript */
     position: fixed;
     z-index: 777;
     left: 0;
@@ -615,16 +620,30 @@ p.mostrar_data {
     transition: 0.6s;
 }
 
-.content_ruleta {
+.container_ruleta_flex {
+    /* Nuevo contenedor de flex para centrar mejor el content_ruleta si el modal tiene otros elementos */
     width: 100%;
-    height: 100%;
+    height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    margin-top: -100px;
 }
 
+.content_ruleta {
+    /* Contenedor principal de la ruleta y botón */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* Apila la flecha, el botón/formulario y la ruleta verticalmente */
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 0; /* Eliminado el margen negativo */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Botón de Cierre del Modal (X) */
 .x_modal_rulet {
     position: fixed;
     top: 50px;
@@ -646,14 +665,15 @@ p.mostrar_data {
     background-color: #f33;
 }
 
-.button_rulet {
-    width: 30%;
-    text-align: center;
-}
+/* -------------------- CONTENEDOR DE LA RULETA (CIRCULAR Y RESPONSIVE) ----------------------------- */
 
 .container_r {
-    width: 520px;
-    height: 520px;
+    /* RESPONSIVE: Usa 'vw' y 'max-width' */
+    width: 80vw;
+    height: 80vw;
+    max-width: 520px;
+    max-height: 520px;
+
     border-radius: 50%;
     background-color: rgba(238, 202, 6, 0.6);
     border: 15px dotted rgb(255, 255, 119);
@@ -668,6 +688,7 @@ p.mostrar_data {
 }
 
 .ranura_rulet {
+    /* Estilos para las divisiones/ranuras internas */
     position: absolute;
     top: -25%;
     left: -25%;
@@ -678,11 +699,22 @@ p.mostrar_data {
     z-index: 5;
 }
 
+.button_rulet {
+    width: 30%;
+    text-align: center;
+}
+
+/* -------------------- ARROW (CORRECCIÓN DE POSICIÓN) ----------------------------- */
+
 .arrow {
+    /* CORRECCIÓN: Posicionamiento absoluto relativo a .content_ruleta */
     position: absolute;
-    top: 8%;
     left: 50%;
     transform: translateX(-50%);
+
+    /* Ajuste inicial de posición para que esté encima del círculo */
+    top: 20%;
+
     color: black;
     width: 50px;
     height: 65px;
@@ -690,9 +722,19 @@ p.mostrar_data {
 }
 
 .arrow::before {
-    content: "\1F817";
+    content: "\1F817"; /* El código Unicode de la flecha */
     font-size: 50px;
 }
+
+/* Ajuste fino para la flecha en pantallas grandes */
+@media (min-width: 600px) {
+    .arrow {
+        /* Calcular la posición fija: (50% del padre) - (radio de 260px) - (margen) */
+        top: calc(50% - 260px - 40px);
+    }
+}
+
+/* -------------------- BOTÓN SPIN ----------------------------- */
 
 #spin {
     position: absolute;
@@ -715,7 +757,20 @@ p.mostrar_data {
     letter-spacing: 1px;
 }
 
-/* ------------------- vaciado de datos ruleta ----------------------- */
+/* ------------------- VACIADO DE DATOS RULETA Y RESULTADOS ----------------------- */
+
+.data_rulet {
+    /* RESPONSIVE: Ajuste de ancho */
+    width: 90%;
+    max-width: 450px;
+    background-color: rgb(200, 220, 230, 0.9);
+    margin: 20px auto 10px auto;
+    text-align: center;
+    color: black;
+    border-radius: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+}
 
 .nombre_ruleta {
     position: relative;
@@ -725,23 +780,17 @@ p.mostrar_data {
     border-radius: 10px 10px 0 0;
 }
 
-.data_rulet {
-    width: 60%;
-    background-color: rgb(200, 220, 230, 0.9);
-    margin: 50px auto 0 auto;
-    text-align: center;
-    color: black;
-    border-radius: 10px;
-}
-
 .mensaje_result {
+    /* RESPONSIVE: Ajuste de ancho */
+    width: 80%;
+    max-width: 300px;
+    margin: 10px auto;
+
     background-color: #109911;
     text-align: center;
     color: black;
-    width: 45%;
     border-radius: 10px;
     padding: 5px;
-    margin: 0 auto;
 }
 
 .cont_cant_op p {
@@ -761,27 +810,26 @@ p.mostrar_data {
     color: white;
 }
 
-.container_ruleta_flex {
-    width: 100%;
-    height: 70vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+/* ------------------- VENTANA EMERGENTE DE RESULTADO ----------------------- */
 
 .emergent_window {
     z-index: 9999;
-    width: 70%;
-    height: 300px;
+    /* RESPONSIVE: Centrado absoluto y ancho flexible */
+    width: 90%;
+    max-width: 500px;
+    height: auto;
+    padding: 20px;
     color: black;
     background-color: rgb(200, 220, 230, 0.9);
     position: fixed;
-    top: 40%;
-    left: 15%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Centrado y oculto inicialmente */
     border-radius: 10px;
     display: none;
-    transform: scale(0);
     transition: 0.4s;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .emergent_window h2 {
@@ -809,7 +857,7 @@ p.mostrar_data {
     color: white;
 }
 
-/* CSS para el texto de la ruleta (slot-text) */
+/* ------------------- CSS para el texto de la ruleta (slot-text) ----------------------- */
 
 .slot-text-wrapper {
     position: absolute;
@@ -827,16 +875,15 @@ p.mostrar_data {
     width: auto;
     height: auto;
     z-index: 9999;
-    color: white;
+    color: black;
     font-size: 20px;
     white-space: nowrap;
 
     /* Desplaza el texto 80px hacia afuera desde el centro */
-    left: 80px;
+    left: 100px; /* Ajuste para centrar mejor el texto */
 
     /* Ajuste vertical */
     top: -10px;
-
     text-align: center;
 }
 
@@ -846,4 +893,51 @@ p.mostrar_data {
     border: 2px solid red;
     background-color: white;
     color: black;
+}
+
+/* -------------------- MEDIA QUERIES PARA PANTALLAS PEQUEÑAS (Móviles) ----------------------------- */
+
+@media (max-width: 600px) {
+    /* Contenedor Ruleta: Ajusta el tamaño de la ruleta para que quepa en la pantalla */
+    .container_r {
+        width: 90vmin; /* 90% del viewport más pequeño (ancho o alto) */
+        height: 90vmin;
+        max-width: 90vmin;
+        max-height: 90vmin;
+        border-width: 10px; /* Borde más pequeño */
+    }
+
+    /* Flecha (Arrow) */
+    .arrow {
+        top: 80px; /* Posiciona la flecha para que esté debajo de los datos y encima de la ruleta */
+        width: 40px;
+        height: 50px;
+    }
+
+    .arrow::before {
+        font-size: 40px;
+    }
+
+    /* Botón de cerrar (X) */
+    .x_modal_rulet {
+        top: 10px;
+        right: 10px;
+    }
+
+    .x_modal_rulet img {
+        width: 30px;
+        height: 30px;
+    }
+
+    /* Texto de Slots */
+    .slot-text {
+        font-size: 14px; /* Texto más pequeño */
+        left: 60px; /* Distancia menor al centro de la ruleta más pequeña */
+    }
+
+    /* Wrapper del texto (radio) */
+    .slot-text-wrapper {
+        /* Asegura que el contenedor del texto se ajuste al nuevo tamaño de la ruleta */
+        width: 50vmin;
+    }
 }
