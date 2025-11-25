@@ -13,30 +13,35 @@ class ruletWinnerMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    
+    public $nombre;
+    public $premio;
 
-    public function __construct()
+    public function __construct($correoContent)
     {
-        //
+        $this->nombre = $ruleta->nombre;
+        $this->premio = $ruleta->premio;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Rulet Winner Mail',
-        );
-    }
 
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            subject: 'Ganador de premio en ruleta ruedayganaa.com',
+        );
+    }
+
+     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.ruletMailClient',
+            with: [
+                'nombre' => $this->nombre,
+                'premio' => $this->premio,
+                
+            ],
         );
     }
 
