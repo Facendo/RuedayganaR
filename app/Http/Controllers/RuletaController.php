@@ -198,7 +198,7 @@ class RuletaController extends Controller
     
     $colorRanura = $last_slot->color;
     //Si cae en bancarrota o intentar de nuevo
-    if($last_slot->premio=='intentar_de_nuevo'|| $last_slot->type=='bancarrota'){
+    if($last_slot->type=='intentar_de_nuevo'|| $last_slot->type=='bancarrota'){
 
         return response()->json([
             'oportunidades_cliente' => $clienteRuleta->oportunidades,
