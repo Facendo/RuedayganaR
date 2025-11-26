@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <td align="center" style="padding: 0 20px;">
-                <p style="margin: 0; line-height: 1.5; color: #333333;">Se ha registrado un nuevo ganador en la ruleta.</p>
+                <p style="margin: 0; line-height: 1.5; color: #333333;">Se ha registrado un nuevo ganador en la ruleta. A continuación, los detalles para el contacto y gestión del premio.</p>
             </td>
         </tr>
         
@@ -23,13 +23,25 @@
                 <table cellpadding="0" cellspacing="0" style="width: 85%; background-color: #ffffff; border: 2px solid #D32F2F; border-radius: 10px; padding: 10px;">
                     <tr>
                         <td style="padding: 15px;">
-                            <h3 style="color: #333333; margin-top: 0; margin-bottom: 15px;">Detalles del Resultado:</h3>
+                            <h3 style="color: #333333; margin-top: 0; margin-bottom: 15px;">Detalles del Ganador:</h3>
                             
                             <p style="margin: 0 0 10px; font-size: 18px; color: #333333;">
-                                <strong>👤 Nombre del Ganador:</strong> {{ $nombre }}
+                                <strong>👤 Nombre:</strong> {{ $nombre }}
                             </p>
-
+                            
+                            <!-- AÑADIDOS -->
                             <p style="margin: 0 0 10px; font-size: 18px; color: #333333;">
+                                <strong>💳 Cédula:</strong> {{ $cedula_cliente }}
+                            </p>
+                            
+                            <p style="margin: 0 0 15px; font-size: 18px; color: #333333;">
+                                <strong>📞 Contacto (Teléfono):</strong> {{ $contacto }}
+                            </p>
+                            <!-- FIN AÑADIDOS -->
+
+                            <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 15px 0;">
+
+                            <p style="margin: 0 0 10px; font-size: 20px; color: #333333;">
                                 <strong>🎁 Premio Asignado:</strong> <span style="font-weight: bold; color: #D32F2F;">{{ $premio }}</span>
                             </p>
                             
