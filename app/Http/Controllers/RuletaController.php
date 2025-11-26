@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\ClienteRuleta;
+use App\Models\HistoricoRuleta;
 use App\Models\Ranura;
 use App\Models\Ruleta;
 use Illuminate\Http\Request;
@@ -222,6 +223,18 @@ class RuletaController extends Controller
                 'correo' => $cliente_info->correo
             ];
             
+            //Generar historico ruleta
+
+            $historico = new HistoricoRuleta();
+            $historico->id_ruleta = $ruleta->id_ruleta;
+            $historico->nombre_ruleta = $ruleta->nombre;
+            $historico->cedula_jugador = $cliente_info->cedula;
+            $historico->nombre_jugador = $cliente_info->nombre_y_apellido;
+            $historico->telefono = $cliente_info->telefono;
+            $historico->descripcion = "Ganó el premio: " . $premio;
+            $historico->save();
+
+
             return response()->json([
                 'correoContent' => $correoContent, 
                 'oportunidades_cliente' => $clienteRuleta->oportunidades,
@@ -260,12 +273,15 @@ class RuletaController extends Controller
 
         // Convertimos el array a objeto para usarlo en el constructor Mailable
         $dataObject = (object) $correoContent;
+        Mail::to($correoContent['correo'])->send(new ruletWinnerMail($dataObject));
+        Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
 
-       Mail::to('Rocktoyonyo@gmail.com')->queue(new ruletAdminMain($dataObject)); 
-       Mail::to($correoContent['correo'])->queue(new ruletWinnerMail($dataObject)); 
+        // $clienteCorreo= new \App\Mail\ruletWinnerMail($correoContent);
+        // $adminCorreo= new \App\Mail\ruletAdminMain($correoContent);
+        // $clienteCorreo= Mail::to($correoContent['correo'])->send($clienteCorreo);
+        // $adminCorreo= Mail::to('Rocktoyonyo@gmail.com')->send($adminCorreo);
 
     }
-
 
     public function BuildRulet(Request $request)
     {
