@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Evento: Formulario de verificación de cédula
     if (form) {
         form.addEventListener("submit", function (event) {
-            event.preventDefault(); // ¡VITAL! Evita la recarga.
+            event.preventDefault();
 
             const cedula = cedulaInput.value.trim();
             const idSorteo = idSorteoInput ? idSorteoInput.value : null;

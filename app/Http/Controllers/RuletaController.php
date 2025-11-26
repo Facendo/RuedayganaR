@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ruletAdminMain;
-use App\Mail\ruletWinnerMail;
 use App\Models\Cliente;
 use App\Models\ClienteRuleta;
 use App\Models\Ranura;
 use App\Models\Ruleta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class RuletaController extends Controller
@@ -261,6 +258,7 @@ class RuletaController extends Controller
 
         // Convertimos el array a objeto para usarlo en el constructor Mailable
         $dataObject = (object) $correoContent;
+
         Mail::to($correoContent['correo'])->send(new ruletWinnerMail($dataObject));
         Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
 
