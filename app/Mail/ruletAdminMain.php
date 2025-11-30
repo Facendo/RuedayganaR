@@ -13,20 +13,12 @@ class ruletAdminMain extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $nombre;
-    public $cedula_cliente;
-    public $premio;
-    public $telefono;
-
     /**
      * Create a new message instance.
      */
-    public function __construct(object $correoContent)
+    public function __construct()
     {
-        $this->nombre = $correoContent->nombre;
-        $this->cedula_cliente = $correoContent->cedula;
-        $this->premio = $correoContent->premio;
-        $this->telefono = $correoContent->telefono;
+        //
     }
 
     /**
@@ -35,7 +27,7 @@ class ruletAdminMain extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Ganador de premio en ruleta ruedayganaa.com (correo del administrador)',
+            subject: 'Rulet Admin Main',
         );
     }
 
@@ -45,13 +37,7 @@ class ruletAdminMain extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.ruletMailAdmin',
-            with: [
-                'nombre' => $this->nombre,
-                'cedula_cliente' => $this->cedula_cliente,
-                'premio' => $this->premio,
-                'contacto' => $this->telefono,
-            ],
+            view: 'view.name',
         );
     }
 

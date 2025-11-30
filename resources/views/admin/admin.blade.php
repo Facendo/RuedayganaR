@@ -321,47 +321,6 @@
     </div>
 </div>
 
-<div id="section_ventas_admin" class="container">
-    <h2 class="section_subtitle">HISTORICOS DE LAS RULETAS</h2>
-    <div class="container_table">
-        <table id="table_gestion" class="table_gestion">
-            <thead>
-                <tr>
-                    <th>Nombre Ruleta</th>
-                    <th>Cedula del Jugador</th>
-                    <th>Nombre del Jugador</th>
-                    <th>Nro de Contacto</th>
-                    <th>Descripcion</th>
-                    <th>Fecha y Hora</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($historicos as $historico)
-                <tr>
-                    <td>{{ $historico->nombre_ruleta }}</td>
-                    <td>{{ $historico->cedula_jugador }}</td>
-                    <td>{{ $historico->nombre_jugador }}</td>
-                    <td>{{ $historico->telefono }}</td>
-                    <td>{{ $historico->descripcion }}</td>
-                    <td>{{ $historico->created_at }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
-                <div class="pagination_container">
-            {{ $historicos->links() }}
-        </div>
-            </tbody>
-            
-        </table>
-        
-    </div>
-</div>
-        
-
-
 
 <h2 class="section_subtitle">Asignar Premios</h2>
 <div class="container_reg">

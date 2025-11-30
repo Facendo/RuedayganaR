@@ -14,7 +14,9 @@
         </tr>
         <tr>
             <td align="center" style="padding: 0 20px;">
+
                 <p style="margin: 0; line-height: 1.5; color: #333333;">Se ha registrado un nuevo ganador en la ruleta. A continuación, los detalles para el contacto y gestión del premio.</p>
+
             </td>
         </tr>
         
@@ -26,7 +28,9 @@
                             <h3 style="color: #333333; margin-top: 0; margin-bottom: 15px;">Detalles del Ganador:</h3>
                             
                             <p style="margin: 0 0 10px; font-size: 18px; color: #333333;">
+
                                 <strong>👤 Nombre:</strong> {{ $nombre }}
+
                             </p>
                             
                             <!-- AÑADIDOS -->
@@ -45,6 +49,9 @@
                                 <strong>🎁 Premio Asignado:</strong> <span style="font-weight: bold; color: #D32F2F;">{{ $premio }}</span>
                             </p>
                             
+                            <p style="margin: 0 0 10px; font-size: 18px; color: #333333;">
+                                <strong>🔢 Número Ganador:</strong> <span style="font-weight: bold;">{{ $numero_ganador }}</span>
+                            </p>
                         </td>
                     </tr>
                 </table>
@@ -57,6 +64,13 @@
                 <p style="margin: 5px 0 0; line-height: 1.5; color: #666666;">
                     Por favor, ingrese al panel de administración para verificar los datos y proceder con la gestión de la entrega del premio.
                 </p>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" style="padding: 15px 20px 40px;">
+                <a href="{{ $url_admin }}" style="display: inline-block; padding: 12px 25px; background-color: #1976D2; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    Ir al Panel de Administración
+                </a>
             </td>
         </tr>
         <tr>
