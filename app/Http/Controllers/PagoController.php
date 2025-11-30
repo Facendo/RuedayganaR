@@ -6,7 +6,6 @@ use App\Models\Pago;
 use App\Models\Premio;
 use App\Models\Ruleta;
 use App\Models\Sorteo;
-use App\Models\HistoricoRuleta;
 use Illuminate\Http\Request;
 
 class PagoController extends Controller
@@ -16,13 +15,11 @@ class PagoController extends Controller
      */
     public function index()
     {
-
         $Ruletas= Ruleta::all();
         $premios= Premio::all();
         $pagos = Pago::orderBy('id_pago', 'desc')->paginate(3);
         $sorteos = Sorteo::all();
-        $historicos = HistoricoRuleta::orderBy('id', 'desc')->paginate(3);
-        return view('admin.admin',compact('pagos','premios','sorteos','Ruletas','historicos'));
+        return view('admin.admin',compact('pagos','premios','sorteos','Ruletas'));
     }
 
     public function update(){

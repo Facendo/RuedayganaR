@@ -37,36 +37,3 @@ export function spinRuleta(idSorteo, cedula) {
         return response.json();
     });
 }
-
-/**
- * Recibe el objeto correoContent ya validado y lo envía al servidor.
- * @param {Object} payload - El objeto correoContent.
- * @returns {Promise<Object>} Promesa de la respuesta del servidor.
- */
-export function sendSecondData(payload) {
-    const jsonPayload = JSON.stringify(payload);
-
-    return fetch(window.APP_ROUTES.mail, {
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": window.APP_ROUTES.token,
-            "Content-Type": "application/json",
-        },
-        body: jsonPayload,
-    })
-        .then((response) => {
-            if (!response.ok) {
-                return response.json().then((errorData) => {
-                    throw new Error(
-                        errorData.error ||
-                            `Error al enviar correos: ${response.status}`
-                    );
-                });
-            }
-            return response.json();
-        })
-        .catch((error) => {
-            console.error("Fallo la llamada a sendSecondData:", error);
-            throw error;
-        });
-}

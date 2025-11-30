@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ruletAdminMain;
-use App\Mail\ruletWinnerMail;
 use App\Models\Cliente;
 use App\Models\ClienteRuleta;
-use App\Models\HistoricoRuleta;
 use App\Models\Ranura;
 use App\Models\Ruleta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class RuletaController extends Controller
 {
@@ -132,8 +127,7 @@ class RuletaController extends Controller
     }
     
     // 2. Verificación de Cliente (Evita Error 500 si el cliente no existe)
-    $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->where('id_ruleta', $ruleta->id_ruleta)->first();
-    
+    $clienteRuleta = ClienteRuleta::where('cedula', $cedula)->first();
     if (!$clienteRuleta) {
         return response()->json(['error' => 'Cliente no encontrado.'], 404);
     }
@@ -198,92 +192,18 @@ class RuletaController extends Controller
     // 7. Retorno de Respuesta JSON COMPLETO
     
     $colorRanura = $last_slot->color;
-    //Si cae en bancarrota o intentar de nuevo
-    if($last_slot->type=='intentar_de_nuevo'|| $last_slot->type=='bancarrota'){
 
-        return response()->json([
-            'oportunidades_cliente' => $clienteRuleta->oportunidades,
-            'angle' => $angle,
-            'premio' => $premio,
-            'color' => $colorRanura,
-        ]);
-    }
-        //Si gana un premio mayor o premio menor
-        // Tu Controlador
-
-//...
-        else{
-            $cliente_info = Cliente::where('cedula', $clienteRuleta->cedula)->first();
-            
-            $correoContent= [
-                'nombre' => $cliente_info->nombre_y_apellido,
-                'cedula' => $cliente_info->cedula,
-                'premio' => $premio,
-                'telefono' => $cliente_info->telefono,
-                'correo' => $cliente_info->correo
-            ];
-            
-            //Generar historico ruleta
-
-            $historico = new HistoricoRuleta();
-            $historico->id_ruleta = $ruleta->id_ruleta;
-            $historico->nombre_ruleta = $ruleta->nombre;
-            $historico->cedula_jugador = $cliente_info->cedula;
-            $historico->nombre_jugador = $cliente_info->nombre_y_apellido;
-            $historico->telefono = $cliente_info->telefono;
-            $historico->descripcion = "Ganó el premio: " . $premio;
-            $historico->save();
-
-
-            return response()->json([
-                'correoContent' => $correoContent, 
-                'oportunidades_cliente' => $clienteRuleta->oportunidades,
-                'angle' => $angle,
-                'premio' => $premio,
-                'color' => $colorRanura,
-            ]);
-            
-        }
+    return response()->json([
+        'oportunidades_cliente' => $clienteRuleta->oportunidades,
+        'angle' => $angle,
+        'premio' => $premio,
+        'color' => $colorRanura,
+    ]);
 }
 
 
-     public function handleMailRequest(Request $request)
-    {
-        // Se obtiene el cuerpo de la petición JSON
-        $correoContent = $request->all();
-
-        if (empty($correoContent) || !isset($correoContent['correo'])) {
-             return response()->json(['error' => 'Datos de correo faltantes o incorrectos.'], 400);
-        }
-
-        try {
-            
-            $this->sendMails($correoContent); // <-- Esta es la invocación
-            return response()->json(['message' => 'Correos enviados con éxito.'], 200);
-        } catch (\Exception $e) {
-            // Loguea el error real (problema con el servidor SMTP, etc.)
-            Log::error('Error al enviar correos desde handleMailRequest: ' . $e->getMessage());
-            // Devuelve un error 500 para que el frontend lo capture.
-            return response()->json(['error' => 'Fallo el envío de correos. Verifique logs.'], 500);
-        }
-    }
 
 
-
-    public function sendMails(array $correoContent){
-
-        // Convertimos el array a objeto para usarlo en el constructor Mailable
-        $dataObject = (object) $correoContent;
-        Mail::to($correoContent['correo'])->send(new ruletWinnerMail($dataObject));
-        //Solo se le envia correo al cliente
-        //Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
-
-        // $clienteCorreo= new \App\Mail\ruletWinnerMail($correoContent);
-        // $adminCorreo= new \App\Mail\ruletAdminMain($correoContent);
-        // $clienteCorreo= Mail::to($correoContent['correo'])->send($clienteCorreo);
-        // $adminCorreo= Mail::to('Rocktoyonyo@gmail.com')->send($adminCorreo);
-
-    }
 
     public function BuildRulet(Request $request)
     {

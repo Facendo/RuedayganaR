@@ -27,5 +27,4 @@ Route::delete('/ruleta/destroy',[RuletaController::class,'destroy'])->name('rule
 //Route for spinning the Rulet
 Route::post('/ruleta/spin', [RuletaController::class,'Spin'])->name('ruleta.spin');
 Route::put('/ruleta/ChangeState/{id_ruleta}',[RuletaController::class,'ActivarRuleta'])->name('ruleta.cambio_estado');
-Route::post('/ruleta/sendmail',[RuletaController::class,'handleMailRequest'])->name('ruleta.sendmail');
 
