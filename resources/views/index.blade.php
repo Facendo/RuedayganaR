@@ -328,11 +328,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         @csrf
 
-                        <input type="text" name="busqueda_tickets" id="cedula_tickets" placeholder="Busque su ticket" class="input_form" min="0" max="9999">
+                        <input type="text" name="busqueda_tickets" id="cedula" placeholder="Busque su ticket" class="input_form" min="0" max="9999">
 
                         <br>
 
-                        <button type="submit" id="searchTickets" class="button button_tick submit_btn">Buscar</button>
+                        <button type="submit" class="button button_tick submit_btn">Buscar</button>
                     </form>
             </div>
             </div>
@@ -399,7 +399,6 @@ document.addEventListener('DOMContentLoaded', function() {
         spin: "{{ route('ruleta.spin') }}",
 
         mail: "{{route('ruleta.sendmail')}}",
-        busqueda_ticket: "{{route('ticket.busqueda')}}",
         token: "{{ csrf_token() }}" // También inyectamos el token
     };
 </script>

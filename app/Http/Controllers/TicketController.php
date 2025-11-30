@@ -262,50 +262,5 @@ class TicketController extends Controller
         return;
     }
 
-    
-
-public function BusquedaTicket(Request $request) {
-    
-    $cedula = $request->input('busqueda_tickets');
-
- 
-    $cliente = Cliente::select('nombre_y_apellido')
-                      ->where('cedula', $cedula)
-                      ->first();
-
-   
-    if (!$cliente) {
-        return response()->json([
-            'nombre_cliente' => null,
-            'numeros' => [],
-            'message' => 'Cliente no encontrado.'
-        ], 404);
-    }
-    
-    $tickets = Ticket::where('cedula_cliente', $cedula)
-                     ->select('numeros_seleccionados')
-                     ->get();
-
-    
-   
-    $todosLosNumeros = [];
-
-    
-    foreach ($tickets as $ticket) {
-        $numerosDelTicket = json_decode($ticket->numeros_seleccionados, true);
-        
-        
-        if (is_array($numerosDelTicket)) {
-            $todosLosNumeros = array_merge($todosLosNumeros, $numerosDelTicket);
-        }
-    }
-    
-
-    return response()->json([
-        'nombre_cliente' => $cliente->nombre_y_apellido,
-        'numeros' => $todosLosNumeros
-    ]);
-}
-
 }
 

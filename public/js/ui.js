@@ -214,55 +214,6 @@ export function generateRuleta(ranuraData) {
     });
 }
 
-export function mostrarTicketsEnModal(data) {
-    const modal = document.querySelector(".cont_modal");
-    const closeButton = document.querySelector(".x_modal");
-    const muestra = document.querySelector(".mostrar_data");
-    const nombreDisplay = document.querySelector(".data_tickets_modal");
-
-    if (!data || !data.numeros || data.numeros.length === 0) {
-        nombreDisplay.innerHTML = data.nombre_cliente || "Cliente Encontrado";
-        muestra.innerHTML =
-            "No se encontraron tickets para la cédula proporcionada.";
-        openModal();
-        return;
-    }
-
-    nombreDisplay.innerHTML = data.nombre_cliente;
-
-    muestra.innerHTML = data.numeros.join(", ");
-
-    openModal();
-
-    function openModal() {
-        modal.style.transform = "translateX(0)";
-        modal.style.display = "block";
-    }
-
-    function closeModal() {
-        modal.style.transform = "translateX(110%)";
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 500);
-    }
-
-    if (closeButton && !closeButton.dataset.listener) {
-        closeButton.addEventListener("click", closeModal);
-        closeButton.dataset.listener = "true";
-    }
-    if (modal && !modal.dataset.listener) {
-        window.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-        modal.dataset.listener = "true";
-    }
-
-    // 5. No se requiere lógica de "vaciar tickets" aquí a menos que tengas un array global
-    // que deba ser limpiado después de esta operación.
-    // Si necesitas vaciar el array, debes pasarlo como argumento separado y ejecutar: arrayGlobal.length = 0;
-}
 // export function generateRuleta(ranuraData) {
 //     const container_rulet = document.querySelector(".container_r");
 

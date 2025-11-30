@@ -38,7 +38,6 @@ export function spinRuleta(idSorteo, cedula) {
     });
 }
 
-
 /**
  * Recibe el objeto correoContent ya validado y lo envía al servidor.
  * @param {Object} payload - El objeto correoContent.
@@ -93,4 +92,3 @@ export function fetchTickets(cedula) {
         return response.json();
     });
 }
-
