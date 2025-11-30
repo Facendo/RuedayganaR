@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ruletAdminMain;
-use App\Mail\ruletWinnerMail;
 use App\Models\Cliente;
 use App\Models\ClienteRuleta;
 use App\Models\HistoricoRuleta;
@@ -11,8 +9,10 @@ use App\Models\Ranura;
 use App\Models\Ruleta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\ruletWinnerMail;
+use App\Mail\ruletAdminMain;
 
 class RuletaController extends Controller
 {
@@ -249,7 +249,6 @@ class RuletaController extends Controller
 
      public function handleMailRequest(Request $request)
     {
-        // Se obtiene el cuerpo de la petición JSON
         $correoContent = $request->all();
 
         if (empty($correoContent) || !isset($correoContent['correo'])) {
@@ -258,7 +257,7 @@ class RuletaController extends Controller
 
         try {
             
-            $this->sendMails($correoContent); // <-- Esta es la invocación
+            $this->sendMails($correoContent); 
             return response()->json(['message' => 'Correos enviados con éxito.'], 200);
         } catch (\Exception $e) {
             // Loguea el error real (problema con el servidor SMTP, etc.)
@@ -275,13 +274,7 @@ class RuletaController extends Controller
         // Convertimos el array a objeto para usarlo en el constructor Mailable
         $dataObject = (object) $correoContent;
         Mail::to($correoContent['correo'])->send(new ruletWinnerMail($dataObject));
-        //Solo se le envia correo al cliente
-        //Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
-
-        // $clienteCorreo= new \App\Mail\ruletWinnerMail($correoContent);
-        // $adminCorreo= new \App\Mail\ruletAdminMain($correoContent);
-        // $clienteCorreo= Mail::to($correoContent['correo'])->send($clienteCorreo);
-        // $adminCorreo= Mail::to('Rocktoyonyo@gmail.com')->send($adminCorreo);
+        // Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
 
     }
 
