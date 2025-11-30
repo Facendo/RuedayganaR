@@ -30,3 +30,4 @@ Route::put('/ruleta/ChangeState/{id_ruleta}',[RuletaController::class,'ActivarRu
 Route::post('/ruleta/sendmail',[RuletaController::class,'handleMailRequest'])->name('ruleta.sendmail');
 Route::post('/ticket/busqueda',[TicketController::class,'BusquedaTicket'])->name('ticket.busqueda');
 
+
