@@ -1,7 +1,18 @@
 // main.js
 
-import { checkCedula, spinRuleta, sendSecondData } from "./api.js";
-import { openModal, closeModal, animateRuleta } from "./ui.js";
+import {
+    checkCedula,
+    spinRuleta,
+    sendSecondData,
+    fetchTickets,
+} from "./api.js";
+
+import {
+    openModal,
+    closeModal,
+    animateRuleta,
+    mostrarTicketsEnModal,
+} from "./ui.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Referencias a elementos comunes
@@ -9,12 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeButton = document.querySelector(".x_modal_rulet");
     const submitBtn = document.querySelector(".submit_btn");
     const spinBtn = document.getElementById("spin");
+    const searchTicketsBtn = document.getElementById("searchTickets");
 
     // Referencias a inputs para obtener valores
     const cedulaInput = document.getElementById("cedula");
     const idSorteoInput = document.querySelector(
         '.form_rulet input[name="id_sorteo"]'
     );
+    const cedulaTicketInput = document.getElementById("cedula_tickets");
 
     // Evento: Cerrar modal
     closeButton.addEventListener("click", closeModal);
@@ -125,6 +138,29 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.log(`Error: ${errorMessage}`);
 
                     spinBtn.disabled = false;
+                });
+        };
+    }
+
+    if (searchTicketsBtn) {
+        searchTicketsBtn.onclick = function (event) {
+            event.preventDefault();
+            const cedula = cedulaTicketInput.value.trim();
+
+            if (cedula === "") {
+                alert("Ingrese su cédula para buscar tickets.");
+                return;
+            }
+
+            fetchTickets(cedula)
+                .then((data) => {
+                    mostrarTicketsEnModal(data);
+                })
+                .catch((error) => {
+                    console.error("Error al buscar tickets:", error);
+                    alert(
+                        "Hubo un error al buscar los tickets o no se encontraron."
+                    );
                 });
         };
     }

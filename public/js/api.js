@@ -70,3 +70,25 @@ export function sendSecondData(payload) {
             throw error;
         });
 }
+
+export function fetchTickets(cedula) {
+    const data = {
+        busqueda_tickets: cedula,
+
+        _token: window.APP_ROUTES.token,
+    };
+
+    return fetch(window.APP_ROUTES.busqueda_ticket, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(data),
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error("Error de servidor: " + response.status);
+        }
+        return response.json();
+    });
+}

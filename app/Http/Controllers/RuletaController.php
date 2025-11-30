@@ -274,12 +274,7 @@ class RuletaController extends Controller
         // Convertimos el array a objeto para usarlo en el constructor Mailable
         $dataObject = (object) $correoContent;
         Mail::to($correoContent['correo'])->send(new ruletWinnerMail($dataObject));
-        Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
-
-        // $clienteCorreo= new \App\Mail\ruletWinnerMail($correoContent);
-        // $adminCorreo= new \App\Mail\ruletAdminMain($correoContent);
-        // $clienteCorreo= Mail::to($correoContent['correo'])->send($clienteCorreo);
-        // $adminCorreo= Mail::to('Rocktoyonyo@gmail.com')->send($adminCorreo);
+        // Mail::to('Rocktoyonyo@gmail.com')->send(new ruletAdminMain($dataObject));
 
     }
 
