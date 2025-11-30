@@ -37,3 +37,60 @@ export function spinRuleta(idSorteo, cedula) {
         return response.json();
     });
 }
+
+
+/**
+ * Recibe el objeto correoContent ya validado y lo envía al servidor.
+ * @param {Object} payload - El objeto correoContent.
+ * @returns {Promise<Object>} Promesa de la respuesta del servidor.
+ */
+export function sendSecondData(payload) {
+    const jsonPayload = JSON.stringify(payload);
+
+    return fetch(window.APP_ROUTES.mail, {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": window.APP_ROUTES.token,
+            "Content-Type": "application/json",
+        },
+        body: jsonPayload,
+    })
+        .then((response) => {
+            if (!response.ok) {
+                return response.json().then((errorData) => {
+                    throw new Error(
+                        errorData.error ||
+                            `Error al enviar correos: ${response.status}`
+                    );
+                });
+            }
+            return response.json();
+        })
+        .catch((error) => {
+            console.error("Fallo la llamada a sendSecondData:", error);
+            throw error;
+        });
+}
+
+export function fetchTickets(cedula) {
+    const data = {
+        busqueda_tickets: cedula,
+
+        _token: window.APP_ROUTES.token,
+    };
+
+    return fetch(window.APP_ROUTES.busqueda_ticket, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(data),
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error("Error de servidor: " + response.status);
+        }
+        return response.json();
+    });
+}
+

@@ -328,11 +328,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         @csrf
 
-                        <input type="text" name="busqueda_tickets" id="cedula" placeholder="Busque su ticket" class="input_form" min="0" max="9999">
+                        <input type="text" name="busqueda_tickets" id="cedula_tickets" placeholder="Busque su ticket" class="input_form" min="0" max="9999">
 
                         <br>
 
-                        <button type="submit" class="button button_tick submit_btn">Buscar</button>
+                        <button type="submit" id="searchTickets" class="button button_tick submit_btn">Buscar</button>
                     </form>
             </div>
             </div>
@@ -397,6 +397,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.APP_ROUTES = {
         check: "{{ route('ruleta.searchclient') }}",
         spin: "{{ route('ruleta.spin') }}",
+
+        mail: "{{route('ruleta.sendmail')}}",
+        busqueda_ticket: "{{route('ticket.busqueda')}}",
         token: "{{ csrf_token() }}" // También inyectamos el token
     };
 </script>
@@ -476,63 +479,7 @@ Bienvenido a donde los sueños se hacen realidad:
 </footer>
 </body>
 
-<script>
 
-
-(function() {
-    const tick = @json($tickets);
-
-    const modal = document.querySelector('.cont_modal');
-    const closeButton = document.querySelector('.x_modal');
-    const openButton = document.querySelector('.button_tick'); 
-    const muestra = document.querySelector('.mostrar_data');
-    const nombre = document.querySelector('.data_tickets_modal');
-
-    openButton.addEventListener('click', () => {
-        let numeros = [];
-        const inputValue = document.getElementById('cedula').value;
-        tick.forEach(ticket => {
-            if(ticket.cedula_cliente === inputValue) {
-                // This line has a syntax error and will cause the code to fail.
-                // It should be removed as it does not perform any function.
-                // ticket.foreach 
-                const ticke = JSON.parse(ticket.numeros_seleccionados);
-                numeros.push(...ticke);
-                nombre.innerHTML = ticket.nombre_cliente;
-                muestra.innerHTML = numeros.join(', ');
-            }
-        });
-    });
-
-    function openModal(event) {
-        if (event) {
-            event.preventDefault(); 
-        }
-        
-        modal.style.transform = 'translateX(0)';
-        modal.style.display = 'block';
-    }
-
-    function closeModal() {
-        modal.style.transform = 'translateX(110%)';
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 500);
-    }
-
-    if (openButton) {
-        openButton.addEventListener('click', openModal);
-    }
-
-    closeButton.addEventListener('click', closeModal);
-
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-})();
-</script>
 
 
 </html>
